@@ -1,0 +1,12 @@
+name: mann_kendall_tfpw
+category: trend
+description: Mann-Kendall after trend-free prewhitening.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- trend_detected
+- direction
+- p_value
+- slope
+source: TODO

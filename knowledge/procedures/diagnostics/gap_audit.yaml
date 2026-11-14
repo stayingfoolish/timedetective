@@ -1,0 +1,10 @@
+name: gap_audit
+category: diagnostics
+description: Counts gaps and reports the longest one.
+requires:
+- regular_spacing
+produces:
+- n_gaps
+- longest_gap
+- has_gaps
+source: TODO

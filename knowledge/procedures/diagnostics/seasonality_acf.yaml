@@ -1,0 +1,11 @@
+name: seasonality_acf
+category: diagnostics
+description: Seasonal period from the highest local peak of the autocorrelation function.
+requires:
+- regular_spacing
+- no_missing
+- detrended
+produces:
+- seasonal
+- period
+source: manokhin_2025

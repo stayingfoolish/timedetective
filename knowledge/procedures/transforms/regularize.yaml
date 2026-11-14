@@ -1,0 +1,8 @@
+name: regularize
+category: transforms
+description: Aggregates a series to a fixed cadence; never upsamples.
+requires:
+- datetime_index
+produces:
+- regular_spacing
+source: TODO

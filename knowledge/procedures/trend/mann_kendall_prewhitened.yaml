@@ -1,0 +1,12 @@
+name: mann_kendall_prewhitened
+category: trend
+description: Mann-Kendall after removing lag-1 autocorrelation; holds the false-positive rate under AR(1) noise.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- trend_detected
+- direction
+- p_value
+- slope
+source: TODO

@@ -1,0 +1,11 @@
+name: rolling_regression
+category: relationship
+description: Slope of one series on another within a moving window.
+requires:
+- regular_spacing
+- no_missing
+- aligned_pair
+produces:
+- rolling_slope
+- slope_range
+source: TODO

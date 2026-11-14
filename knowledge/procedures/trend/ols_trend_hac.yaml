@@ -1,0 +1,12 @@
+name: ols_trend_hac
+category: trend
+description: Least-squares slope with Newey-West standard errors, valid under autocorrelated residuals.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- slope
+- ci_low
+- ci_high
+- p_value
+source: TODO

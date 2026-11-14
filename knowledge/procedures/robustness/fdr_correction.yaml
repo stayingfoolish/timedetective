@@ -1,0 +1,9 @@
+name: fdr_correction
+category: robustness
+description: Benjamini-Hochberg control of the false discovery rate across many tests.
+requires:
+- p_values
+produces:
+- n_significant_fdr
+- p_adjusted
+source: TODO

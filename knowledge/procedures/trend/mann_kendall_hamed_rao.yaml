@@ -1,0 +1,12 @@
+name: mann_kendall_hamed_rao
+category: trend
+description: Mann-Kendall with the Hamed-Rao variance correction for autocorrelated data.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- trend_detected
+- direction
+- p_value
+- slope
+source: TODO

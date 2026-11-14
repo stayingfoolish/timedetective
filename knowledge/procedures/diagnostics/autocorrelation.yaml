@@ -1,0 +1,13 @@
+name: autocorrelation
+category: diagnostics
+description: Lag-1 autocorrelation and a Ljung-Box test of no serial correlation.
+requires:
+- regular_spacing
+- no_missing
+- detrended
+- deseasonalized
+produces:
+- lag1_autocorrelation
+- ljung_box_p
+- autocorrelated
+source: manokhin_2025

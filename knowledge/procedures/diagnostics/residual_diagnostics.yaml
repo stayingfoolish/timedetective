@@ -1,0 +1,12 @@
+name: residual_diagnostics
+category: diagnostics
+description: Ljung-Box, Jarque-Bera and Breusch-Pagan checks on the residuals of a fitted model.
+requires:
+- regular_spacing
+- no_missing
+- residuals
+produces:
+- residuals_uncorrelated
+- residuals_normal
+- variance_stable
+source: TODO

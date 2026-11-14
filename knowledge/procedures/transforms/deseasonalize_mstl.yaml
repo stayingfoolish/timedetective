@@ -1,0 +1,10 @@
+name: deseasonalize_mstl
+category: transforms
+description: Series minus all MSTL seasonal components, for several seasonal periods.
+requires:
+- regular_spacing
+- no_missing
+- known_period
+produces:
+- deseasonalized
+source: manokhin_2025

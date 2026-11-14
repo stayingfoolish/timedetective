@@ -1,0 +1,12 @@
+name: johansen
+category: relationship
+description: Johansen trace test for the number of cointegrating relations among several series.
+requires:
+- regular_spacing
+- no_missing
+- aligned_pair
+- non_stationary
+produces:
+- cointegration_rank
+- cointegrated
+source: manokhin_2025

@@ -1,0 +1,35 @@
+# DRAFT, not loaded. Do two series move together, and did that change? (Kansas: groundwater vs precipitation.)
+name: co_movement
+question: Do these two series move together, and has that relationship changed?
+domain: core
+start: deseasonalize_x
+nodes:
+  - {id: deseasonalize_x, procedure: deseasonalize_stl, input: x}
+  - {id: deseasonalize_y, procedure: deseasonalize_stl, input: y}
+  - {id: stationarity_x, procedure: stationarity, input: x_deseasonalized}
+  - {id: stationarity_y, procedure: stationarity, input: y_deseasonalized}
+  - {id: cointegration, procedure: cointegration_engle_granger}
+  - {id: detrend_x, procedure: detrend_linear, input: x_deseasonalized}
+  - {id: detrend_y, procedure: detrend_linear, input: y_deseasonalized}
+  - {id: lag, procedure: lagged_cross_correlation}
+  - {id: decoupling, procedure: decoupling_test}
+  - {id: rolling, procedure: rolling_regression}
+  - {id: claim_unrelated, terminal: claim}
+  - {id: claim_co_movement, terminal: claim}
+  - {id: claim_decoupled, terminal: claim}
+edges:
+  - {from: deseasonalize_x, to: deseasonalize_y, source: TODO}
+  - {from: deseasonalize_y, to: stationarity_x, source: TODO}
+  - {from: stationarity_x, to: stationarity_y, source: TODO}
+  # Both drifting: test for a shared long-run balance before correlating.
+  - {from: stationarity_y, to: cointegration, when: {property: both_unit_root, op: is_true}, source: TODO}
+  - {from: stationarity_y, to: detrend_x, when: {property: both_unit_root, op: is_false}, source: TODO}
+  - {from: cointegration, to: decoupling, source: TODO}
+  - {from: detrend_x, to: detrend_y, source: TODO}
+  - {from: detrend_y, to: lag, source: TODO}
+  - {from: lag, to: claim_unrelated, when: {property: correlated, op: is_false}, source: TODO}
+  - {from: lag, to: decoupling, when: {property: correlated, op: is_true}, source: TODO}
+  - {from: decoupling, to: claim_co_movement, when: {property: decoupled, op: is_false}, source: TODO}
+  - {from: decoupling, to: rolling, when: {property: decoupled, op: is_true}, source: TODO}
+  # The claim is "the relationship changed at about this date", never "because of pumping".
+  - {from: rolling, to: claim_decoupled, source: TODO}

@@ -1,0 +1,11 @@
+name: component_strength
+category: diagnostics
+description: Trend strength and seasonal strength from an STL decomposition.
+requires:
+- regular_spacing
+- no_missing
+- known_period
+produces:
+- trend_strength
+- seasonal_strength
+source: manokhin_2025

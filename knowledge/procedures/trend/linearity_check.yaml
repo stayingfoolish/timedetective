@@ -1,0 +1,11 @@
+name: linearity_check
+category: trend
+description: 'F-test of a quadratic term: is a straight line an adequate description?'
+requires:
+- regular_spacing
+- no_missing
+- residuals_uncorrelated
+produces:
+- curved
+- p_value
+source: TODO

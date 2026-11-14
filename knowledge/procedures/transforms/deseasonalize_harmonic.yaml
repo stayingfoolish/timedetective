@@ -1,0 +1,9 @@
+name: deseasonalize_harmonic
+category: transforms
+description: Series minus a fitted sum of sines and cosines; tolerates gaps.
+requires:
+- regular_spacing
+- known_period
+produces:
+- deseasonalized
+source: TODO

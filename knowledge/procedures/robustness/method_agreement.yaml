@@ -1,0 +1,10 @@
+name: method_agreement
+category: robustness
+description: Compares the least-squares slope with the Theil-Sen slope.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- methods_agree
+- same_sign
+source: TODO

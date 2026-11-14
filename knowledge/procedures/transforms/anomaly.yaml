@@ -1,0 +1,9 @@
+name: anomaly
+category: transforms
+description: Subtracts the mean of each phase of the cycle (the climatology) over a stated baseline.
+requires:
+- regular_spacing
+- known_period
+produces:
+- deseasonalized
+source: TODO

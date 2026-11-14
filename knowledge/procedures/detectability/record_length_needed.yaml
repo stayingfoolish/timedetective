@@ -1,0 +1,10 @@
+name: record_length_needed
+category: detectability
+description: Record length needed to detect a trend of a stated size, given this record's noise and cadence.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- length_needed
+- long_enough
+source: TODO

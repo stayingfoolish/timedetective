@@ -1,0 +1,11 @@
+name: block_bootstrap_slope
+category: trend
+description: Percentile interval for the slope from a moving-block bootstrap of residuals; seeded.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- slope
+- ci_low
+- ci_high
+source: TODO

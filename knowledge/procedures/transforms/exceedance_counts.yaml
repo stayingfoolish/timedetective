@@ -1,0 +1,8 @@
+name: exceedance_counts
+category: transforms
+description: Counts observations beyond a threshold in each year (or other period).
+requires:
+- datetime_index
+produces:
+- count_series
+source: TODO

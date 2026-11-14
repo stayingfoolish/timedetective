@@ -1,0 +1,13 @@
+name: segmented_regression
+category: changepoint
+description: Best single slope change in a piecewise-linear trend, compared with one line by BIC.
+requires:
+- regular_spacing
+- no_missing
+- residuals_uncorrelated
+produces:
+- break_time
+- slope_before
+- slope_after
+- delta_bic
+source: TODO

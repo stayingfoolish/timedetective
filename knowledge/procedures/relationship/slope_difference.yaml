@@ -1,0 +1,13 @@
+name: slope_difference
+category: relationship
+description: 'Trend of the paired difference of two series: is one changing faster?'
+requires:
+- regular_spacing
+- no_missing
+- aligned_pair
+produces:
+- slope_difference
+- p_value
+- slopes_differ
+- opposite_sign
+source: TODO

@@ -1,0 +1,14 @@
+name: decoupling_test
+category: relationship
+description: 'CUSUM test on the residuals of one series regressed on another: did the relationship break
+  down?'
+requires:
+- regular_spacing
+- no_missing
+- aligned_pair
+produces:
+- decoupled
+- break_time
+- p_value
+- residual_shift
+source: TODO

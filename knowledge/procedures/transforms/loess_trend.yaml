@@ -1,0 +1,9 @@
+name: loess_trend
+category: transforms
+description: LOWESS smooth of the series for inspecting a non-linear trend.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- smoothed
+source: manokhin_2025

@@ -7,4 +7,14 @@
 #   title: "..."
 #   venue: "..."
 #   doi: "..."
-{}
+
+manokhin_2025:
+  authors: "Manokhin, V."
+  year: 2025
+  title: "Mastering Modern Time Series Forecasting: A Comprehensive Guide to Statistical, Machine Learning, and Deep Learning Models in Python"
+  venue: "North Star Academic Press"
+  isbn: "978-1-9194658-3-8"
+  note: >-
+    Secondary source. Cited where the book describes the method and its
+    assumptions; the primary paper for each procedure should replace it as
+    those papers are opened.

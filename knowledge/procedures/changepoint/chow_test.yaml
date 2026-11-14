@@ -1,0 +1,14 @@
+name: chow_test
+category: changepoint
+description: F-test that the trend line changed at a date named in advance.
+requires:
+- regular_spacing
+- no_missing
+- break_date_given
+- residuals_uncorrelated
+produces:
+- break_detected
+- p_value
+- slope_before
+- slope_after
+source: TODO

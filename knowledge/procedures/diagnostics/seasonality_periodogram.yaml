@@ -1,0 +1,11 @@
+name: seasonality_periodogram
+category: diagnostics
+description: Dominant period from the periodogram, with Fisher's g-test that the peak is not noise.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- seasonal
+- period
+- fisher_g_p
+source: manokhin_2025

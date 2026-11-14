@@ -1,0 +1,11 @@
+name: outlier_screen
+category: diagnostics
+description: 'Hampel identifier: flags points far from the rolling median. Flags only; never removes.'
+requires:
+- regular_spacing
+- no_missing
+produces:
+- n_outliers
+- outlier_positions
+- has_outliers
+source: TODO
