@@ -1,0 +1,76 @@
+id: https://github.com/stayingfoolish/timedetective/schema/core
+name: timedetective_core
+description: >-
+  The TimeDetective ontology. Source of truth for what a procedure, a playbook
+  and a Finding are. Instances live in knowledge/.
+prefixes:
+  linkml: https://w3id.org/linkml/
+  td: https://github.com/stayingfoolish/timedetective/schema/core/
+default_prefix: td
+default_range: string
+imports:
+  - linkml:types
+
+# NOT YET DEFINED, on purpose:
+#   Finding  - to be frozen first (schema_version 0.1); see CONTRIBUTING.md section 6
+#   Playbook - nodes, edges, conditions; follows once Finding is frozen
+# Do not add either without agreeing on it together.
+
+enums:
+  SkillCategory:
+    description: >-
+      Skill type. A procedure's category is also its folder name under
+      knowledge/procedures/, src/timedetective/skills/ and tests/skills/.
+      Adding a value here is a schema change.
+    permissible_values:
+      diagnostics:
+        description: Measures a property of a series; changes nothing.
+      transforms:
+        description: Returns a new series.
+      trend:
+        description: Tests for and sizes a monotonic change.
+      changepoint:
+        description: Finds when behavior changed.
+      relationship:
+        description: Relates two or more series.
+      detectability:
+        description: Says what this record is able to show.
+      robustness:
+        description: Re-tests a result another way.
+
+  ClaimStrength:
+    description: The claim-strength ladder. Only the critic assigns it.
+    permissible_values:
+      descriptive:
+        description: A direction and a magnitude with an interval.
+      significant:
+        description: Beats a stated null model after the autocorrelation check.
+      robust:
+        description: Survives a second method and an independent record.
+
+classes:
+  Procedure:
+    description: >-
+      One test, check or transform. Implemented by exactly one skill registered
+      under the same name.
+    attributes:
+      name:
+        identifier: true
+        required: true
+        description: Registry name; equals the YAML file name without extension.
+      category:
+        range: SkillCategory
+        required: true
+      description:
+        description: One or two lines on what it does.
+      requires:
+        multivalued: true
+        description: Properties that must hold before this procedure may run.
+      produces:
+        multivalued: true
+        description: Properties this procedure adds to the state.
+      source:
+        required: true
+        description: >-
+          Key into knowledge/sources.yaml for the paper that defines it.
+          Never invented; use TODO if the real paper is not yet in hand.

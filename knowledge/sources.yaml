@@ -1,0 +1,10 @@
+# Papers cited by procedures and playbook edges, keyed by a short id.
+# Add an entry only for a paper you have actually opened; never invent one.
+#
+# example_key:
+#   authors: "..."
+#   year: 2002
+#   title: "..."
+#   venue: "..."
+#   doi: "..."
+{}
