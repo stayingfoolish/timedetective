@@ -418,8 +418,191 @@ causal_discovery:   # deferred tier; collected so the corpus is ready if time al
     methods_seen: [LKIF, PCMCI, lagged correlation as the common baseline]
     access: Copernicus, open access
 
-# Gaps still open after two rounds:
-#   - sea level, ice and ocean variables (outside the three demos)
-#   - open-access papers on long-memory noise and trend significance in hydrology
-#   - reviewed retail or supply-chain papers on demand shifts (most hits were preprints or blogs)
-#   - papers that report a refusal, i.e. "record too short to conclude"
+# ---- Third search round (2026-11-14): variables outside the demos, and other fields ----
+
+sea_level:
+  - title: Sea level accelerations at globally distributed tide gauge stations during the satellite altimetry era (J. Geod. Sci., 2018)
+    url: https://doi.org/10.1515/jogs-2018-0013
+    type: applied
+    methods_seen: [broken trend model with harmonics, acceleration term, comparison of tide gauges with altimetry]
+    access: listed in DOAJ (open access journal)
+  - title: Recent and future manifestations of a contingent global mean sea level acceleration (J. Geod. Sci., 2021)
+    url: https://doi.org/10.1515/jogs-2020-0115
+    type: applied
+    methods_seen: [trend plus acceleration with AR(1) disturbances, generalized least squares]
+    access: open access journal
+  - title: Statistical analysis of the acceleration of Baltic mean sea-level rise, 1900-2012 (Front. Mar. Sci. 3, 125, 2016)
+    url: https://doi.org/10.3389/fmars.2016.00125
+    type: applied
+    methods_seen: [several acceleration estimators, gliding trends, reports that methods lack power at single gauges]
+    access: Frontiers, open access
+    note: an example of a paper that reports non-detection and explains why
+  - title: Noise characteristics of sea-level trends from altimetry and tide gauges, Indian and Pacific Oceans (repository copy)
+    url: https://core.ac.uk/download/158371427.pdf
+    type: comparison
+    methods_seen: [noise model selection, AR(1) found insufficient for most grid cells, record length for a trend to emerge]
+    access: repository copy of a submitted manuscript; find the published version
+  - title: Detection time for global and regional sea level trends and accelerations (2014)
+    url: https://eprints.soton.ac.uk/370529/
+    type: method
+    methods_seen: [detection time as a function of trend size]
+    access: record has no file attached; likely out of scope unless a free copy exists
+
+sea_ice:
+  - title: The step-like evolution of Arctic open water (Scientific Reports 8, 16902, 2018)
+    url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6237816/
+    type: applied
+    methods_seen: [structural-break analysis, breakpoint means versus linear detrending, econometric time series methods]
+    access: open access via PubMed Central
+    note: direct precedent for the trend_or_step playbook
+  - title: Recent Eurasian winter temperature change and its association with Arctic sea-ice loss (Polar Research)
+    url: https://polarresearch.net/index.php/polar/article/download/3363/10238?inline=1
+    type: applied
+    methods_seen: [break-point trend analysis, lagged covariability, warning against detrending series whose trend changes]
+    access: open access journal
+  - title: A regime shift in September Arctic sea-ice extent in 2007 (ESS Open Archive preprint)
+    url: https://doi.org/10.22541/essoar.173671277.78145382/v1
+    type: applied
+    methods_seen: [single breakpoint by separation of values, Rodionov regime-shift algorithm, trend then no trend]
+    access: preprint
+
+long_memory:
+  - title: Long-term persistence in discharge time series of mountainous catchments in the Elbe River basin (Proc. IAHS 383, 135, 2020)
+    url: https://piahs.copernicus.org/articles/383/135/2020/piahs-383-135-2020.pdf
+    type: applied
+    methods_seen: [Hurst exponent estimators that disagree, effect of persistence on trend tests]
+    access: Copernicus, CC BY 4.0
+  - title: The spatial scale dependence of the Hurst coefficient in global annual precipitation data (Hydrology 9, 199, 2022)
+    url: https://www.mdpi.com/2306-5338/9/11/199
+    type: method
+    methods_seen: [Hurst-Kolmogorov dynamics, scale dependence of persistence]
+    access: MDPI, CC BY
+  - title: "Trend or persistence: what are we really detecting in annual low-flow time series? (EGU 2026 abstract)"
+    url: https://meetingorganizer.copernicus.org/EGU26/EGU26-13518.html
+    type: comparison
+    methods_seen: [block-bootstrap Mann-Kendall, bias-corrected prewhitening, Mann-Kendall under long-term persistence, FARIMAX, misclassification of short memory as long memory]
+    access: conference abstract only; watch for the paper
+    note: closest published statement of our calibration question
+  - title: Global precipitation trends under long-range dependence (author-hosted preprint, 2017)
+    url: https://www.itia.ntua.gr/el/getfile/1761/2/documents/2017AWR_global_hurst_pp.pdf
+    type: applied
+    methods_seen: [Mann-Kendall under the long-range dependence assumption, Hurst parameter by location]
+    access: author-hosted preprint
+
+interrupted_time_series:   # public health; the same statistics as a known-date break
+  - title: "Interrupted time series regression for the evaluation of public health interventions: a tutorial (Int. J. Epidemiol. 46, 348, 2017)"
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5407170
+    type: method
+    methods_seen: [segmented regression at a known date, impact model stated in advance, over-dispersion, autocorrelation, seasonal adjustment, time-varying confounders]
+    access: open access via PubMed Central
+    note: a ready-made playbook for a break at a known date; maps onto chow_test and count regression
+
+concept_drift_in_demand:
+  - title: PELT-driven drift detection and model adaptation for forecasting (arXiv 2506.14133)
+    url: https://arxiv.org/abs/2506.14133
+    type: applied
+    methods_seen: [PELT change points, retraining after the last detected drift]
+    access: arXiv preprint
+  - title: "DriftGuard: hierarchical concept drift detection and remediation in supply chain forecasting (arXiv 2601.08928)"
+    url: https://arxiv.org/abs/2601.08928
+    type: applied
+    methods_seen: [ensemble of error monitoring, statistical tests and CUSUM, drift located within a product hierarchy, M5 retail data]
+    access: arXiv preprint
+  - title: Concept drift handling in demand prediction (arXiv 2011.02738)
+    url: https://arxiv.org/abs/2011.02738
+    type: applied
+    methods_seen: [sudden, gradual and recurring drift, structural breaks versus drift detectors]
+    access: arXiv preprint
+
+time_of_emergence:
+  - title: Record length needed to distinguish ozone trends from natural variability, and the effect of satellite averaging kernels (ACP 25, 2269, 2025)
+    url: https://acp.copernicus.org/articles/25/2269/2025/acp-25-2269-2025.html
+    type: method
+    methods_seen: [trend compared with a reference distribution of natural trends, record length needed, trends that changed sign after a few more years]
+    access: Copernicus, open access
+  - title: Quantifying the time of emergence of the anthropogenic signal in the global land carbon sink (Biogeosciences 23, 767, 2026)
+    url: https://bg.copernicus.org/articles/23/767/2026/bg-23-767-2026.html
+    type: method
+    methods_seen: [time of emergence from large model ensembles, longer emergence at regional scale, variability removal to shorten detection time]
+    access: Copernicus, open access
+  - title: Detection time for regional fossil-fuel CO2 emission trends (repository copy)
+    url: https://core.ac.uk/download/275812093.pdf
+    type: method
+    methods_seen: [trend detection time by region, confounding by natural variability]
+    access: repository copy; confirm the journal licence
+
+aerosol:
+  - title: Analysis of linear long-term trend of aerosol optical thickness from SeaWiFS over Europe and South China (ACP 11, 12149, 2011)
+    url: https://acp.copernicus.org/articles/11/12149/2011/acp-11-12149-2011.pdf
+    type: applied
+    methods_seen: [linear trend with attention to cloud disturbance, calibration and orbital drift as sources of spurious trend]
+    access: Copernicus, CC BY 3.0
+  - title: 15-year variability of desert dust optical depth on global and regional scales (ACP, 2021)
+    url: https://doaj.org/article/f45c2195c9cd4fcfb8084830529a174d
+    type: applied
+    methods_seen: [factors affecting sign, size and significance of trends, effect of spatial resolution and time interval]
+    access: Copernicus, open access
+  - title: Aerosol trends with variance-corrected Sen's slope, prewhitened Mann-Kendall and Pettitt tests, with field significance (ACP, about 2023)
+    url: TODO
+    type: applied
+    methods_seen: [trend-free prewhitening Mann-Kendall, Pettitt change points, collective significance across grid points]
+    access: seen only through a database snippet; locate the article and confirm
+
+homogenization:
+  - title: Benchmarking homogenization algorithms for monthly data (Clim. Past 8, 89, 2012)
+    url: https://opac.geologie.ac.at/ais312/dokumente/copernicus.org/cp-8-89-2012.pdf
+    type: comparison
+    methods_seen: [break-type inhomogeneities, benchmark with inserted breaks, relative homogenization]
+    access: Copernicus, open access
+    note: inhomogeneities can bias regional trends; supports the artifact check on dataset cards
+  - title: "Homogenization of monthly temperature and precipitation series: benchmarking results of the MULTITEST project (Int. J. Climatol., post-print)"
+    url: https://repositorio.aemet.es/bitstream/20.500.11765/14523/1/MULTITEST-IJC23-post.pdf
+    type: comparison
+    methods_seen: [homogenization packages compared on synthetic networks]
+    access: institutional post-print
+  - title: Relative homogenization and benchmark sections (Atmosphere 15, 957, 2024)
+    url: https://www.mdpi.com/2073-4433/15/8/957
+    type: method
+    methods_seen: [difference series between neighbouring stations, station effect versus climate signal]
+    access: MDPI, open access
+
+burned_area:
+  - title: A human-driven decline in global burned area (Science 356, 2017; author manuscript)
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6047075
+    type: applied
+    methods_seen: [trend with confidence limits, residual trend after adjusting for precipitation, multiple datasets and time intervals]
+    access: author manuscript in PubMed Central
+    note: adjusting for a climate driver before testing the trend; a covariate-regression example
+  - title: Multi-decadal trends and variability in burned area from GFED5 (Earth Syst. Sci. Data, 2023)
+    url: https://doaj.org/article/c29b83c0c9224779b1a420415ed110d2
+    type: applied
+    methods_seen: [fused multi-sensor record, trend with uncertainty by land cover]
+    access: Copernicus, open access
+  - title: Analysis of trends in the FireCCI global long-term burned area product, 1982-2018 (Fire 4, 74, 2021)
+    url: https://doi.org/10.3390/fire4040074
+    type: applied
+    methods_seen: [contextual Mann-Kendall, short and long records giving opposite trends in the same region]
+    access: MDPI, open access
+
+lake_levels:
+  - title: Worldwide lake level trends and responses to background climate variation (HESS 24, 2593, 2020)
+    url: https://hess.copernicus.org/articles/24/2593/2020/hess-24-2593-2020.html
+    type: applied
+    methods_seen: [annual aggregation so residuals are not serially correlated, Theil-Sen, trend after removing background climate variation]
+    access: Copernicus, open access
+    note: aggregating to annual values is an alternative to prewhitening
+  - title: Monitoring spatial-temporal variations of lake level in western China using ICESat-1 and CryoSat-2 (Remote Sens. 14, 5709, 2022)
+    url: https://doi.org/10.3390/rs14225709
+    type: applied
+    methods_seen: [linear trend on merged two-mission series, validation against in situ and an independent product]
+    access: MDPI, open access
+  - title: Lake water level changes across High Mountain Asia from CryoSat-2 and ICESat-2 (EGUsphere preprint, 2026)
+    url: https://doi.org/10.5194/egusphere-2026-808
+    type: applied
+    methods_seen: [inter-mission consistency as sign agreement, precipitation as driver]
+    access: Copernicus preprint
+
+# Gaps still open after three rounds:
+#   - reviewed retail or supply-chain papers on demand shifts (hits remain preprints)
+#   - evapotranspiration, ocean colour and carbon variables are only touched through detectability papers
+#   - nothing yet from energy load or finance, the book's own example domains
