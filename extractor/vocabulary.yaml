@@ -488,6 +488,88 @@ unregistered:
     not_in_book:
     - hierarchical Bayesian
     - Gaussian random field
+  # added after the second search round
+  walker_test:
+    in_book: []
+    not_in_book:
+    - Walker test
+    - minimum local p value
+  count_regression_trend:
+    in_book:
+    - count data
+    not_in_book:
+    - Poisson regression
+    - negative binomial regression
+  isotonic_regression:
+    in_book: []
+    not_in_book:
+    - isotonic regression
+  fractional_integration:
+    in_book:
+    - ARFIMA
+    - fractionally integrated
+    - long-term persistence
+    not_in_book:
+    - fractional integration
+    - LTP
+  homogeneity_tests:
+    in_book: []
+    not_in_book:
+    - standard normal homogeneity test
+    - SNHT
+    - Buishand
+    - von Neumann ratio
+    - homogenization
+  unit_root_with_break:
+    in_book:
+    - Perron test
+    not_in_book:
+    - Kim-Perron
+    - unit root test with structural break
+    - Zivot-Andrews
+  co_trending:
+    in_book: []
+    not_in_book:
+    - co-trending
+    - co-shifting
+    - common trend
+  beast:
+    in_book: []
+    not_in_book:
+    - BEAST
+    - Bayesian change-point
+    - Bayesian changepoint
+  phenology_metrics:
+    in_book:
+    - Savitzky-Golay
+    not_in_book:
+    - start of season
+    - end of season
+    - length of season
+    - double logistic
+  precipitation_accumulation:
+    in_book: []
+    not_in_book:
+    - accumulated precipitation
+    - cumulative precipitation anomaly
+    - integrated precipitation anomalies
+  information_flow:
+    in_book: []
+    not_in_book:
+    - Liang-Kleeman information flow
+    - LKIF
+  pcmci:
+    in_book: []
+    not_in_book:
+    - PCMCI
+    - momentary conditional independence
+    - causal discovery
+  likelihood_categories:
+    in_book:
+    - likely
+    not_in_book:
+    - somewhat likely
+    - about as likely as not
 
 ambiguous:
 - term: modified Mann-Kendall
