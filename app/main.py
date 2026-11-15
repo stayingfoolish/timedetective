@@ -161,7 +161,8 @@ if "season_finding" in st.session_state:
     for step in finding.path:
         values = json.loads(step.values_json)
         if step.node == "standing":
-            st.line_chart(pd.DataFrame(values["seasons"]).set_index("year")[["value"]], y_label="season greenness (NDVI)")
+            st.line_chart(pd.DataFrame(values["seasons"]).astype({"year": str}).set_index("year")[["value"]],
+                          x_label="season", y_label="season greenness (NDVI)")
     show_finding(finding, "season")
 
 st.subheader("Water storage check: is the water stored under this region changing?")
@@ -186,5 +187,6 @@ if "storage_finding" in st.session_state:
     for step in finding.path:
         values = json.loads(step.values_json)
         if step.node == "annual":
-            st.line_chart(pd.DataFrame(values["annual"]).set_index("year")[["value"]], y_label="stored water, cm (yearly mean)")
+            st.line_chart(pd.DataFrame(values["annual"]).astype({"year": str}).set_index("year")[["value"]],
+                          x_label="year", y_label="stored water, cm (yearly mean)")
     show_finding(finding, "storage")
