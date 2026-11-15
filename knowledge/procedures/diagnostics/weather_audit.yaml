@@ -1,0 +1,6 @@
+name: weather_audit
+category: diagnostics
+description: Verify weather provenance, variable, units, calendar and supported intent; refuse ambiguous data.
+requires: [dated_series_with_metadata]
+produces: [n, missing, start, end, variable, units, intent, spatial_support, quality, known_issues, metadata_review]
+source: weather_policy_v1

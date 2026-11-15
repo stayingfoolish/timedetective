@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 
 import timedetective.skills  # noqa: F401  (registers everything)
+import timedetective.packs.earth.skills  # noqa: F401 (pack registration is explicit)
 from timedetective.skills import registry
 from timedetective.skills.result import SkillResult
 
@@ -20,17 +21,19 @@ def test_registry_matches_knowledge():
 def test_skill_lives_in_its_category_folder():
     for path in (ROOT / "knowledge" / "procedures").glob("*/*.yaml"):
         module = registry.get(path.stem).__module__
-        assert module.startswith(f"timedetective.skills.{path.parent.name}."), path.stem
+        assert module.startswith((f"timedetective.skills.{path.parent.name}.",
+                                  f"timedetective.packs.earth.skills.{path.parent.name}.")), path.stem
 
 
 SINGLE_SERIES = [
     n for n in registry.names()
-    if n not in {
+    if not n.startswith("weather_") and n not in {
         "lagged_cross_correlation", "partial_correlation", "rolling_regression", "decoupling_test",
         "cointegration_engle_granger", "johansen", "slope_difference", "independent_record_check",
         "fdr_correction", "chow_test", "seasonal_kruskal", "component_strength", "deseasonalize_stl",
         "deseasonalize_mstl", "deseasonalize_harmonic", "moving_average", "hp_filter",
         "exceedance_counts", "record_length_needed", "block_bootstrap_slope", "seasonal_kendall",
+        "artifact_overlap",
     }
 ]
 

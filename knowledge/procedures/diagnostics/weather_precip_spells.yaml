@@ -1,0 +1,6 @@
+name: weather_precip_spells
+category: diagnostics
+description: Annual rainfall indices plus cross-year wet/dry spells with censoring flags.
+requires: [daily_precipitation, wet_threshold]
+produces: [annual_indices, spells, method_sources]
+source: zhang_2011

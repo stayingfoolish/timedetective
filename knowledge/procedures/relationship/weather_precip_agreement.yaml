@@ -1,0 +1,6 @@
+name: weather_precip_agreement
+category: relationship
+description: Paired daily signed differences, RMSE, MAE, correlation and wet-day contingency counts; neither product is treated as truth.
+requires: [daily_precipitation, companion, matched_requested_support]
+produces: [paired_days, overlap, pearson_r, method_sources]
+source: precipitation_policy_v2

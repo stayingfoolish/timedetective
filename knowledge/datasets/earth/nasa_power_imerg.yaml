@@ -1,0 +1,24 @@
+name: nasa_power_imerg
+pack: earth
+title: NASA POWER daily IMERG precipitation export
+plain_definition: Daily precipitation estimates derived from the GPM satellite constellation product, queried at a point on its own grid.
+variable: IMERG_PRECTOT
+units: Daily accumulation; current observed API labels mm/day, documentation table labels mm
+provider: NASA POWER / GPM
+product_id: POWER IMERG export; native release version must be verified separately
+cadence: daily
+analysis_cadence: monthly
+record_start: '1998-06-01'
+spatial_resolution: 0.1 degree source grid
+known_issues:
+  - kind: processing
+    effect: Late and Final data may coexist near real time; monthly gauge calibration and shared ancillary inputs matter.
+    handling: Use frozen historical data; do not call cross-product agreement independent validation.
+    source: power_meteorology
+  - kind: sensor_change
+    start: '2014-06-01'
+    effect: Version 07 ATBD describes switching from TRMM-based to GPM-based calibration in June 2014.
+    handling: Review candidate breaks near this transition; a coincidence is not proof of an artifact, and the POWER native version is unreported.
+    source: imerg_atbd_2023
+companions: [nasa_power_daily]
+source: power_meteorology

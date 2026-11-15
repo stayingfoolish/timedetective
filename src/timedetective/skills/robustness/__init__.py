@@ -1,3 +1,3 @@
 """Re-tests a result another way."""
 
-from timedetective.skills.robustness import agreement, fdr, period  # noqa: F401
+from timedetective.skills.robustness import agreement, artifact_overlap, fdr, period  # noqa: F401

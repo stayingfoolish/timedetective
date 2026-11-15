@@ -1,0 +1,6 @@
+name: weather_precip_return_levels
+category: diagnostics
+description: Conditional stationary GEV daily annual-maximum return levels with refitted goodness-of-fit and parametric-bootstrap intervals.
+requires: [daily_precipitation, thirty_complete_years, explicit_seed]
+produces: [return_levels, parameters, refitted_ks_p, method_sources]
+source: precipitation_policy_v2

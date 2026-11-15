@@ -1,0 +1,23 @@
+name: nasa_power_daily
+pack: earth
+title: NASA POWER daily meteorological point exports
+plain_definition: Grid-cell estimates of precipitation, temperature, wind, humidity and pressure, queried at a coordinate. Not a station record or a regional mean.
+variable: PRECTOTCORR, T2M, WS10M, RH2M, PS
+units: Parameter-specific; validated against the response (mm/day, C, m/s, percent, kPa)
+provider: NASA POWER / GMAO
+product_id: POWER daily API / MERRA-2 derivative; exact upstream revision not exposed
+cadence: daily
+analysis_cadence: monthly
+record_start: '1981-01-01'
+spatial_resolution: 0.5 degree latitude by 0.625 degree longitude meteorology source grid
+known_issues:
+  - kind: processing
+    effect: Near-real-time records can include GEOS-IT and later be replaced by MERRA-2.
+    handling: This adapter accepts only frozen historical years before the retrieval year.
+    source: power_meteorology
+  - kind: quality
+    effect: The point export does not expose all native quality flags or an upstream revision identifier.
+    handling: Preserve response, checksum and retrieval date; do not claim homogeneity or certified independence.
+    source: weather_policy_v1
+companions: [nasa_power_imerg]
+source: power_meteorology

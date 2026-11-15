@@ -1,0 +1,13 @@
+name: precipitation_family
+question: What remains after retaining the full declared product, season and test family?
+domain: earth
+start: family
+nodes:
+  - id: family
+    procedure: weather_precip_global
+    parameters_json: '{"families":"$families","alpha":"$alpha"}'
+  - {id: conclusion, terminal: claim}
+  - {id: refused, terminal: refusal}
+edges:
+  - {id: family_recorded, origin: family, target: conclusion, outcome: ok, domain: earth, source: precipitation_policy_v2}
+  - {id: family_failed, origin: family, target: refused, outcome: refused, domain: earth, source: precipitation_policy_v2}
