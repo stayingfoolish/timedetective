@@ -7,6 +7,13 @@ under this region disappearing? how does this growing season compare with earlie
 statistician would run on NASA satellite records and gives the answer in plain words, with a label for how sure it
 is: descriptive, significant or robust. When the evidence is not enough, it says so, and says what would be.
 
+**How it does it.** Each kind of question has a *playbook*: the order of checks an expert would run, written down
+as data, with a source for every step. Each check is a *procedure*: one small, repeatable calculation, such as a
+trend test or a search for the point where a record shifts. A separate *critic* then reads the evidence and decides
+the label, so no test can promote its own result. If a check cannot be run honestly, because the region is too
+small or the record too short, the tool stops and says why. No AI model takes part in producing an answer.
+[More below](#how-it-works).
+
 **The challenge.** Built for the 2026 NASA Space Apps Challenge, *Be an Earth System Trend Detective*. The challenge
 asks teams to help people become data detectives: choose an Earth science variable, get its data for a region, plot
 it over a long enough period, measure how fast it is changing, and test whether that trend is significant.
