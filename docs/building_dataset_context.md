@@ -4,9 +4,13 @@ How to give TimeDetective what it needs to know about a particular dataset (GRAC
 storage, MODIS land surface temperature, SMAP soil moisture, a retail sales feed) without
 putting any of that knowledge into the core.
 
-**Status: none of this is built.** `packs/earth/` and `packs/retail/` are empty, `data/cache/`
-holds no series, and `schema/core.yaml` has no class that describes a dataset. This file is
-the build order and the list of what is still missing.
+**Updated status:** the weather implementation now supplies additive Dataset/Finding/Playbook
+classes, a generic executor, conservative critic, two POWER dataset cards, real cached daily
+NASA point values, provenance-aware POWER/CSV adapters and a dated-metadata overlap screen.
+See [weather_playbook.md](weather_playbook.md) for implemented scope and remaining gates.
+The original design/build order below is retained as historical guidance; statements that
+these pieces do not exist predate this implementation. Native GRACE/MODIS/SMAP adapters,
+matched regional downloads and calibrated inferential discovery are still not built.
 
 ## The four pieces and where each lives
 
