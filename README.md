@@ -1,34 +1,33 @@
 # TimeDetective
 
-**Is this place really changing? TimeDetective turns NASA Earth data into an answer you can inspect, step by step.**
+**Is this place really changing, or does the chart just look dramatic? TimeDetective follows the clues in NASA Earth data and shows its work.**
 
-**What it does.** Ask how groundwater, a growing season or rainfall has changed. TimeDetective checks the relevant
-NASA records, measures what changed, and explains the result in plain language. Each answer comes with the data,
-methods and sources behind it, plus a label—descriptive, significant or robust—that reflects the evidence earned.
+**Start with a question.** Has groundwater fallen? Was that growing season unusual? What has rainfall been doing?
+TimeDetective checks the relevant NASA records, measures the change and explains the result in plain language.
+Every answer brings its receipts: data, methods, sources and an evidence label (descriptive, significant or robust).
 
-**What we have built.** The toolkit has **86 implemented analysis skills**, from data-quality checks and seasonal
-comparisons to trend, change-point and precipitation analyses. **Six executable playbooks** put those skills in
-an expert-defined order, and **seven Earth-data cards** document what the underlying NASA products measure.
-Together they go beyond drawing a trend line: they check missing observations and seasonal cycles, look for
-sensor changes, weigh steady trends against abrupt shifts, and compare rainfall products. The same evidence
-engine can investigate different places and questions without hard-coding the conclusion.
+**The detective kit.** There are **86 implemented analysis skills**, from data-quality checks and seasonal
+comparisons to trend, change-point and precipitation analyses. **Six executable playbooks** arrange those skills
+in an expert-defined order, while **seven Earth-data cards** explain what the NASA products actually measure.
+A line on a chart is only the first clue. The toolkit checks missing observations and seasonal cycles, looks for
+sensor changes, weighs steady trends against abrupt shifts, and compares rainfall products. Its evidence engine
+can investigate different places and questions without hard-coding the conclusion.
 
-**The ontology connects it all.** Think of our [ontology](schema/core.yaml) as a structured map of the datasets,
-the skills that analyze them, the evidence each skill needs and produces, and the playbooks that connect the steps.
-It lets every finding trace a path from NASA data through the analysis to the conclusion.
+**The map behind the mystery.** Our [ontology](schema/core.yaml) connects datasets, analysis skills, the evidence
+each skill needs and produces, and the playbooks that put the steps together. Follow any finding backward and you
+can see the path from conclusion to analysis to NASA data.
 
-**Research you can inspect.** Our [source library](knowledge/sources.yaml) brings together **44 documented
+**Research you can inspect.** The [source library](knowledge/sources.yaml) brings together **44 documented
 references, including 18 research publications**, NASA product guides and statistical software documentation.
 Each active playbook step links to its source or a stated project rule. An evidence checker assigns the final
-label from the recorded results: the groundwater example below demonstrates calibrated significance, while the
-precipitation workflow delivers detailed, traceable descriptions of rainfall. [See how it works](#how-it-works).
+label from the recorded results. The groundwater example below earns calibrated significance; the precipitation
+workflow delivers detailed, traceable descriptions of rainfall. [See how it works](#how-it-works).
 
-**The challenge.** Built for the 2026 NASA Space Apps Challenge, *Be an Earth System Trend Detective*. The challenge
-asks teams to help people become data detectives: choose an Earth science variable, get its data for a region, plot
-it over a long enough period, measure how fast it is changing, and test whether that trend is significant.
-TimeDetective brings water storage, vegetation greenness and rainfall into one evidence-led workflow, with a
-particularly important safeguard: a trend only earns the word "significant" when its test has been checked for
-the kind of record being analyzed.
+**The mission.** Built for the 2026 NASA Space Apps Challenge, *Be an Earth System Trend Detective*. Choose an
+Earth science variable and a place. Gather enough history to see what happened. Measure the rate of change, then
+check how convincing the trend really is. TimeDetective brings water storage, vegetation greenness and rainfall
+into one evidence-led workflow. Its key safeguard: a trend earns the word "significant" only when its test has been
+checked for the kind of record being analyzed.
 
 Demo: [interactive walkthrough](https://stayingfoolish.github.io/timedetective/story/) · _add the video or slides link here before submitting_
 
@@ -216,13 +215,13 @@ Every figure in this walkthrough is written out by the code: `uv run python scri
 
 ## The problem
 
-Anyone can draw a line through satellite data and announce a trend. Many of those trends are not real: short
-records wander, instruments change, a few wet years look like a recovery. The people who most need the answer, a
-district agriculture officer or a groundwater manager, have no statistician to tell the difference.
+Draw a line through satellite data and you might have found a trend. Or a wandering short record, a sensor change,
+or a few wet years dressed up as a recovery. For a district agriculture officer or groundwater manager, telling
+those stories apart matters.
 
-TimeDetective does the statistician's part. It runs the checks an expert would run, in the order an expert would run
-them, and labels the answer by how much the evidence supports. When the evidence is not enough, it says so and says
-what would be.
+TimeDetective does the statistician's part. It runs expert checks in a deliberate order and labels the answer by
+how much evidence supports it. If the record cannot settle the question, the answer explains why and what would
+help.
 
 ## Three real answers
 
@@ -412,8 +411,8 @@ make demo
 ```
 
 The demo opens on the walkthrough above, run live on the cached NASA records. Pick an area, change the question,
-and step through the six tabs, then the label and the playbook. Three things to try: ask *why is the groundwater
-falling here?*, switch to the US High Plains, or choose the area that is too small for the satellites.
+and follow six tabs to the label and the playbook. Try asking *why is the groundwater falling here?* Then switch
+to the US High Plains, or pick an area too small for the satellites to resolve. The answer changes with the evidence.
 
 Further down the page are the season check, the total-storage check and the weather explorer. Nothing is fetched:
 the demo runs on the cached NASA files.
