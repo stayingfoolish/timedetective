@@ -1,7 +1,8 @@
 name: storage_handover
 category: changepoint
-description: Test for a break at the declared hand-over between satellite missions
-  and attach it as a caution.
+description: Rank the change across the declared gap between satellite missions against
+  the same measurement everywhere else in the record, and attach a caution if it
+  stands out.
 requires:
 - monthly_storage
 - declared_gap

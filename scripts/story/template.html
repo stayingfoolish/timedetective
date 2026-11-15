@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is the water under these farms running out? A TimeDetective walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>/*CSS*/</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">TimeDetective &middot; a worked example on NASA data &middot; north-west India</span>
+  <h1>{{question}}</h1>
+  <p class="dek">A student asks this about the farm belt around Punjab, Haryana, Delhi and northern Rajasthan. This page follows TimeDetective as it answers, one question at a time, and shows the places where it holds back and says why.</p>
+  <div class="verdict">
+    <div>{{chip_sig}}</div>
+    <p class="line">The groundwater estimate is falling, and the fields do not show it.</p>
+    <div class="facts">
+      <div class="fact"><b>{{slope}} cm a year</b><span>fall in the groundwater estimate, {{y0}} to {{y1}} (range {{slope_range}})</span></div>
+      <div class="fact"><b>about {{total}} cm</b><span>total fall over the record, as a layer of water across the region</span></div>
+      <div class="fact"><b>+{{green}} NDVI a decade</b><span>the land got greener over {{green_y0}} to {{green_y1}}</span></div>
+    </div>
+    <p class="note">What it cannot tell you is whether the water is running out. The satellites measure how much the stored water changes, not how much is left.</p>
+  </div>
+  <nav aria-label="Questions on this page">
+    <ol class="jump">
+      <li><a href="#q1">How can anyone know what is underground?</a></li>
+      <li><a href="#q2">Is it actually falling?</a></li>
+      <li><a href="#q3">Is that real, or could it be noise?</a></li>
+      <li><a href="#q4">Could it be the satellites and not the water?</a></li>
+      <li><a href="#q5">Is it just a dry spell?</a></li>
+      <li><a href="#q6">Would you see it from the fields?</a></li>
+      <li><a href="#q7">So why is it falling?</a></li>
+      <li><a href="#q8">What about my district?</a></li>
+      <li><a href="#q9">Is it the same in Kansas?</a></li>
+    </ol>
+  </nav>
+  <p class="note">Questions 1 to 6 are the six steps of one playbook, in order. Each step is one procedure, shown under its chart. Questions 7 and 8 are where the tool stops. Question 9 runs the same playbook somewhere else. After that: <a href="#label">how the label is decided</a>, <a href="#playbook">the playbook as data</a>, and <a href="#procedures">the procedures</a>.</p>
+  {{rail_top}}
+</header>
+
+<section id="q1">
+  <div class="q"><span class="eyebrow">Question 1 &middot; step 1</span><h2>How can anyone know what is underground?</h2></div>
+  <p class="answer">By weighing it from orbit. Two satellite missions, GRACE and then GRACE-FO, run by NASA with German partners, measure tiny changes in Earth's gravity as water moves around. That gives the change in all the water stored in a region: soil moisture, snow, rivers and groundwater together.</p>
+  <p>A NASA land model, GLDAS, estimates the soil moisture and snow. Subtract that from the total, and what is left is an estimate of groundwater. Everything is counted in centimetres of water: a layer that deep spread over the whole region.</p>
+  <figure class="plate">
+    <h3>All stored water, minus the modelled soil moisture and snow, leaves groundwater</h3>
+    <p class="sub">North-west India, monthly, cm of water above or below a reference level</p>
+    {{leg1}}
+    <div class="chart scroll-x" id="c-subtract" data-label="Three monthly lines for north-west India from 2002 to 2026. All stored water and the groundwater estimate both fall; modelled soil moisture and snow stays roughly level."></div>
+    <figcaption>The blank stretch is the {{gap_months}} months between the two missions. The estimate still includes surface water such as rivers, canals and reservoirs, because the model has no store for it.</figcaption>
+  </figure>
+  <div class="two">
+    <figure class="plate half">
+      <h3>The region, as the satellites see it</h3>
+      <p class="sub">{{cells}} blocks, each about {{cell_across}} km across</p>
+      <div class="chart" id="c-map" data-label="A map of 26 measurement blocks covering north-west India between 26 and 33 degrees north."></div>
+      <figcaption>The box is set by latitude and longitude, not by borders, so it also takes in part of Pakistan's Punjab.</figcaption>
+    </figure>
+    <div class="plate half">
+      <h3>What step 1 found</h3>
+      <dl class="kv">
+        <dt>measures</dt><dd>an estimate of groundwater</dd>
+        <dt>record</dt><dd>{{years}} years</dd>
+        <dt>months with data</dt><dd>{{months}} of {{months_all}}</dd>
+        <dt>longest gap</dt><dd>{{gap_months}} months</dd>
+        <dt>region</dt><dd>{{cells}} blocks, {{area}} km&sup2;</dd>
+        <dt>smallest region allowed</dt><dd>{{cells_min}} blocks</dd>
+      </dl>
+      <p class="note">NASA's documentation says this product cannot separate areas much smaller than about {{cells_min}} blocks. This region passes. <a href="#q8">A district does not.</a></p>
+    </div>
+  </div>
+  {{proc1}}
+</section>
+
+<section id="q2">
+  <div class="q"><span class="eyebrow">Question 2 &middot; step 2</span><h2>Is it actually falling?</h2></div>
+  <p class="answer">Yes. With the yearly cycle of monsoon and dry season removed and each year averaged, the estimate goes from {{v0}} cm in {{y0}} to {{v1}} cm in {{y1}}.</p>
+  <p>A straight line through those years falls about {{slope}} cm of water a year (range {{slope_range}}), about {{total}} cm in total.</p>
+  <figure class="plate">
+    <h3>The groundwater estimate, one value per year</h3>
+    <p class="sub">North-west India, cm of water</p>
+    {{leg2}}
+    <div class="chart scroll-x" id="c-annual" data-label="Yearly groundwater estimate for north-west India, falling steadily from 2002 to 2026."></div>
+    <figcaption>{{gap_thin}} rest on {{gap_thin_n}} months each because of the gap between missions. A year is kept if it has at least 4 months, and thin years are listed so they can be seen: {{thin_text}} (months of data in brackets).</figcaption>
+  </figure>
+  {{proc2}}
+</section>
+
+<section id="q3">
+  <div class="q"><span class="eyebrow">Question 3 &middot; step 3</span><h2>Is that real, or could it be noise?</h2></div>
+  <p class="answer">It is larger than chance would explain. This is the question the challenge is about, and a fitted line cannot answer it, because a line can be fitted to anything.</p>
+  <p>Records like this one wander. A wet year leaves the ground wetter the next year too, so a record with no trend at all can drift one way for a decade and look like a decline. The test used here is built for that. It ignores the line, takes the change from each year to the next, and asks whether those changes average out to zero.</p>
+  <p>They do not. The average is a fall of {{mean_change}} cm a year, nearly as large as the usual swing from one year to the next ({{sd}} cm), and it kept up across {{n_changes}} changes. The test's p-value is {{p}}, well under its 0.05 bar.</p>
+  <figure class="plate">
+    <h3>The change from each year to the next</h3>
+    <p class="sub">North-west India, cm of water; the line marks the average change</p>
+    <div class="chart scroll-x" id="c-changes" data-label="Bars showing the change in the groundwater estimate from each year to the next. Most bars point down."></div>
+    <figcaption>The drift test is a t-test on these {{n_changes}} changes, with its error bar widened to allow for wandering. On records with no trend, including wandering ones, it raised a false alarm about 1 time in 20 or less when we measured it. A second method, prewhitened Mann-Kendall, agrees here (p = {{p2}}), but it is not trusted alone: on wandering records with no trend it fired 21 to 26% of the time.</figcaption>
+  </figure>
+  <p>Step 3 also records what the label will depend on. The smallest steady trend this record could detect is about {{mdt}} cm a year, and the slope is roughly {{times_mdt}} times that. And the direction holds when the first or last few years are dropped: the slope stays between {{win}} cm a year.</p>
+  {{proc3}}
+</section>
+
+<section id="q4">
+  <div class="q"><span class="eyebrow">Question 4 &middot; step 4</span><h2>Could it be the satellites and not the water?</h2></div>
+  <p class="answer">The check finds no clear sign of it, though this is the closest call on the page. The record comes from two missions with {{gap_months}} months between them. If the second read a little lower than the first, that step alone would look like a decline.</p>
+  <p>So step 4 measures the change across the gap after taking out the overall slide, then makes the same measurement across every other stretch of the same length in the record.</p>
+  <p>Across the real gap, the estimate dropped {{obs}} cm more than the slide alone predicts. A typical stretch moves about {{typical}} cm. {{as_large}} of the {{n_plac}} other stretches, {{share}}%, moved as much or more. That is on the large side, but the bar for raising a caution is 1 in 20, and this does not pass it.</p>
+  <figure class="plate">
+    <h3>The change across the real gap, against {{n_plac}} other stretches of the same length</h3>
+    <p class="sub">North-west India, how many stretches moved by each amount</p>
+    {{leg4}}
+    <div class="chart scroll-x" id="c-gap" data-label="Histogram of changes across 233 stretches of the record, centred near zero, with the real mission gap marked at minus 8.2 cm in the lower tail."></div>
+    <figcaption>If the real gap had stood out past the bar, a caution would be attached and the label could not rise above &ldquo;descriptive&rdquo;, however strong the trend.</figcaption>
+  </figure>
+  {{proc4}}
+</section>
+
+<section id="q5">
+  <div class="q"><span class="eyebrow">Question 5 &middot; step 5</span><h2>Is it just a dry spell?</h2></div>
+  <p class="answer">No. Rainfall here rose over the period, and the water still fell.</p>
+  <p>Groundwater rises after wet years and falls after dry ones, so a run of dry years could explain a decline. Step 5 sets each year's change in storage against the rain of the same two years, the comparison the 2009 study of this region made.</p>
+  <p>In a spell of exactly average rainfall, {{mean_rain}} mm a year, storage still fell about {{at_avg}} cm a year (range {{at_avg_range}}). Rainfall itself rose by about {{rain_up}} mm a year each year over {{rain_y0}} to {{rain_y1}} (range {{rain_up_range}}).</p>
+  <figure class="plate">
+    <h3>Each year's change in storage, against the rain of the same two years</h3>
+    <p class="sub">North-west India; one dot per year</p>
+    {{leg5}}
+    <div class="chart scroll-x" id="c-rain" data-label="Scatter of yearly storage change against two-year rainfall. Nearly every dot sits below zero, and the fitted line is still well below zero at average rainfall."></div>
+    <figcaption>Wetter years seem to help a little, about {{resp}} cm for every extra 100 mm of rain. But the range on that, {{resp_lo}} to {{resp_hi}}, includes zero, so the tool does not call it a clear response.</figcaption>
+  </figure>
+  {{proc5}}
+</section>
+
+<section id="q6">
+  <div class="q"><span class="eyebrow">Question 6 &middot; step 6</span><h2>Would you see it from the fields?</h2></div>
+  <p class="answer">No. Over {{green_y0}} to {{green_y1}} the land got greener, by about {{green}} NDVI a decade (range {{green_range}}). Looking at the fields alone, nothing would suggest the water under them was falling.</p>
+  <p>NDVI is a satellite measure of how much green, growing plant cover there is. It comes from NASA's MODIS instrument and is averaged here over the same blocks.</p>
+  <figure class="plate">
+    <h3>Groundwater down, greenness up, over the same years</h3>
+    <p class="sub">North-west India, yearly; two panels, each with its own scale, sharing the years along the bottom</p>
+    {{leg6}}
+    <div class="chart scroll-x" id="c-green-water" data-label="Yearly groundwater estimate, falling from 2002 to 2025."></div>
+    <div class="chart scroll-x" id="c-green-ndvi" data-label="Yearly greenness of the land, rising from 2002 to 2025."></div>
+    <figcaption>Greenness leaves out {{excluded}} block ({{excluded_share}}% of the area) that cloud or snow hides in more than a quarter of months. The two records move in opposite directions (rank correlation {{rho}}), but when two records both simply trend, that number mostly reflects the two trends. It is not evidence that one drives the other.</figcaption>
+  </figure>
+  {{proc6}}
+</section>
+
+<section id="q7">
+  <div class="q"><span class="eyebrow">Question 7 &middot; where it stops</span><h2>So why is it falling?</h2></div>
+  <p class="answer">TimeDetective does not say. All six steps run as before, and the finding comes back with two sentences added.</p>
+  <div class="stopcard">
+    <div class="sign" aria-hidden="true">!</div>
+    <div>
+      <h3>Added to the finding when the question asks why</h3>
+      <p><q>{{cause1}}.</q></p>
+      <p><q>{{cause2}}.</q></p>
+    </div>
+  </div>
+  <p>What you hold at this point is the evidence the scientists used: the water fell, the rain did not, and the crops kept growing. The 2009 study in Nature by Rodell, Velicogna and Famiglietti concluded that pumping for irrigation was the likely cause. That is their conclusion, drawn with knowledge of how the region farms. Testing it needs pumping records, and no step in this playbook has any. A tool that printed &ldquo;caused by irrigation&rdquo; here would be repeating a paper, not checking one.</p>
+  <div class="two">
+    <div class="plate half can">
+      <h3>What this check says</h3>
+      <ul>
+        <li>How fast the estimate is changing, with a range</li>
+        <li>Whether that passes a test built for wandering records</li>
+        <li>Whether rainfall accounts for it</li>
+        <li>Whether the land's greenness moved with it</li>
+      </ul>
+    </div>
+    <div class="plate half can">
+      <h3>What it leaves to you</h3>
+      <ul>
+        <li>Why it is happening</li>
+        <li>What will happen next</li>
+        <li>What anyone should do about it</li>
+        <li>How much water is left</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="q8">
+  <div class="q"><span class="eyebrow">Question 8 &middot; where it stops</span><h2>What about my district?</h2></div>
+  <p class="answer">It refuses, at the first step, before any trend is computed.</p>
+  <p>A district such as Ludhiana is smaller than one block. Asked about the {{hot_n}} blocks nearest Ludhiana, about {{hot_km2}} km&sup2;, the check still stops: the satellites cannot separate an area that small from the land around it.</p>
+  <div class="two">
+    <figure class="plate half">
+      <h3>The area asked about</h3>
+      {{leg8}}
+      <div class="chart" id="c-district" data-label="The same map of 26 blocks with the three nearest Ludhiana highlighted."></div>
+    </figure>
+    <div class="plate half">
+      <h3>What came back</h3>
+      {{rail_refused}}
+      <p class="note">Steps 2 to 6 did not run.</p>
+      <blockquote><strong>Failed:</strong> {{ref_failed}}.<footer>storage_audit</footer></blockquote>
+      <blockquote><strong>What would change it:</strong> {{ref_change}}.</blockquote>
+      <p class="note">A refusal is a result. It names what failed and what would change the answer, so the student knows what to ask instead.</p>
+    </div>
+  </div>
+</section>
+
+<section id="q9">
+  <div class="q"><span class="eyebrow">Question 9 &middot; the same playbook, somewhere else</span><h2>Is it the same in Kansas?</h2></div>
+  <p class="answer">Same six steps, different label. Over the US High Plains, a box centred on western Kansas, a straight line falls about {{hp_slope}} cm a year (range {{hp_range}}). But the drift test does not fire (p = {{hp_p}}), so the tool reports the slope as a description and says a record that simply wanders could look like this.</p>
+  <p>The difference is in the year-to-year changes. In north-west India the average fall ({{mean_change}} cm) is nearly as large as the usual swing ({{sd}} cm). Over the High Plains the average fall ({{hp_mean}} cm) is about half the usual swing ({{hp_sd}} cm). Once the test widens its error bar to allow for wandering, that is not enough.</p>
+  <div class="two">
+    <figure class="plate half">
+      <div class="pair-head"><h3>North-west India</h3>{{chip_sig}}</div>
+      <p class="sub">Yearly groundwater estimate, cm of water</p>
+      <div class="chart" id="c-cmp-ind" data-label="Yearly groundwater estimate for north-west India, falling steadily."></div>
+    </figure>
+    <figure class="plate half">
+      <div class="pair-head"><h3>US High Plains</h3>{{chip_desc}}</div>
+      <p class="sub">Yearly groundwater estimate, cm of water, same scale</p>
+      <div class="chart" id="c-cmp-hp" data-label="Yearly groundwater estimate for the US High Plains, falling less and with wider swings."></div>
+    </figure>
+    <figure class="plate half">
+      <h3>North-west India: year-to-year changes</h3>
+      <p class="sub">Average fall {{mean_change}} cm a year; usual swing {{sd}} cm</p>
+      <div class="chart" id="c-cmpb-ind" data-label="Year-to-year changes for north-west India, mostly downward."></div>
+    </figure>
+    <figure class="plate half">
+      <h3>US High Plains: year-to-year changes</h3>
+      <p class="sub">Average fall {{hp_mean}} cm a year; usual swing {{hp_sd}} cm; same scale</p>
+      <div class="chart" id="c-cmpb-hp" data-label="Year-to-year changes for the US High Plains, swinging both up and down."></div>
+    </figure>
+  </div>
+  <p>The second method does fire here (p = {{hp_p2}}). A tool that relied on that test alone would have called the High Plains decline significant. Because that test fired on 21 to 26% of wandering records with no trend, it does not get to decide. The strictness has a price: the tool will sometimes hold back on a decline that is real. What would settle it, in the tool's words: <q>{{hp_strengthen}}</q></p>
+  <p>Rain matters more here: each extra 100 mm of yearly rain goes with about {{hp_resp}} cm more storage (range {{hp_resp_range}}). Greenness shows no trend.</p>
+</section>
+
+<section id="label">
+  <div class="q"><span class="eyebrow">Behind the answers</span><h2>How the label is decided</h2></div>
+  <p class="answer">Procedures never choose the label. They record evidence. One module, the critic, reads that evidence and applies a fixed rule.</p>
+  {{checks}}
+  <div class="ladder" role="list" aria-label="The three labels, strongest first">
+    <div class="rung" role="listitem"><div><span class="label-chip rob"><i></i>robust</span></div><div><p>Everything below, plus the direction holds when years are dropped, a second method agrees, and an independent record agrees. Nothing in this project reaches this rung yet, because no well record has been compared.</p></div></div>
+    <div class="rung" role="listitem"><div>{{chip_sig}}</div><div><p>The test fired, inside the conditions where its false-alarm rate was measured, with no caution about the instruments.</p><div class="who"><span class="pin">North-west India groundwater</span></div></div></div>
+    <div class="rung" role="listitem"><div>{{chip_desc}}</div><div><p>The slope and its range are reported as a description of the record, with no claim that it is more than chance.</p><div class="who"><span class="pin">US High Plains groundwater</span></div></div></div>
+  </div>
+  <div class="two">
+    <div>
+      <p class="note">The conditions are data in the critic, not judgement. A longer or shorter record, or a stickier one, falls outside them and stays descriptive.</p>
+      <pre>{{critic_rule}}</pre>
+    </div>
+    <div class="plate half can">
+      <h3>What would strengthen the India finding, in the tool's words</h3>
+      <ul>{{strengthen}}</ul>
+    </div>
+  </div>
+</section>
+
+<section id="playbook">
+  <div class="q"><span class="eyebrow">Behind the answers</span><h2>The playbook, as data</h2></div>
+  <p class="answer">The order of the checks is not code. It is a short file. Every arrow in it names the source of the rule that justifies it, and the engine rejects an arrow that has none.</p>
+  <figure class="plate">
+    <h3>water_and_greenness_check</h3>
+    <p class="sub">Six steps, one procedure each; drawn from the file below</p>
+    <div class="legend"><span><i style="--c:var(--ink);border-top-width:3px"></i>Route taken for north-west India</span><span><i style="--c:var(--muted);border-top-width:1.5px"></i>Other routes in the file</span></div>
+    <div class="chart scroll-x" id="c-playbook" data-label="Flow diagram of the playbook: audit, annual, trend, handover, rainfall, greenness, then the finding. The first four steps can each end in a refusal. Rainfall and greenness are skipped if their record is missing."></div>
+    <figcaption>The first four steps can each end the check. The last two cannot: if rainfall or greenness is missing, the finding is written from the steps that ran.</figcaption>
+  </figure>
+  <details class="file"><summary>Show the playbook file</summary><pre>{{playbook_yaml}}</pre></details>
+</section>
+
+<section id="procedures">
+  <div class="q"><span class="eyebrow">Behind the answers</span><h2>The procedures</h2></div>
+  <p class="answer">A procedure is one check. It has a definition file that says what it needs, what it returns and where its rule comes from, and one function that does the arithmetic. No AI model runs inside any of them, so the same data always gives the same answer.</p>
+  <div class="anatomy">
+    <div><h3>One procedure's definition file</h3><pre>{{procedure_yaml}}</pre></div>
+    <div class="plate half"><h3>What it returned for north-west India</h3><dl class="kv stack">{{kv}}</dl><p class="note">The conclusion is handed on to the next step and, at the end, to the critic.</p></div>
+  </div>
+  <div class="cards">{{cards}}</div>
+</section>
+
+<footer class="end">
+  <p><strong>How this compares with the 2009 study.</strong> Over that study's window, August 2002 to October 2008, this estimate falls {{rodell}} cm a year. The study reported 4.0 &plusmn; 1.0 cm a year for Rajasthan, Punjab and Haryana. The outlines differ (a latitude and longitude box here, state borders there), the data releases differ, and this estimate leaves surface water in.</p>
+  <p><strong>Where the numbers come from.</strong> Every figure about the two regions was written out by the TimeDetective code and filled into this page by script. To reproduce it, run <code>scripts/story/extract.py</code> and then <code>scripts/story/build_page.py</code> in <a href="{{repo}}">the project repository</a>. The false-alarm rates are from the project's <a href="{{repo}}/blob/main/docs/calibration.md">calibration notes</a>.</p>
+  <p><strong>Data.</strong> NASA GSFC GRACE and GRACE-FO mascons RL06v2.0 (stored water); NASA GLDAS Noah v2.1 (modelled soil moisture and snow); NASA MODIS MOD13C2 v061 (greenness); NASA POWER (rainfall).</p>
+  <p><strong>Sources cited by the playbook.</strong></p>
+  <ul>{{sources}}</ul>
+  <p><strong>Use of AI.</strong> This page and parts of the project's code were written with Claude. The checks themselves are plain arithmetic.</p>
+</footer>
+
+</div>
+<script type="application/json" id="data">/*DATA*/</script>
+<script type="application/json" id="extra">/*EXTRA*/</script>
+<script>/*JS*/</script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 name: storage_annual
 category: transforms
 description: Remove the seasonal cycle with a gap-tolerant harmonic fit and average
-  by calendar year, requiring six months per year.
+  by calendar year, requiring four months per year and listing the years that rest
+  on fewer than twelve.
 requires:
 - monthly_storage
 produces:
