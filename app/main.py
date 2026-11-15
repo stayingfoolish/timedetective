@@ -10,8 +10,15 @@ import streamlit as st
 from timedetective.agent.report import render
 from timedetective.packs.earth.adapters.power import PARAMETERS, load_power
 from timedetective.packs.earth.run import investigate
+from walkthrough import show_walkthrough
 
 st.title("TimeDetective")
+st.caption("Is it a real trend, or just noise? Answers from NASA data, each with a label for how sure it is. "
+           "No AI model runs when a check executes.")
+show_walkthrough()
+
+st.divider()
+st.header("Weather evidence for one grid cell")
 st.caption("Reproducible weather evidence · no live model calls")
 st.info("Real NASA POWER daily records, 2000–2024, queried at 3°N, 42°E. "
         "This is a grid-cell comparison—not an average for the Horn of Africa. "
@@ -167,8 +174,8 @@ if "season_finding" in st.session_state:
 
 st.subheader("Water storage check: is the water stored under this region changing?")
 st.info("Real NASA GRACE and GRACE-FO records (April 2002 to June 2026) for two regions large enough for the satellites to resolve, "
-        "with rainfall over the same box. This is all stored water together: soil moisture and surface water have not been "
-        "separated from groundwater yet.")
+        "with rainfall over the same box. This check reads all stored water together. The walkthrough at the top of this page "
+        "subtracts modelled soil moisture and snow to estimate groundwater.")
 REGIONS = {"North-west India: Punjab, Haryana, Delhi, northern Rajasthan": "nw_india",
            "US High Plains: western Kansas, eastern Colorado, the panhandles": "high_plains"}
 with st.form("storage_check"):

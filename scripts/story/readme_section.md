@@ -16,7 +16,8 @@ not how much is left.
 Here is how it got there, one question at a time. Questions 1 to 6 are the six steps of one playbook, and each
 step is one procedure. Questions 7 and 8 are where the tool stops. Question 9 runs the same playbook somewhere else.
 
-**[Open the interactive version]({{pages}})** to hover over any chart and see the numbers behind it.
+**[Open the interactive version]({{pages}})** to hover over any chart and see the numbers behind it, or run it
+live with `make demo`, which opens on this walkthrough.
 
 ### 1. How can anyone know what is underground?
 
