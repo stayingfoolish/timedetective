@@ -53,8 +53,8 @@ All three use real NASA records. The words in the middle column are the tool's o
 
 | Who is asking | What the tool says | Claim strength |
 | --- | --- | --- |
-| **Harpreet**, a water officer in Punjab: *is the water under this region changing?* | "Total water storage in this region fell by about 3.8 cm of water per year between 2002 and 2026 (range 3.3 to 4.2), about 90 cm in total. In a spell of average rainfall, storage still fell by about 3.6 cm a year." | Significant |
-| **Maria**, a groundwater manager in western Kansas: *the same question for the High Plains* | "On a straight-line fit, total water storage in this region fell by about 1.4 cm of water per year. Year-to-year changes vary too much for that to pass this project's significance test: a record that simply wanders could look like this." | Descriptive |
+| **Harpreet**, a water officer in Punjab: *is the water under these farms running out, and would the fields show it?* | "Groundwater storage in this region fell by about 4.0 cm of water per year between 2002 and 2026 (range 3.6 to 4.4), about 95 cm in total. In a spell of average rainfall, storage still fell by about 4.1 cm a year, so rainfall alone does not account for the decline. […] Over the same years (2002-2025) the region grew greener, by about 0.04 NDVI a decade. Looking at the fields alone, nothing would suggest the water under them was falling." | Significant |
+| **Maria**, a groundwater manager in western Kansas: *the same question for the High Plains* | "On a straight-line fit, groundwater storage in this region fell by about 1.3 cm of water per year. Year-to-year changes vary too much for that to pass this project's significance test: a record that simply wanders could look like this." | Descriptive |
 | **Grace**, a district agriculture officer in Karamoja, Uganda: *how does this growing season compare?* | For 2009: "Vegetation greenness in the 2009 season was well below usual: lowest of 27 seasons. Rainfall agrees: rainfall for the matching months was well below usual (lowest of 26 seasons)." | Descriptive |
 
 The personas are composites. The numbers are not: see [the full results](docs/story_results.md) and the screenshots
@@ -186,6 +186,8 @@ in the library for records with more than one shift.)
 | Dataset | Used for | Source |
 | --- | --- | --- |
 | GRACE and GRACE-FO mascons (NASA GSFC, RL06v2.0), April 2002 to June 2026 | Water stored on and under the land, for two regions | [GSFC mascons](https://earth.gsfc.nasa.gov/geo/data/grace-mascons) |
+| GLDAS Noah land surface model, monthly V2.1, 2002 to July 2026 | Modelled soil moisture, snow and canopy water, subtracted from GRACE to estimate groundwater | [GES DISC](https://disc.gsfc.nasa.gov/datasets/GLDAS_NOAH025_M_2.1/summary), Earthdata Cloud OPeNDAP |
+| MODIS Terra monthly vegetation index, MOD13C2, 2000 to December 2025 | Greenness over each water-storage region | [LP DAAC](https://doi.org/10.5067/MODIS/MOD13C2.061), Earthdata Cloud OPeNDAP |
 | MODIS Terra vegetation index, MOD13Q1, 2000 to October 2026 | Greenness of the growing season around Kotido | [ORNL DAAC subset service](https://modis.ornl.gov/data/modis_webservice.html) |
 | IMERG satellite rainfall, via NASA POWER | Second indicator for the season check | [NASA POWER](https://power.larc.nasa.gov/) |
 | MERRA-2 corrected rainfall and soil wetness, via NASA POWER | Rainfall over each water-storage region; a second rainfall product | [NASA POWER](https://power.larc.nasa.gov/) |
@@ -208,12 +210,12 @@ checksum. The loaders refuse a file whose checksum does not match.
 - **It agrees with the ground where it should.** The season it ranks lowest around Kotido, 2009, is one in which an
   official in Karamoja told reporters that crops had dried up with no harvest
   ([VOA, November 2009](https://www.voanews.com/a/a-13-2009-11-04-voa39-69781372/415417.html)).
-- **295 automated tests**, including known-answer tests for every procedure and tests that pin the real results.
+- **307 automated tests**, including known-answer tests for every procedure and tests that pin the real results.
 
 ## What it cannot do yet
 
-- **Groundwater alone.** The water storage check measures all stored water together. Separating groundwater needs a
-  soil-moisture model (GLDAS) subtracted first.
+- **Groundwater exactly.** Groundwater is estimated by subtracting modelled soil moisture, snow and canopy water
+  (GLDAS) from total storage. Surface water (lakes, rivers, reservoirs, canals) is not subtracted; every finding says so.
 - **Crops alone.** The season check reads all vegetation in a 10 km box. It has no cropland mask.
 - **"Robust".** No finding can reach the top label until an independent record, such as observation wells, is wired in.
 - **Any place.** Three places are cached for these two checks. A new place needs its data fetched; the checks themselves are not tied to these three.
@@ -235,7 +237,7 @@ Scroll to "Two checks for any place the data covers". Press **Check water storag
 is fetched: the demo runs on the cached NASA files.
 
 ```bash
-make test                                                   # 295 tests
+make test                                                   # 307 tests
 uv run python scripts/validate_knowledge.py --scope stories # the two story playbooks and their sources
 ```
 

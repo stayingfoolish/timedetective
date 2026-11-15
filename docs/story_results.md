@@ -20,8 +20,11 @@ How they were fetched: the cloud workspace cannot reach NASA servers, so the req
 session. Each response's SHA-256 was computed in the browser before saving and re-checked after transfer. No login was
 needed for any of these.
 
-Not fetched: GLDAS (soil moisture, snow and surface water to subtract from total storage). It needs a NASA Earthdata
-login. Until it is added, the storage findings are about **total water storage**, and say so.
+GLDAS (`gldas_noah025_m_{nw_india,high_plains}.json.gz`, 3.4 and 4.2 MB, SHA-256 `afd0d836ea8c`, `6c2baadcd0b4`)
+was fetched on 15 November 2026 from the cloud workspace with an Earthdata Login token, by
+`scripts/fetch_gldas_subsets.py`: GLDAS Noah monthly V2.1 (doi:10.5067/SXAVCZFAQLNO), January 2002 to July 2026,
+soil moisture in four layers to 2 m, snow water and canopy water, only for the grid cells over each region's mascon
+footprints (Earthdata Cloud OPeNDAP). The sidecar records every request address and response checksum.
 
 ## Water storage
 
@@ -63,6 +66,50 @@ series is in the right range, not that the method is validated.
 
 Why neither can be "robust": the two trend methods disagree in both regions, and no independent record (observation
 wells) is wired in.
+
+## Groundwater estimate (GLDAS subtracted)
+
+`packs/earth/adapters/gldas.py` averages the modelled water over the same mascon footprints, weighted by mascon area,
+puts it on the GRACE baseline (2004.0-2010.0 mean) and subtracts it month by month, as Rodell et al. (2009) did. Surface
+water is not subtracted (the model has no such store) and every finding says so.
+
+| | North-west India | US High Plains |
+| --- | --- | --- |
+| Modelled soil, snow and canopy water, trend | +0.15 cm a year | -0.11 cm a year |
+| Groundwater estimate, Theil-Sen slope | -4.0 cm a year (range -4.4 to -3.6), about 95 cm in total | -1.3 cm a year (range -1.7 to -0.9) |
+| Drift test | fired, p = 0.004 | did not fire, p = 0.063 |
+| Prewhitened Mann-Kendall | fired (now agrees) | fired |
+| Change in a spell of average rainfall | -4.1 cm a year (range -2.4 to -5.8) | -1.5 cm a year (range -0.4 to -2.5), descriptive |
+| **Claim strength** | **significant** | **descriptive** |
+
+In north-west India the subtraction barely moves the slope, but it removes the disagreement between the two trend
+methods. Still not "robust": no independent record (observation wells) is wired in.
+
+## Water and greenness together (the combined story)
+
+`knowledge/playbooks/water_and_greenness_check.yaml`: the water storage check on the groundwater estimate, then the
+region's yearly greenness over the same years. Greenness is MODIS Terra monthly NDVI (MOD13C2 V061,
+doi:10.5067/MODIS/MOD13C2.061), averaged over the same mascon footprints, fetched by
+`scripts/fetch_mod13c2_regions.py` on 15 November 2026 (`mod13c2_{nw_india,high_plains}.json.gz`). The service would not
+subset any 2026 granule (HTTP 400); those nine months are recorded as skipped and stay missing.
+
+| | North-west India | US High Plains |
+| --- | --- | --- |
+| Greenness months used | 308 of 321 | 306 of 321 |
+| Blocks left out of greenness | 1 (mascon 7735, Himalayan foothills, fails the quality rule in 38% of months: winter snow), 4% of area | none |
+| Greenness trend, 2002-2025 | +0.037 NDVI a decade (range 0.029 to 0.045), prewhitened Mann-Kendall p = 0.03 | +0.007 (range -0.011 to 0.026), p = 0.60 |
+| Pattern named | **greener while storage fell** | no tested decline, so no hidden fall is claimed |
+| Claim strength (set by the storage evidence) | significant | descriptive |
+
+North-west India, as the check words the new part:
+
+> Over the same years (2002-2025) the region grew greener, by about 0.04 NDVI a decade. Looking at the fields alone,
+> nothing would suggest the water under them was falling. […] Fields staying green while stored water falls is the
+> pattern a reference study of north-west India links to pumping for irrigation; this check shows the two records side
+> by side and does not test that cause.
+
+The rank correlation of yearly greenness with yearly storage is -0.91 in north-west India; both records trend, so this
+mostly reflects the two trends and is not used as evidence. Reference: Asoka and Mishra (2020).
 
 ## Season check, area around Kotido, Karamoja, Uganda
 

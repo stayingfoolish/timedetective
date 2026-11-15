@@ -1,0 +1,40 @@
+name: gldas_noah025_m_nw_india
+dataset_card: gldas_noah_monthly
+product: GLDAS_NOAH025_M v2.1
+source: https://opendap.earthdata.nasa.gov/collections/C1342986036-GES_DISC
+cmr_collection: C1342986036-GES_DISC
+retrieved: '2026-11-15'
+sha256: 6c2baadcd0b4b8b651bef5f8bd793530568ca29e56635cc7760c519f5f3d25e8
+uncompressed_sha256: 5ef9a94b177d695a1961fcd5c0449e3d78b6e69b43d6fd1c2c0938900c6960c9
+variables:
+- SoilMoi0_10cm_inst
+- SoilMoi10_40cm_inst
+- SoilMoi40_100cm_inst
+- SoilMoi100_200cm_inst
+- SWE_inst
+- CanopInt_inst
+units: kg m-2 (= mm of water)
+region: nw_india
+mascon_footprint:
+  south: 26.5
+  north: 32.5
+  west: 72.4675325
+  east: 78.35962144999999
+grid_index_box:
+  lat0: 345
+  lat1: 370
+  lon0: 1009
+  lon1: 1033
+n_months: 295
+first_month: '200201'
+last_month: '202607'
+request_window:
+  started: '2026-11-15T14:35:41+00:00'
+  finished: '2026-11-15T14:38:11+00:00'
+acquisition: Fetched with scripts/fetch_gldas_subsets.py from the cloud workspace
+  using an Earthdata Login token.
+citation: Beaudoing, H. and M. Rodell, NASA/GSFC/HSL (2020), GLDAS Noah Land Surface
+  Model L4 monthly 0.25 x 0.25 degree V2.1, Greenbelt, Maryland, USA, Goddard Earth
+  Sciences Data and Information Services Center (GES DISC), doi:10.5067/SXAVCZFAQLNO
+note: Real NASA model output; used to subtract modelled soil moisture, snow and canopy
+  water from GRACE total storage.

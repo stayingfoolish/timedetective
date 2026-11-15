@@ -248,4 +248,7 @@ def water_storage(slope_per_year: float = 0.0, rain: pd.Series | None = None, re
     out[pd.to_datetime(GRACE_MISSING)] = np.nan
     out.attrs = _provenance("water_storage_anomaly", "cm equivalent water height", "monthly", "synthetic water storage",
                             storage_kind=kind, resolution_units=cells, min_resolution_units=22, area_km2=12400.0 * cells)
+    if kind == "groundwater":
+        out.attrs["subtraction"] = {"method": "synthetic: no subtraction performed", "model": "synthetic",
+                                    "not_subtracted": "surface water (lakes, rivers, reservoirs, canals) was not subtracted, because the model has no such store"}
     return out
