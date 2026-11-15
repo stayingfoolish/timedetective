@@ -6,10 +6,11 @@ A student asks this about the farm belt of north-west India: Punjab, Haryana, De
 TimeDetective answers from {{years_round}} years of NASA satellite data.
 
 **The groundwater estimate is falling about {{slope}} cm of water a year (range {{slope_range}}), about {{total}} cm in
-total, and the fields do not show it.** The label on that answer is **significant**.
+total, and the fields do not show it.** The decline earns the label **significant**: it is larger
+than we would expect from ordinary year-to-year swings alone.
 
-What it cannot say is whether the water is running out. The satellites measure how much the stored water changes,
-not how much is left.
+The satellites show how water storage has changed over time. Pairing that view with measurements
+of how much groundwater remains would give the fuller picture of future water supply.
 
 <img src="docs/images/story/fields.png" alt="Two panels for north-west India, {{green_y0}} to {{green_y1}}. The groundwater estimate falls steadily while the greenness of the land rises.">
 
