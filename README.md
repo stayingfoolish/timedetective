@@ -1,8 +1,17 @@
 # TimeDetective
 
-**Ask a question about an Earth record. Get an answer that never claims more than the evidence supports.**
+**Is it a real trend, or just noise? TimeDetective answers from NASA data, and never claims more than the evidence supports.**
 
-Built for the 2026 NASA Space Apps Challenge, *Be an Earth System Trend Detective*.
+**What it is.** TimeDetective is an open-source tool for questions about how a place is changing: *is the water
+under this region disappearing? how does this growing season compare with earlier ones?* It runs the checks a
+statistician would run on NASA satellite records and gives the answer in plain words, with a label for how sure it
+is: descriptive, significant or robust. When the evidence is not enough, it says so, and says what would be.
+
+**The challenge.** Built for the 2026 NASA Space Apps Challenge, *Be an Earth System Trend Detective*. The challenge
+asks teams to help people become data detectives: choose an Earth science variable, get its data for a region, plot
+it over a long enough period, measure how fast it is changing, and test whether that trend is significant.
+TimeDetective does this for water storage, vegetation greenness and rainfall, and adds the step that is easiest
+to get wrong: deciding when a trend has earned the word "significant".
 
 Demo: _add the video or slides link here before submitting_
 
