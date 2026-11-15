@@ -15,7 +15,7 @@ from walkthrough import show_walkthrough
 
 st.set_page_config(page_title="TimeDetective | Evidence studio", layout="wide", initial_sidebar_state="collapsed")
 st.markdown("""<style>
-  .block-container {max-width: 1500px; padding-top: 1rem; padding-bottom: 1rem}
+  .block-container {max-width: 1500px; padding-top: 3rem; padding-bottom: .25rem}
   .td-brand {font-size:2rem;font-weight:800;letter-spacing:-.04em;line-height:1.3}
 </style>""", unsafe_allow_html=True)
 brand, navigation = st.columns([1, 2], vertical_alignment="center")
