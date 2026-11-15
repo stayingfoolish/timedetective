@@ -296,3 +296,26 @@ mod13_user_guide_c61:
   accessed: '2026-11-15'
   review: read_pixel_reliability_compositing_and_data_layer_sections
   note: Pixel reliability ranks (0 good, 1 marginal, 2 snow or ice, 3 cloud, -1 fill), NDVI scale 0.0001 and valid range -2000 to 10000. Gives no formal filtering rule; accepting ranks 0 and 1 is this project's choice.
+
+drift_test_note_v1:
+  title: TimeDetective drift test, derivation and limits
+  kind: house_rule
+  url: docs/drift_test.md
+  note: A t-test on first differences with an autocorrelation-widened standard error. The 0.25 floor is derived in that document and checked by simulation; the effect it guards against is reported in cowles_1960.
+cowles_1960:
+  authors: Cowles, A.
+  year: 1960
+  title: A Revision of Previous Conclusions Regarding Stock Price Behavior
+  venue: Econometrica 28(4), 909-915; Cowles Foundation Paper 159
+  url: https://cowles.yale.edu/sites/default/files/2022-08/cowles-p159.pdf
+  accessed: '2026-11-15'
+  review: read_open_copy
+  note: Reports that averaging within each time unit puts positive first-order serial correlation into the first differences of a random chain, and credits Holbrook Working's accompanying note for the proof. Gives no formula. Working's note (Econometrica 28, 916-918) has not been opened.
+ruptures_pelt:
+  title: ruptures documentation, Linearly penalized segmentation (Pelt), user guide and code reference
+  kind: implementation_documentation
+  url: https://centre-borelli.github.io/ruptures-docs/user-guide/detection/pelt
+  reference: https://centre-borelli.github.io/ruptures-docs/code-reference/detection/pelt-reference
+  accessed: '2026-11-15'
+  review: opened_user_guide_and_code_reference
+  note: Confirms the interface used (model l2, min_size, jump, predict with a penalty; the last breakpoint is the series length). The default penalty in this project, 2 sigma^2 log n with sigma from first differences, is a house choice. The PELT paper (Killick, Fearnhead and Eckley, 2012) has not been opened.

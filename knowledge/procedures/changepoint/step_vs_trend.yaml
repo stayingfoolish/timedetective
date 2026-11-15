@@ -10,4 +10,4 @@ produces:
 - bic_margin
 - step_time
 - step_size
-source: TODO
+source: schwarz_1978

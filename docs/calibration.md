@@ -78,6 +78,23 @@ Reading it:
 Still not covered: long-memory noise, changes in variance, and any swing longer than the record. No test on 25
 yearly values can rule those out, and the wording of a "significant" finding says so.
 
+## `pelt` (ruptures): locations, not significance
+
+`pelt` reports where the level of a series shifts. It is not used for any claim strength. With its default
+penalty, on series with no change at all (300 series per cell):
+
+| Series | Split at least once |
+| --- | --- |
+| White noise, 300 points | 3% |
+| White noise, 120 points | 6% |
+| White noise, 27 points | 17% |
+| AR(1) noise, phi 0.3, 120 points | 65% |
+| AR(1) noise, phi 0.6, 120 points | 100% |
+| Steady linear trend, 120 points | 100% (a ramp becomes a staircase) |
+
+So a change it finds is a candidate. `step_vs_trend` decides whether a step describes the record better than a
+steady change, and nothing in the critic relies on `pelt`.
+
 ## Not done
 
 - The weather playbooks have their own calibration record; their claims stay descriptive.
