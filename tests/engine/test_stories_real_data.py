@@ -141,3 +141,31 @@ def test_high_plains_groundwater_estimate_stays_descriptive():
     finding = check_storage(groundwater, question="Is the groundwater under this region changing?", rainfall=rainfall)
     assert steps(finding)["trend"]["slope_cm_per_year"] == pytest.approx(-1.28, abs=0.05)
     assert finding.claim.strength == "descriptive"
+
+
+def joint(tag):
+    from timedetective.packs.earth.adapters.mod13c2 import load_mod13c2_region
+    from timedetective.packs.earth.stories import check_storage_and_greenness
+    groundwater, _, rainfall = groundwater_inputs(tag)
+    greenness = load_mod13c2_region(CACHE / f"mod13c2_{tag}.json.gz", CACHE / f"gsfc_mascons_{tag}.meta.yaml")
+    return greenness, check_storage_and_greenness(
+        groundwater, question="Is the water under these farms running out, and would the fields show it?",
+        vegetation=greenness, rainfall=rainfall)
+
+
+def test_north_west_india_grew_greener_while_its_groundwater_fell():
+    greenness, finding = joint("nw_india")
+    assert [m["mascon_id"] for m in greenness.attrs["excluded_mascons"]] == [7735]  # Himalayan block, snow every winter
+    assert greenness.attrs["skipped_months"][0] == "2026-02"
+    v = steps(finding)["greenness"]
+    assert v["pattern"] == "greener_while_storage_fell" and v["n_years"] == 24
+    assert v["greenness_slope_per_decade"] == pytest.approx(0.037, abs=0.003)
+    assert finding.claim.strength == "significant"
+    assert "nothing would suggest the water under them was falling" in finding.claim.statement
+    assert "does not test that cause" in finding.claim.statement and "leaves out 1 of the region's blocks" in finding.claim.statement
+
+
+def test_high_plains_claims_no_hidden_decline():
+    _, finding = joint("high_plains")
+    assert steps(finding)["greenness"]["pattern"] == "no_tested_decline"
+    assert "nothing would suggest" not in finding.claim.statement and finding.claim.strength == "descriptive"

@@ -281,6 +281,16 @@ gldas_noah_v21:
   accessed: '2026-11-15'
   review: provider_catalogue_record
   note: DOI, creators, release date and variable list read from the CMR collection record (C1342986036-GES_DISC) and the granule DMR. Soil moisture in four layers to 2 m, snow water equivalent and canopy water in kg m-2. The README (docserver.gesdisc.eosdis.nasa.gov/public/project/hydrology/README_GLDAS2.pdf) was not opened; the statement that irrigation is not modelled should be checked against it before it is shown as more than a caution.
+mod13c2_v061:
+  authors: Didan, K.
+  year: 2021
+  title: MODIS/Terra Vegetation Indices Monthly L3 Global 0.05Deg CMG V061
+  venue: NASA Land Processes Distributed Active Archive Center
+  doi: 10.5067/MODIS/MOD13C2.061
+  url: https://doi.org/10.5067/MODIS/MOD13C2.061
+  accessed: '2026-11-15'
+  review: provider_catalogue_record
+  note: DOI, creator and release date from the CMR collection record (C2565788914-LPCLOUD); variable names, grid, scale factor 10000, valid range -2000 to 10000 and fill value -3000 from a granule DMR; grid-centre coordinates checked against the granule's Latitude and Longitude arrays.
 rodell_2009:
   authors: Rodell, M.; Velicogna, I.; Famiglietti, J. S.
   year: 2009

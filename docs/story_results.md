@@ -85,6 +85,32 @@ water is not subtracted (the model has no such store) and every finding says so.
 In north-west India the subtraction barely moves the slope, but it removes the disagreement between the two trend
 methods. Still not "robust": no independent record (observation wells) is wired in.
 
+## Water and greenness together (the combined story)
+
+`knowledge/playbooks/water_and_greenness_check.yaml`: the water storage check on the groundwater estimate, then the
+region's yearly greenness over the same years. Greenness is MODIS Terra monthly NDVI (MOD13C2 V061,
+doi:10.5067/MODIS/MOD13C2.061), averaged over the same mascon footprints, fetched by
+`scripts/fetch_mod13c2_regions.py` on 15 November 2026 (`mod13c2_{nw_india,high_plains}.json.gz`). The service would not
+subset any 2026 granule (HTTP 400); those nine months are recorded as skipped and stay missing.
+
+| | North-west India | US High Plains |
+| --- | --- | --- |
+| Greenness months used | 308 of 321 | 306 of 321 |
+| Blocks left out of greenness | 1 (mascon 7735, Himalayan foothills, fails the quality rule in 38% of months: winter snow), 4% of area | none |
+| Greenness trend, 2002-2025 | +0.037 NDVI a decade (range 0.029 to 0.045), prewhitened Mann-Kendall p = 0.03 | +0.007 (range -0.011 to 0.026), p = 0.60 |
+| Pattern named | **greener while storage fell** | no tested decline, so no hidden fall is claimed |
+| Claim strength (set by the storage evidence) | significant | descriptive |
+
+North-west India, as the check words the new part:
+
+> Over the same years (2002-2025) the region grew greener, by about 0.04 NDVI a decade. Looking at the fields alone,
+> nothing would suggest the water under them was falling. […] Fields staying green while stored water falls is the
+> pattern a reference study of north-west India links to pumping for irrigation; this check shows the two records side
+> by side and does not test that cause.
+
+The rank correlation of yearly greenness with yearly storage is -0.91 in north-west India; both records trend, so this
+mostly reflects the two trends and is not used as evidence. Reference: Asoka and Mishra (2020).
+
 ## Season check, area around Kotido, Karamoja, Uganda
 
 Declared growing season: April to September. Vegetation: mean NDVI of good and marginal pixels in a 10 km box

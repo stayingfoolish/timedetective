@@ -77,6 +77,12 @@ def storage_greenness(annual: pd.Series, vegetation: pd.Series | None, prior_val
                     f"greenness {'rose' if greening else 'fell' if browning else 'showed no clear trend'} over {first}-{last}.")
     prior = prior_values["conclusion"]
     limits = list(prior.get("limits", []))
+    excluded = vegetation.attrs.get("excluded_mascons") or []
+    if excluded:
+        share = (vegetation.attrs.get("spatial_support") or {}).get("share_of_storage_region_area")
+        limits.append(f"Greenness leaves out {len(excluded)} of the region's blocks"
+                      + (f" ({100 * (1 - share):.0f}% of its area)" if share else "")
+                      + ", which cloud or snow hide in more than a quarter of months.")
     if pattern in ("greener_while_storage_fell", "green_held_while_storage_fell"):
         limits.append("Fields staying green while stored water falls is the pattern a reference study of north-west India "
                       "links to pumping for irrigation; this check shows the two records side by side and does not test that cause.")
@@ -87,9 +93,10 @@ def storage_greenness(annual: pd.Series, vegetation: pd.Series | None, prior_val
         "greenness_trend_detected": bool(test.values["trend_detected"]), "greenness_direction": test.values["direction"],
         "greenness_p_value": test.values["p_value"],
         "spearman_storage_greenness": float(rho), "spearman_p_value": float(rho_p),
+        "spearman_note": "when both records trend, this mostly reflects the two trends; it is not evidence of a link",
         "yearly": [{"year": int(y.year), "greenness": float(g), "storage_cm": float(s)}
                    for y, g, s in zip(years, green, storage)],
-        "vegetation_product": vegetation.attrs.get("product"),
+        "vegetation_product": vegetation.attrs.get("product"), "excluded_mascons": excluded,
         "method": "calendar-year mean greenness; Sen slope and prewhitened Mann-Kendall; Spearman rank correlation; descriptive",
         "conclusion": {**prior, "statement": f"{prior['statement']} {sentence}", "limits": limits,
                        "evidence": {**prior["evidence"], "greenness_pattern": pattern}}}))
