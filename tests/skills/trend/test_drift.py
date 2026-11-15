@@ -50,3 +50,15 @@ def test_refuses_short_or_gappy_series():
     assert not drift_test(yearly(np.arange(8.0))).ok
     x = yearly(np.arange(30.0)); x.iloc[5] = np.nan
     assert not drift_test(x).ok
+
+
+def test_the_floor_matches_the_correlation_that_averaging_a_random_walk_creates():
+    """Lag-1 correlation of changes in period averages of a random walk: (m^2 - 1) / (2 (2 m^2 + 1)). See docs/drift_test.md."""
+    for m, expected in ((12, 143 / 578), (4, 15 / 66)):
+        assert (m * m - 1) / (2 * (2 * m * m + 1)) == pytest.approx(expected)
+        rng = np.random.default_rng(m)
+        walk = rng.normal(0, 1, m * 40_000).cumsum()
+        changes = np.diff(walk.reshape(-1, m).mean(axis=1))
+        measured = np.corrcoef(changes[:-1], changes[1:])[0, 1]
+        assert measured == pytest.approx(expected, abs=0.02)
+    assert 143 / 578 == pytest.approx(0.25, abs=0.005)   # monthly points in yearly averages: the default floor

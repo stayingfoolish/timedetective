@@ -1,0 +1,13 @@
+name: pelt
+category: changepoint
+description: Splits a series into stretches of constant level with the PELT search (ruptures library), allowing several changes; returns where the level shifts and by how much.
+requires:
+- regular_spacing
+- no_missing
+- residuals_uncorrelated
+produces:
+- n_changes
+- change_times
+- shifts
+- segments
+source: ruptures_pelt

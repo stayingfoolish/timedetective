@@ -1,3 +1,3 @@
 """Finds when behavior changed."""
 
-from timedetective.skills.changepoint import chow, cusum, pettitt, segmented  # noqa: F401
+from timedetective.skills.changepoint import chow, cusum, pelt, pettitt, segmented  # noqa: F401

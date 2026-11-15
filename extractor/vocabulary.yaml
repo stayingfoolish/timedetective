@@ -385,12 +385,14 @@ registered:
     in_book: []
     not_in_book: [cumulative departure from the mean, cumulative rainfall departure, CRD, accumulated deviations, residual mass curve]
 
-unregistered:
   pelt:
     in_book:
     - PELT
     - pruned exact linear time
     - changepoint detection
+    not_in_book: [ruptures, penalized change point detection, multiple change points, piecewise constant]
+
+unregistered:
   bai_perron:
     in_book:
     - Bai-Perron
