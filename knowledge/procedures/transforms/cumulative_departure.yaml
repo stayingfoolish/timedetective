@@ -1,0 +1,11 @@
+name: cumulative_departure
+category: transforms
+description: Running sum of departures from the mean; rising stretches are above average, falling stretches below.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- cumulative_series
+- lowest_time
+- highest_time
+source: TODO

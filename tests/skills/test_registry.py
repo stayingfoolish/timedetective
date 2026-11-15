@@ -31,7 +31,7 @@ SINGLE_SERIES = [
         "fdr_correction", "chow_test", "seasonal_kruskal", "component_strength", "deseasonalize_stl",
         "deseasonalize_mstl", "deseasonalize_harmonic", "moving_average", "hp_filter",
         "exceedance_counts", "record_length_needed", "block_bootstrap_slope", "seasonal_kendall",
-        "savgol_smooth",
+        "savgol_smooth", "rolling_accumulation",
     }
 ]
 

@@ -378,6 +378,12 @@ registered:
   seasonal_rank:
     in_book: []
     not_in_book: [rank among seasons, lowest on record, percentile of the season, seasonal cumulative NDVI]
+  rolling_accumulation:
+    in_book: []
+    not_in_book: [accumulated precipitation, 12-month precipitation, antecedent precipitation, SPI accumulation period]
+  cumulative_departure:
+    in_book: []
+    not_in_book: [cumulative departure from the mean, cumulative rainfall departure, CRD, accumulated deviations, residual mass curve]
 
 unregistered:
   pelt:

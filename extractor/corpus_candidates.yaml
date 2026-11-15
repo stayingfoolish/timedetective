@@ -649,6 +649,30 @@ agricultural_early_warning:
     methods_seen: [common crop condition classes, multi-agency consensus, crop masks and crop calendars as context]
     access: public web page, not a paper
 
+groundwater_india_and_resolution:
+  - title: Satellite-based estimates of groundwater depletion in India (Nature 460, 999, 2009)
+    url: https://escholarship.org/uc/item/22577805
+    type: applied
+    methods_seen: [GRACE storage minus modelled soil water, linear trend over 2002-2008, comparison with rainfall over the same period]
+    access: repository copy (eScholarship); confirm version
+    note: the reference case for "storage falling while rainfall was near average"
+  - title: Dwindling groundwater resources in northern India, from satellite gravity observations (Geophys. Res. Lett. 36, L18401, 2009)
+    url: https://doi.org/10.1029/2009GL039401
+    type: applied
+    methods_seen: [regional mass trend, hydrological model subtraction, leakage handling]
+    access: unverified
+  - title: What is the spatial resolution of GRACE satellite products for hydrology? (Remote Sens. 10, 852, 2018)
+    url: https://doi.org/10.3390/rs10060852
+    type: method
+    methods_seen: [smallest resolvable catchment for a stated error, filtering and leakage]
+    access: open (MDPI)
+    note: source for the minimum-area rule on the dataset card
+  - title: "GRACE hydrological estimates for small basins: evaluating processing approaches on the High Plains Aquifer, USA (Water Resour. Res. 46, W11517, 2010)"
+    url: https://doi.org/10.1029/2009WR008564
+    type: method
+    methods_seen: [bias and leakage correction for a named aquifer, comparison with well-based storage]
+    access: repository copy reported (HAL); confirm
+
 # Gaps still open after three rounds:
 #   - reviewed retail or supply-chain papers on demand shifts (hits remain preprints)
 #   - evapotranspiration, ocean colour and carbon variables are only touched through detectability papers
