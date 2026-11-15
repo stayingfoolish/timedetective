@@ -261,6 +261,16 @@ asap_classification_v4:
   accessed: '2026-11-15'
   review: read_sections_5_1_2_and_5_2
   note: Supports comparing vegetation accumulated since the start of the season with the same period in earlier years, issuing nothing outside the active season, and treating agreement of a rainfall indicator and a vegetation indicator as stronger than either alone. ASAP works on crop and rangeland masks with pixel phenology and z-scores below -1; this project uses a declared season, no mask, and ranks, so its bands are house rules. ASAP states that vegetation anomalies can have causes other than drought and that automatic warnings need analyst verification.
+asoka_mishra_2020:
+  authors: Asoka, A.; Mishra, V.
+  year: 2020
+  title: A strong linkage between seasonal crop growth and groundwater storage variability in India
+  venue: Journal of Hydrometeorology
+  doi: 10.1175/JHM-D-20-0085.1
+  url: https://arxiv.org/abs/1908.00255
+  accessed: '2026-11-15'
+  review: read_preprint_abstract
+  note: Using GRACE, well observations and MODIS NDVI over groundwater-irrigated areas, reports that crop growth is negatively correlated with groundwater storage in north India, and that in north-west India vegetation growth explains more of the groundwater storage variation than precipitation (R2 0.26 against 0.02, 2002-2016), which the authors attribute to pumping for irrigation. Preprint title on arXiv differs ("Groundwater pumping to increase food production causes persistent groundwater drought in India"). This project's step only sets yearly greenness beside yearly storage; it does not reproduce the paper's irrigated-pixel masking or relative-importance analysis.
 rodell_2009:
   authors: Rodell, M.; Velicogna, I.; Famiglietti, J. S.
   year: 2009

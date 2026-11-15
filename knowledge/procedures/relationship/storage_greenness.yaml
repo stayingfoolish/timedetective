@@ -1,0 +1,13 @@
+name: storage_greenness
+category: relationship
+description: Set the region's yearly greenness beside its yearly water storage over
+  the same years; name whether greenness held, rose or fell while storage changed.
+requires:
+- annual_storage
+- vegetation_index
+produces:
+- pattern
+- greenness_slope_per_decade
+- spearman_storage_greenness
+- conclusion
+source: asoka_mishra_2020

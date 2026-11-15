@@ -63,3 +63,16 @@ def check_storage(storage: pd.Series, *, question: str, rainfall: pd.Series | No
     return _run("water_storage_check", question, storage, {
         "rainfall": rainfall, "companion": rainfall, "soil_wetness": soil_wetness,
         "gap_start": gap[0], "gap_end": gap[1]}, root)
+
+
+def check_storage_and_greenness(storage: pd.Series, *, question: str, vegetation: pd.Series | None,
+                                rainfall: pd.Series | None = None, soil_wetness: pd.Series | None = None,
+                                gap: tuple[str, str] = ("2017-07-01", "2018-05-31"), root: Path = ROOT) -> Finding:
+    """The water storage check, then the region's greenness set beside it over the same years.
+
+    Answers "would the fields show it?": whether greenness held, rose or fell while storage
+    changed. The vegetation record must cover the same region as the storage record.
+    """
+    return _run("water_and_greenness_check", question, storage, {
+        "rainfall": rainfall, "companion": rainfall, "soil_wetness": soil_wetness, "vegetation": vegetation,
+        "gap_start": gap[0], "gap_end": gap[1]}, root)
