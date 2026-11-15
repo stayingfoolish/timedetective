@@ -1,0 +1,27 @@
+name: modis_ndvi_monthly_cmg
+pack: earth
+title: MODIS Terra monthly vegetation indices, 0.05 degree climate modelling grid (MOD13C2 V061)
+plain_definition: How green the land surface is each month, on a 0.05 degree (about 5 km) global grid, averaged here over the same satellite-gravity blocks (mascons) as the water storage record. It sees all vegetation in the region, not crops alone.
+variable: CMG_0_05_Deg_Monthly_NDVI, CMG_0_05_Deg_Monthly_pixel_reliability
+units: NDVI, unitless, after dividing the stored integer by the scale factor 10000
+provider: NASA LP DAAC (Didan, K.), served through Earthdata Cloud OPeNDAP
+product_id: MOD13C2.061 (CMR C2565788914-LPCLOUD)
+cadence: monthly composite
+analysis_cadence: annual
+record_start: '2000-02-01'
+spatial_resolution: 0.05 degree cells; mean of reliable cells inside each mascon footprint, mascons weighted by area
+known_issues:
+  - kind: quality
+    effect: Cloud, snow and poor viewing conditions degrade cells; monsoon months lose the most.
+    handling: Keep cells with reliability 0 or 1 only; a mascon with fewer than half its cells kept is missing for that month, and a month needs every mascon. Never filled.
+    source: mod13_user_guide_c61
+  - kind: land_cover
+    effect: The regional average mixes irrigated cropland with desert, grassland and towns, and land use changes over the record.
+    handling: Describe it as the region's greenness; never present it as a crop or irrigation reading.
+    source: asap_classification_v4
+  - kind: availability
+    effect: On 2026-11-15 the OPeNDAP service would not subset some recent granules.
+    handling: The fetch records them as skipped; their months are missing and a year needs ten months.
+    source: story_policy_v1
+companions: [gsfc_grace_mascons, gldas_noah_monthly]
+source: mod13c2_v061

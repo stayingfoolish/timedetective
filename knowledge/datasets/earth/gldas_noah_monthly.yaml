@@ -1,0 +1,27 @@
+name: gldas_noah_monthly
+pack: earth
+title: GLDAS Noah Land Surface Model L4 monthly 0.25 x 0.25 degree, V2.1
+plain_definition: A computer model's month-by-month estimate of water held in the soil (to 2 m depth), in snow, and on plant leaves, driven by observed weather. It is used to take those parts out of the satellites' total water storage, leaving an estimate of groundwater. It is model output, not a measurement.
+variable: SoilMoi0_10cm_inst + SoilMoi10_40cm_inst + SoilMoi40_100cm_inst + SoilMoi100_200cm_inst + SWE_inst + CanopInt_inst
+units: kg m-2 (mm of water); converted to cm and expressed relative to the 2004.0-2010.0 mean to match the GRACE baseline
+provider: NASA GSFC Hydrological Sciences Laboratory; distributed by GES DISC
+product_id: GLDAS_NOAH025_M.2.1 (CMR C1342986036-GES_DISC)
+cadence: monthly means of instantaneous 3-hourly states
+analysis_cadence: annual
+record_start: '2000-01-01'
+spatial_resolution: 0.25 degree grid; averaged here over each GRACE mascon's footprint and weighted by mascon area
+known_issues:
+  - kind: composition
+    effect: Noah has no groundwater, lake, river or reservoir store. Surface water is therefore not subtracted and stays in the groundwater estimate.
+    handling: Say so in every groundwater finding. In north-west India the reference study judged surface-water change, if anything, to make the storage decline look smaller.
+    source: rodell_2009
+  - kind: model
+    effect: Soil moisture is modelled; irrigation is not represented in GLDAS-2.1 Noah, so irrigated soils may be drier in the model than in the field.
+    handling: Report the subtracted component's own trend beside the groundwater estimate, so a reader can see how much the subtraction moved the result.
+    source: gldas_noah_v21
+  - kind: timing
+    effect: GLDAS months are calendar months; GRACE solutions are labelled by the month of their middle day. The two are paired by that label.
+    handling: Pair by month label only; never shift or interpolate either record.
+    source: story_policy_v1
+companions: [gsfc_grace_mascons]
+source: gldas_noah_v21

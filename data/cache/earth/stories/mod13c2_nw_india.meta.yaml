@@ -1,0 +1,63 @@
+name: mod13c2_nw_india
+dataset_card: modis_ndvi_monthly_cmg
+product: MOD13C2 V061
+source: https://opendap.earthdata.nasa.gov/collections/C2565788914-LPCLOUD
+cmr_collection: C2565788914-LPCLOUD
+retrieved: '2026-11-15'
+sha256: 8629618c288d42e3dcbbf0c909d213dfb060c1258882b63d73ba7e436d7891d8
+uncompressed_sha256: 9631f3f38f205e248341076c544b4d9ba4f1e59b86840521dd4f7114312a90a4
+region: nw_india
+mascon_footprint:
+  south: 26.5
+  north: 32.5
+  west: 72.4675325
+  east: 78.35962144999999
+grid_index_box:
+  row0: 1149
+  row1: 1270
+  col0: 5048
+  col1: 5167
+n_months: 312
+first_month: '200002'
+last_month: '202601'
+reduction: 'per mascon and month: mean NDVI of cells with reliability 0 or 1 and a
+  value in the valid range, with cell counts; raw grids are not kept, each response''s
+  SHA-256 is'
+requested_period:
+  start: '2000-02-01T00:00:00Z'
+  end: '2026-12-31T23:59:59Z'
+request_window:
+  started: '2026-11-15T15:09:51+00:00'
+  finished: '2026-11-15T15:16:37+00:00'
+acquisition: Fetched with scripts/fetch_mod13c2_regions.py from the cloud workspace
+  using an Earthdata Login token.
+skipped:
+- granule: MOD13C2.A2026032.061.2026072100223
+  month: 2026-02
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026060.061.2026098012318
+  month: 2026-03
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026091.061.2026137153107
+  month: 2026-04
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026121.061.2026163153758
+  month: 2026-05
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026152.061.2026195105527
+  month: 2026-06
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026182.061.2026229012853
+  month: 2026-07
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026213.061.2026258011951
+  month: 2026-08
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026244.061.2026290004827
+  month: 2026-09
+  skipped: 'HTTPError: HTTP Error 400: '
+- granule: MOD13C2.A2026274.061.2026307134330
+  month: 2026-10
+  skipped: 'HTTPError: HTTP Error 400: '
+note: Real NASA data. Granules the service would not subset are listed under skipped;
+  their months are missing, not filled.
