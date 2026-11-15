@@ -22,16 +22,20 @@ to get wrong: deciding when a trend has earned the word "significant".
 
 Demo: _add the video or slides link here before submitting_
 
-## The 30-second version
+## One real answer
 
-A water officer asks whether the water under north-west India is disappearing. TimeDetective reads 24 years of NASA
-satellite gravity data and answers in plain words, with a label for how sure it is.
+A student reads that north-west India is running out of water and wants to check. TimeDetective takes 24 years of
+data from NASA's GRACE satellites, which measure changes in the weight of water on and under the land, and answers
+in plain words, with a label for how sure it is.
 
 <img src="docs/images/hero_north_west_india.png" alt="Water storage in north-west India, 2002 to 2026, with the finding in plain words" width="640">
 
 - **What it found:** water storage fell about 3.8 cm a year, about 90 cm in all, and rainfall does not account for it.
 - **How sure it is:** "significant", a label the tool only gives when a test with a measured false-alarm rate fires.
 - **What it will not say:** why. It does not name pumping, irrigation or climate, because the record cannot show that.
+
+Ask the same question about the US High Plains and the answer changes: the tool reports a decline of about 1.4 cm a
+year but declines to call it significant, because a record that simply wanders could look the same.
 
 ## The problem
 
