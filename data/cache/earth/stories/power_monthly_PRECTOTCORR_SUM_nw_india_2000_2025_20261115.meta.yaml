@@ -1,0 +1,33 @@
+dataset: nasa_power_monthly_regional
+request_url: https://power.larc.nasa.gov/api/temporal/monthly/regional?latitude-min=27&latitude-max=32&longitude-min=73&longitude-max=78&parameters=PRECTOTCORR_SUM&community=AG&start=2000&end=2025&format=JSON
+retrieved: '2026-11-15'
+sha256: 4f2a7b6465f5e59b80555a68294f0f20fd9325d57161bc33e39d1e66243b27cf
+region:
+  kind: box
+  south: 27
+  north: 32
+  west: 73
+  east: 78
+  place: Punjab, Haryana, Delhi and northern Rajasthan (box also takes in strips of
+    Pakistan and Uttar Pradesh)
+parameters:
+- PRECTOTCORR_SUM
+header:
+  title: NASA/POWER Source Native Resolution Monthly and Annual
+  api:
+    version: v2.10.0
+    name: POWER Monthly and Annual API
+  sources:
+  - MERRA2
+  - POWER
+  fill_value: -999.0
+  time_standard: LST
+  start: '20000101'
+  end: '20251231'
+provider_units:
+  PRECTOTCORR_SUM: mm/day
+acquisition: Fetched 2026-11-15 in a desktop browser session (this workspace cannot
+  reach the provider); SHA-256 computed in the browser before saving and re-checked
+  after transfer.
+note: Real NASA response; synthetic data are used only in separate calibration and
+  known-answer tests.

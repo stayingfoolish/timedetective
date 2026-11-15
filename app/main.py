@@ -103,3 +103,88 @@ if "precipitation_result" in st.session_state:
             st.json(bundle["global_family"])
     st.download_button("Download precipitation investigation", json.dumps(bundle, indent=2, allow_nan=False), "precipitation_investigation.json")
     st.download_button("Download precipitation report", render_run(bundle), "precipitation_report.md")
+
+st.divider()
+st.header("Two checks for any place the data covers")
+st.caption("Information only. Each check says what the record shows, how sure that is, and what it cannot tell you. "
+           "No forecasts, no causes, no declarations.")
+from timedetective.packs.earth.adapters.stories import load_gsfc_mascons, load_modis_subset, load_power_regional
+from timedetective.packs.earth.stories import check_season, check_storage
+
+STORIES = Path(__file__).resolve().parents[1] / "data/cache/earth/stories"
+MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def show_finding(finding, key: str) -> None:
+    if finding.claim:
+        st.subheader("What the record shows")
+        st.write(finding.claim.statement)
+        st.write("Claim strength:", finding.claim.strength)
+    else:
+        st.warning("No finding: the check stopped. The reason is below.")
+    for refusal in finding.refusals:
+        st.warning(f"{refusal.procedure}: {refusal.failed}. Needed: {refusal.would_change}")
+    if finding.would_strengthen:
+        st.write("What would make this stronger:")
+        for item in finding.would_strengthen:
+            st.write("- " + item)
+    for step in finding.path:
+        with st.expander(f"Evidence: {step.node}"):
+            st.write("Source:", step.source, "| Edge:", step.edge_source)
+            st.json(json.loads(step.values_json))
+    st.download_button("Download finding (JSON)", finding.model_dump_json(indent=2), f"{key}_finding.json", key=f"{key}_json")
+    st.download_button("Download evidence report", render(finding), f"{key}_finding.md", key=f"{key}_md")
+
+
+st.subheader("Season check: how unusual is this growing season here?")
+st.info("Real NASA records for the area around Kotido, Karamoja, Uganda: MODIS vegetation greenness (2000 to October 2026) "
+        "and rainfall at the same point (2000 to 2025). Greenness covers all vegetation in the box, not crops alone.")
+with st.form("season_check"):
+    season_question = st.text_area("Question", "How does this growing season compare with earlier ones here?", key="season_q")
+    box = st.selectbox("Area", ["10 km box around the point", "4 km box around the point"])
+    first_month = st.selectbox("Growing season starts", MONTH_NAMES, index=3)
+    last_month = st.selectbox("Growing season ends", MONTH_NAMES, index=8)
+    target = st.number_input("Season (year it starts)", min_value=2000, max_value=2026, value=2026)
+    rain_choice = st.selectbox("Rainfall record for the second indicator", ["IMERG satellite rainfall", "MERRA-2 corrected rainfall", "None"])
+    run_season = st.form_submit_button("Check the season")
+if run_season:
+    start, end = MONTH_NAMES.index(first_month) + 1, MONTH_NAMES.index(last_month) + 1
+    months = list(range(start, end + 1)) if end >= start else list(range(start, 13)) + list(range(1, end + 1))
+    km = 5 if box.startswith("10") else 2
+    vegetation = load_modis_subset(STORIES / f"modis_MOD13Q1_3.0061N_34.1125E_{km}km_20261115.json.gz")
+    power_file = STORIES / "power_3.006N_34.112E_2000_2025_20261115.json"
+    rain = None if rain_choice == "None" else load_power(power_file, "IMERG_PRECTOT" if rain_choice.startswith("IMERG") else "PRECTOTCORR")
+    st.session_state["season_finding"] = check_season(vegetation, question=season_question, season_months=months,
+                                                      target_year=int(target), rainfall=rain)
+if "season_finding" in st.session_state:
+    finding = st.session_state["season_finding"]
+    for step in finding.path:
+        values = json.loads(step.values_json)
+        if step.node == "standing":
+            st.line_chart(pd.DataFrame(values["seasons"]).set_index("year")[["value"]], y_label="season greenness (NDVI)")
+    show_finding(finding, "season")
+
+st.subheader("Water storage check: is the water stored under this region changing?")
+st.info("Real NASA GRACE and GRACE-FO records (April 2002 to June 2026) for two regions large enough for the satellites to resolve, "
+        "with rainfall over the same box. This is all stored water together: soil moisture and surface water have not been "
+        "separated from groundwater yet.")
+REGIONS = {"North-west India: Punjab, Haryana, Delhi, northern Rajasthan": "nw_india",
+           "US High Plains: western Kansas, eastern Colorado, the panhandles": "high_plains"}
+with st.form("storage_check"):
+    storage_question = st.text_area("Question", "Is the water stored under this region changing, and does the change follow rainfall?", key="storage_q")
+    region = st.selectbox("Region", list(REGIONS))
+    with_rain = st.checkbox("Compare with rainfall", value=True)
+    run_storage = st.form_submit_button("Check water storage")
+if run_storage:
+    tag = REGIONS[region]
+    storage = load_gsfc_mascons(STORIES / f"gsfc_mascons_{tag}.csv")
+    rain = load_power_regional(STORIES / f"power_monthly_PRECTOTCORR_SUM_{tag}_2000_2025_20261115.json", "PRECTOTCORR_SUM") if with_rain else None
+    wetness = load_power_regional(STORIES / f"power_monthly_GWETPROF_{tag}_2000_2025_20261115.json", "GWETPROF") if with_rain else None
+    st.session_state["storage_finding"] = check_storage(storage, question=storage_question, rainfall=rain, soil_wetness=wetness)
+if "storage_finding" in st.session_state:
+    finding = st.session_state["storage_finding"]
+    for step in finding.path:
+        values = json.loads(step.values_json)
+        if step.node == "annual":
+            st.line_chart(pd.DataFrame(values["annual"]).set_index("year")[["value"]], y_label="stored water, cm (yearly mean)")
+    show_finding(finding, "storage")
