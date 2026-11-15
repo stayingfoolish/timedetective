@@ -17,11 +17,12 @@ can investigate different places and questions without hard-coding the conclusio
 each skill needs and produces, and the playbooks that put the steps together. Follow any finding backward and you
 can see the path from conclusion to analysis to NASA data.
 
-**Research you can inspect.** The [source library](knowledge/sources.yaml) brings together **44 documented
-references, including 18 research publications**, NASA product guides and statistical software documentation.
-Each active playbook step links to its source or a stated project rule. An evidence checker assigns the final
-label from the recorded results. The groundwater example below earns calibrated significance; the precipitation
-workflow delivers detailed, traceable descriptions of rainfall. [See how it works](#how-it-works).
+**Research you can inspect.** The team distilled roughly **1,000 papers** while developing the statistical
+methods. The [source library](knowledge/sources.yaml) records the research publications, NASA product guides and
+statistical documentation selected to support the implemented checks. Each active playbook step links to its
+source or a stated project rule. An evidence checker assigns the final label from the recorded results. The
+groundwater example below earns calibrated significance; the precipitation workflow delivers detailed, traceable
+descriptions of rainfall. [See how it works](#how-it-works).
 
 **The mission.** Built for the 2026 NASA Space Apps Challenge, *Be an Earth System Trend Detective*. Choose an
 Earth science variable and a place. Gather enough history to see what happened. Measure the rate of change, then
@@ -387,7 +388,7 @@ checksum. The loaders refuse a file whose checksum does not match.
 - **It agrees with the ground where it should.** The season it ranks lowest around Kotido, 2009, is one in which an
   official in Karamoja told reporters that crops had dried up with no harvest
   ([VOA, November 2009](https://www.voanews.com/a/a-13-2009-11-04-voa39-69781372/415417.html)).
-- **311 automated tests**, including known-answer tests for every procedure and tests that pin the real results.
+- **313 automated tests**, including known-answer tests for every procedure and tests that pin the real results.
 
 ## What it cannot do yet
 
@@ -410,15 +411,17 @@ uv sync
 make demo
 ```
 
-The demo opens on the walkthrough above, run live on the cached NASA records. Pick an area, change the question,
-and follow six tabs to the label and the playbook. Try asking *why is the groundwater falling here?* Then switch
-to the US High Plains, or pick an area too small for the satellites to resolve. The answer changes with the evidence.
+The demo opens on a guided version of the groundwater walkthrough, run live on the cached NASA records. Pick an
+area, change the question, and follow six clues to the evidence label. Open the complete evidence trail for the
+playbook and every recorded step. Try asking *why is the groundwater falling here?* Then switch to the US High
+Plains, or pick an area too small for the satellites to resolve. The answer changes with the evidence.
 
-Further down the page are the season check, the total-storage check and the weather explorer. Nothing is fetched:
-the demo runs on the cached NASA files.
+Further down the page are the season check, the total-storage check and the weather explorer. The automatic
+precipitation investigator lets you preview the request before fetching NASA POWER data, then follow the data,
+checks and answer in stages. The worked groundwater and season examples use the cached NASA files.
 
 ```bash
-make test                                                   # 311 tests
+make test                                                   # 313 tests
 uv run python scripts/validate_knowledge.py --scope stories # the story playbooks and their sources
 ```
 
