@@ -411,12 +411,13 @@ uv sync
 make demo
 ```
 
-The demo opens on a guided version of the groundwater walkthrough, run live on the cached NASA records. Pick an
-area, change the question, and follow six clues to the evidence label. Open the complete evidence trail for the
-playbook and every recorded step. Try asking *why is the groundwater falling here?* Then switch to the US High
-Plains, or pick an area too small for the satellites to resolve. The answer changes with the evidence.
+The demo opens in a wide, screen-recording-friendly groundwater story. Each clue puts its chart and takeaway side
+by side, with the question, controls and current evidence on one screen at desktop size. Use **Next clue** to follow
+six checks to the evidence label. Open **Change the question or area** to try *why is the groundwater falling here?*,
+switch to the US High Plains, or pick an area too small for the satellites to resolve. Open the complete evidence
+trail for the playbook and every recorded step. The answer changes with the evidence.
 
-Further down the page are the season check, the total-storage check and the weather explorer. The automatic
+Select **Research tools** at the top for the season check, total-storage check and weather explorer. The automatic
 precipitation investigator lets you preview the request before fetching NASA POWER data, then follow the data,
 checks and answer in stages. The worked groundwater and season examples use the cached NASA files.
 
