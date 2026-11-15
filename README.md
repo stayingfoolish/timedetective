@@ -41,7 +41,8 @@ not how much is left.
 Here is how it got there, one question at a time. Questions 1 to 6 are the six steps of one playbook, and each
 step is one procedure. Questions 7 and 8 are where the tool stops. Question 9 runs the same playbook somewhere else.
 
-**[Open the interactive version](https://stayingfoolish.github.io/timedetective/story/)** to hover over any chart and see the numbers behind it.
+**[Open the interactive version](https://stayingfoolish.github.io/timedetective/story/)** to hover over any chart and see the numbers behind it, or run it
+live with `make demo`, which opens on this walkthrough.
 
 ### 1. How can anyone know what is underground?
 
@@ -358,7 +359,7 @@ checksum. The loaders refuse a file whose checksum does not match.
 - **It agrees with the ground where it should.** The season it ranks lowest around Kotido, 2009, is one in which an
   official in Karamoja told reporters that crops had dried up with no harvest
   ([VOA, November 2009](https://www.voanews.com/a/a-13-2009-11-04-voa39-69781372/415417.html)).
-- **307 automated tests**, including known-answer tests for every procedure and tests that pin the real results.
+- **311 automated tests**, including known-answer tests for every procedure and tests that pin the real results.
 
 ## What it cannot do yet
 
@@ -381,11 +382,15 @@ uv sync
 make demo
 ```
 
-Scroll to "Two checks for any place the data covers". Press **Check water storage** or **Check the season**. Nothing
-is fetched: the demo runs on the cached NASA files.
+The demo opens on the walkthrough above, run live on the cached NASA records. Pick an area, change the question,
+and step through the six tabs, then the label and the playbook. Three things to try: ask *why is the groundwater
+falling here?*, switch to the US High Plains, or choose the area that is too small for the satellites.
+
+Further down the page are the season check, the total-storage check and the weather explorer. Nothing is fetched:
+the demo runs on the cached NASA files.
 
 ```bash
-make test                                                   # 307 tests
+make test                                                   # 311 tests
 uv run python scripts/validate_knowledge.py --scope stories # the story playbooks and their sources
 ```
 
