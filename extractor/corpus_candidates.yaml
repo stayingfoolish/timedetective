@@ -602,6 +602,53 @@ lake_levels:
     methods_seen: [inter-mission consistency as sign agreement, precipitation as driver]
     access: Copernicus preprint
 
+# ---- Fourth round (2026-11-15): seasonal anomaly and agricultural early warning ----
+
+agricultural_early_warning:
+  - title: "ASAP: a new global early warning system to detect anomaly hot spots of agricultural production for food security analysis (Agric. Syst. 168, 2019)"
+    url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6360855/
+    type: method
+    methods_seen: [vegetation and rainfall anomalies against previous seasons, two-step design with automatic warning then analyst check, four warning levels]
+    access: open access via PubMed Central
+    note: the closest published template for the season_check playbook
+  - title: "ASAP: Anomaly hot Spots of Agricultural Production, warning classification v4.0 (JRC technical report, 2019)"
+    url: https://agricultural-production-hotspots.ec.europa.eu/files/asap_warning_classification_v_4_0.pdf
+    type: method
+    methods_seen: [SPI-3, NDVI-based indicators, share of agricultural area affected, timing within the growing cycle]
+    access: European Commission report, public
+    note: source for indicator definitions and thresholds
+  - title: New functionalities and regional/national use cases of the ASAP platform (Remote Sens. 15, 4284, 2023)
+    url: https://doi.org/10.3390/rs15174284
+    type: applied
+    methods_seen: [seasonal forecasts added, crop calendars matched to satellite phenology, national adoptions]
+    access: MDPI, open access
+  - title: "How well do EO-based food security warning systems agree? Comparison of NDVI-based vegetation anomaly maps in West Africa (IEEE JSTARS 16, 2023)"
+    url: https://hal.inrae.fr/hal-04052591v1/document
+    type: comparison
+    methods_seen: [agreement between anomaly maps from different systems, negative-alarm agreement]
+    access: repository copy, CC BY-NC-ND
+    note: evidence that two systems can disagree; supports requiring a second indicator
+  - title: Characterizing agricultural drought in the Karamoja subregion of Uganda with meteorological and satellite-based indices (Natural Hazards 91, 837, 2018)
+    url: https://doi.org/10.1007/s11069-017-3106-x
+    type: applied
+    methods_seen: [NDVI-based drought indicators against SPI and PDSI, ranking of drought years, small-field limits]
+    access: unverified
+  - title: "Agricultural land use, drought impacts and vulnerability: a regional case study for Karamoja, Uganda (PhD dissertation, University of Maryland, 2017)"
+    url: https://api.drum.lib.umd.edu/server/api/core/bitstreams/c0fd793f-9265-4f52-8118-2a9e177e1589/content
+    type: applied
+    methods_seen: [cropland mask, drought within agricultural areas, field and survey data]
+    access: university repository; a dissertation
+  - title: A review of satellite-based global agricultural monitoring systems available for Africa (Global Food Security 29, 100543, 2021)
+    url: https://geog.umd.edu/sites/geog.umd.edu/files/pubs/1-s2.0-S2211912421000523-main.pdf
+    type: method
+    methods_seen: [inventory of monitoring systems, data each exposes (vegetation indices, crop masks)]
+    access: university-hosted PDF; confirm it may be used
+  - title: Crop Monitor methodology (GEOGLAM)
+    url: https://cropmonitor.org/methodology
+    type: method
+    methods_seen: [common crop condition classes, multi-agency consensus, crop masks and crop calendars as context]
+    access: public web page, not a paper
+
 # Gaps still open after three rounds:
 #   - reviewed retail or supply-chain papers on demand shifts (hits remain preprints)
 #   - evapotranspiration, ocean colour and carbon variables are only touched through detectability papers

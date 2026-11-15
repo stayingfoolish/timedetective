@@ -6,6 +6,7 @@ from timedetective.skills.diagnostics import (  # noqa: F401
     outliers,
     record,
     residuals,
+    season_rank,
     seasonality,
     stationarity,
     strength,

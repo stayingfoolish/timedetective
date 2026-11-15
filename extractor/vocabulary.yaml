@@ -366,6 +366,18 @@ registered:
     - Benjamini-Hochberg
     - field significance
     - multiple testing
+  standardized_anomaly:
+    in_book: []
+    not_in_book: [standardized anomaly, z-score anomaly, NDVI anomaly, percent of average, departure from average]
+  condition_index:
+    in_book: []
+    not_in_book: [Vegetation Condition Index, VCI]
+  savgol_smooth:
+    in_book: []
+    not_in_book: [Savitzky-Golay, SG filter]
+  seasonal_rank:
+    in_book: []
+    not_in_book: [rank among seasons, lowest on record, percentile of the season, seasonal cumulative NDVI]
 
 unregistered:
   pelt:
@@ -570,6 +582,16 @@ unregistered:
     not_in_book:
     - somewhat likely
     - about as likely as not
+  # added 2026-11-15 with the season-anomaly procedures (terms not checked against the book)
+  spi:
+    in_book: []
+    not_in_book: [Standardized Precipitation Index, SPI, SPI-3, SPI-12]
+  crop_mask_aggregation:
+    in_book: []
+    not_in_book: [crop mask, cropland mask, crop calendar]
+  warning_classification:
+    in_book: []
+    not_in_book: [warning level, alarm, hot spot, trigger threshold]
 
 ambiguous:
 - term: modified Mann-Kendall

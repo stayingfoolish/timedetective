@@ -8,9 +8,9 @@ Built for the NASA Space Apps *Earth System Trend Detective* challenge, on a cor
 
 Skills are in; the engine is not.
 
-- **Done:** 53 procedures across the seven skill categories, each with a YAML definition in `knowledge/procedures/`, a registered skill, and known-answer tests. Seeded synthetic generators in `data/synthetic/generators.py`. A calibration suite (`make calibrate`) with results in [docs/calibration.md](docs/calibration.md).
-- **Not done:** the Finding and Playbook schema, playbooks, the executor and critic, the planner and narrator, data adapters, and the demo. Draft schema and four draft playbooks are in [docs/proposals/](docs/proposals/README.md), awaiting agreement.
-- **Known failing check:** `make validate` reports 34 procedures whose `source` is still `TODO`. That is deliberate: those papers have not been opened yet.
+- **Done:** 57 procedures across the seven skill categories, each with a YAML definition in `knowledge/procedures/`, a registered skill, and known-answer tests. Seeded synthetic generators in `data/synthetic/generators.py`. A calibration suite (`make calibrate`) with results in [docs/calibration.md](docs/calibration.md).
+- **Not done:** the Finding and Playbook schema, playbooks, the executor and critic, the planner and narrator, data adapters, and the demo. Draft schema and five draft playbooks are in [docs/proposals/](docs/proposals/README.md), awaiting agreement.
+- **Known failing check:** `make validate` reports 38 procedures whose `source` is still `TODO`. That is deliberate: those papers have not been opened yet.
 
 ## Quickstart
 

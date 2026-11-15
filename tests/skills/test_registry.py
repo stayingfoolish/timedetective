@@ -31,6 +31,7 @@ SINGLE_SERIES = [
         "fdr_correction", "chow_test", "seasonal_kruskal", "component_strength", "deseasonalize_stl",
         "deseasonalize_mstl", "deseasonalize_harmonic", "moving_average", "hp_filter",
         "exceedance_counts", "record_length_needed", "block_bootstrap_slope", "seasonal_kendall",
+        "savgol_smooth",
     }
 ]
 
@@ -44,7 +45,7 @@ def test_too_short_is_a_refusal_not_an_exception(name):
         assert result.refusal.failed and result.refusal.would_change
 
 
-@pytest.mark.parametrize("name", [n for n in SINGLE_SERIES if n not in {"record_summary", "gap_audit", "gap_fill", "regularize", "anomaly"}])
+@pytest.mark.parametrize("name", [n for n in SINGLE_SERIES if n not in {"record_summary", "gap_audit", "gap_fill", "regularize", "anomaly", "standardized_anomaly", "condition_index"}])
 def test_missing_values_are_a_refusal(name):
     x = pd.Series(range(300), dtype=float)
     x.iloc[50] = float("nan")

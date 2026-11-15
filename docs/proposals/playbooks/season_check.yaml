@@ -1,0 +1,48 @@
+# DRAFT, not loaded. How unusual is this growing season, here, compared with this place's own record?
+#
+# Scope: information only, for any place the data covers. The playbook ends in a description of
+# how unusual the season is. It never declares a crop failure, forecasts yield, or recommends
+# an action; those need a cropland mask, a crop calendar and ground reports this system does not have.
+#
+# Order follows the published early-warning practice: compare the current vegetation reading with
+# the same period in earlier seasons, take the timing within the season into account, and look
+# for agreement with rainfall before raising the level of concern.
+name: season_check
+question: Is this growing season unusual for this place, compared with its own record?
+domain: earth
+start: record_summary
+nodes:
+  - {id: record_summary, procedure: record_summary, input: vegetation}
+  - {id: regularize, procedure: regularize, input: vegetation}
+  - {id: gap_fill, procedure: gap_fill, input: vegetation}
+  - {id: smooth, procedure: savgol_smooth, input: vegetation}
+  - {id: rank, procedure: seasonal_rank, input: vegetation_smoothed}
+  - {id: anomaly, procedure: standardized_anomaly, input: vegetation_smoothed}
+  - {id: comparable_years, procedure: step_vs_trend, input: vegetation_anomaly}
+  - {id: rain_rank, procedure: seasonal_rank, input: rainfall}
+  - {id: lag, procedure: lagged_cross_correlation}        # does rainfall lead vegetation here, and by how long
+  - {id: refuse_gaps, terminal: refusal}
+  - {id: refuse_out_of_season, terminal: refusal}
+  - {id: refuse_short_record, terminal: refusal}
+  - {id: describe_typical, terminal: claim}               # within the usual range
+  - {id: describe_unusual_one_indicator, terminal: claim} # vegetation unusual, rainfall not (or unavailable)
+  - {id: describe_unusual_two_indicators, terminal: claim} # vegetation and rainfall both unusual
+  - {id: describe_with_caveat, terminal: claim}           # unusual, but the record has a step or trend
+edges:
+  - {from: record_summary, to: regularize, source: TODO}
+  - {from: regularize, to: gap_fill, source: TODO}
+  - {from: gap_fill, to: refuse_gaps, when: {property: gap_fill, op: refused}, source: TODO}
+  - {from: gap_fill, to: smooth, source: TODO}
+  - {from: smooth, to: rank, source: TODO}
+  - {from: rank, to: refuse_out_of_season, when: {property: seasonal_rank, op: refused}, source: TODO}
+  - {from: rank, to: anomaly, source: TODO}
+  - {from: anomaly, to: refuse_short_record, when: {property: standardized_anomaly, op: refused}, source: TODO}
+  # A step or trend in the record (land-use change, sensor change) makes years non-comparable.
+  - {from: anomaly, to: comparable_years, source: TODO}
+  - {from: comparable_years, to: describe_with_caveat, when: {property: best_model, op: ne, value: flat}, source: TODO}
+  # "Unusual" is a rank statement (e.g. lowest tenth of seasons); the cut-off is a house rule until sourced.
+  - {from: comparable_years, to: describe_typical, when: {property: percentile, op: gt, value: 10}, source: TODO}
+  - {from: comparable_years, to: rain_rank, when: {property: percentile, op: le, value: 10}, source: TODO}
+  - {from: rain_rank, to: lag, source: TODO}
+  - {from: lag, to: describe_unusual_two_indicators, when: {property: rainfall_percentile, op: le, value: 10}, source: TODO}
+  - {from: lag, to: describe_unusual_one_indicator, when: {property: rainfall_percentile, op: gt, value: 10}, source: TODO}

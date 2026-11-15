@@ -1,6 +1,7 @@
 """Smoothers that return an estimate of the slow-moving level. For looking, not for testing."""
 
 import pandas as pd
+from scipy.signal import savgol_filter
 from statsmodels.nonparametric.smoothers_lowess import lowess
 from statsmodels.tsa.filters.hp_filter import hpfilter
 
@@ -55,3 +56,19 @@ def hp_filter(x: pd.Series, lamb: float) -> SkillResult:
         return r
     _, trend = hpfilter(x.to_numpy(dtype=float), lamb=lamb)
     return SkillResult(name, {"lamb": lamb, "endpoint_bias_warning": True}, series=pd.Series(trend, index=x.index, name=x.name))
+
+
+@register("savgol_smooth")
+def savgol_smooth(x: pd.Series, window: int, polyorder: int = 2) -> SkillResult:
+    """Savitzky-Golay filter: a local polynomial fit that smooths noise but keeps the height of peaks.
+
+    Assumes a regular, gap-free series and noise that is short compared with
+    `window`. Commonly used to clean cloud-affected vegetation index series.
+    """
+    name = "savgol_smooth"
+    if window % 2 == 0 or window <= polyorder or polyorder < 1:
+        return refuse(name, "window must be odd and larger than polyorder (>= 1)", "pass an odd window above the polynomial order")
+    if (r := guard(name, x, window + 1)) is not None:
+        return r
+    smoothed = savgol_filter(x.to_numpy(dtype=float), window_length=window, polyorder=polyorder)
+    return SkillResult(name, {"window": window, "polyorder": polyorder}, series=pd.Series(smoothed, index=x.index, name=x.name))

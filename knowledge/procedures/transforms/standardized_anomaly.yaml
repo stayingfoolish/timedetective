@@ -1,0 +1,12 @@
+name: standardized_anomaly
+category: transforms
+description: Each value as a z-score against the same point of the cycle in all years.
+requires:
+- regular_spacing
+- known_period
+- comparable_years
+produces:
+- standardized_series
+- latest_z
+- n_cycles
+source: TODO

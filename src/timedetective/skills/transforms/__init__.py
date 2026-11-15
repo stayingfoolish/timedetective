@@ -7,5 +7,6 @@ from timedetective.skills.transforms import (  # noqa: F401
     exceedance,
     gaps,
     regularize,
+    season_anomaly,
     smooth,
 )

@@ -1,0 +1,9 @@
+name: savgol_smooth
+category: transforms
+description: Savitzky-Golay smoothing that reduces noise while keeping the height of peaks.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- smoothed
+source: TODO
