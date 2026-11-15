@@ -1,0 +1,6 @@
+name: weather_precip_spi
+category: transforms
+description: Calendar-month zero-adjusted gamma MLE SPI, fit screens and drought-run catalogue; model-dependent index.
+requires: [normalized_monthly_precipitation, thirty_year_baseline, explicit_seed]
+produces: [series, fits, drought_events, subprocedure_refusals, method_sources]
+source: precipitation_policy_v2

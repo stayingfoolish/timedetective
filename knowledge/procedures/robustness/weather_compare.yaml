@@ -1,0 +1,6 @@
+name: weather_compare
+category: robustness
+description: Compare fixed-baseline seasonal anomalies across products without assuming independence or equal grid footprints.
+requires: [two_weather_series_with_provenance]
+produces: [comparison, shared_lineage_declared, independence_established, primary_product, companion_product, primary_resolution, companion_resolution, limitations]
+source: imerg_atbd_2023

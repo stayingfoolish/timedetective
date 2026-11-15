@@ -1,0 +1,458 @@
+{
+  "seed": 77123,
+  "resamples": 1999,
+  "nominal_alpha": 0.05,
+  "rows": [
+    {
+      "n": 25,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "trend",
+      "repetitions": 500,
+      "false_positives": 18,
+      "false_positive_rate": 0.036,
+      "rate_exact_95_interval": [
+        0.02147285658609329,
+        0.05630017620179111
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.6
+    },
+    {
+      "n": 25,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "period_change",
+      "repetitions": 500,
+      "false_positives": 19,
+      "false_positive_rate": 0.038,
+      "rate_exact_95_interval": [
+        0.02303077080624761,
+        0.05870729046322856
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.906
+    },
+    {
+      "n": 25,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "changepoint",
+      "repetitions": 500,
+      "false_positives": 8,
+      "false_positive_rate": 0.016,
+      "rate_exact_95_interval": [
+        0.006932321202483599,
+        0.03128200168985311
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": true,
+      "strong_signal_power": 0.716
+    },
+    {
+      "n": 25,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "family",
+      "repetitions": 500,
+      "false_positives": 3,
+      "false_positive_rate": 0.006,
+      "rate_exact_95_interval": [
+        0.001239057543540751,
+        0.017433673725913486
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": true,
+      "strong_signal_power": null
+    },
+    {
+      "n": 25,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "trend",
+      "repetitions": 500,
+      "false_positives": 56,
+      "false_positive_rate": 0.112,
+      "rate_exact_95_interval": [
+        0.08572058152768455,
+        0.14296852269169766
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.466
+    },
+    {
+      "n": 25,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "period_change",
+      "repetitions": 500,
+      "false_positives": 38,
+      "false_positive_rate": 0.076,
+      "rate_exact_95_interval": [
+        0.05434078124391164,
+        0.10282558211499357
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.758
+    },
+    {
+      "n": 25,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "changepoint",
+      "repetitions": 500,
+      "false_positives": 40,
+      "false_positive_rate": 0.08,
+      "rate_exact_95_interval": [
+        0.05776611992883435,
+        0.10734546435635237
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.534
+    },
+    {
+      "n": 25,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "family",
+      "repetitions": 500,
+      "false_positives": 27,
+      "false_positive_rate": 0.054,
+      "rate_exact_95_interval": [
+        0.03588425972193367,
+        0.0775974684949371
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": null
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "trend",
+      "repetitions": 500,
+      "false_positives": 24,
+      "false_positive_rate": 0.048,
+      "rate_exact_95_interval": [
+        0.03099316879350539,
+        0.07058079625732983
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.836
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "period_change",
+      "repetitions": 500,
+      "false_positives": 19,
+      "false_positive_rate": 0.038,
+      "rate_exact_95_interval": [
+        0.02303077080624761,
+        0.05870729046322856
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.996
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "changepoint",
+      "repetitions": 500,
+      "false_positives": 12,
+      "false_positive_rate": 0.024,
+      "rate_exact_95_interval": [
+        0.01246123905955567,
+        0.041547618799686235
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": true,
+      "strong_signal_power": 0.898
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "gamma",
+      "method": "family",
+      "repetitions": 500,
+      "false_positives": 7,
+      "false_positive_rate": 0.014,
+      "rate_exact_95_interval": [
+        0.005646761070324428,
+        0.028631616183336053
+      ],
+      "meets_empirical_5pct_target": true,
+      "upper_95_bound_at_most_5pct": true,
+      "strong_signal_power": null
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "trend",
+      "repetitions": 500,
+      "false_positives": 50,
+      "false_positive_rate": 0.1,
+      "rate_exact_95_interval": [
+        0.07513581506642551,
+        0.12970908566220307
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.528
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "period_change",
+      "repetitions": 500,
+      "false_positives": 47,
+      "false_positive_rate": 0.094,
+      "rate_exact_95_interval": [
+        0.06988623391878114,
+        0.12303760788956065
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.87
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "changepoint",
+      "repetitions": 500,
+      "false_positives": 39,
+      "false_positive_rate": 0.078,
+      "rate_exact_95_interval": [
+        0.05605117377556037,
+        0.10508772643006571
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.61
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "gamma",
+      "method": "family",
+      "repetitions": 500,
+      "false_positives": 28,
+      "false_positive_rate": 0.056,
+      "rate_exact_95_interval": [
+        0.0375304444750222,
+        0.07992130060436006
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": null
+    },
+    {
+      "n": 45,
+      "phi": 0.85,
+      "kind": "gamma",
+      "method": "trend",
+      "repetitions": 500,
+      "false_positives": 110,
+      "false_positive_rate": 0.22,
+      "rate_exact_95_interval": [
+        0.18443670806164186,
+        0.25891173283738367
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.482
+    },
+    {
+      "n": 45,
+      "phi": 0.85,
+      "kind": "gamma",
+      "method": "period_change",
+      "repetitions": 500,
+      "false_positives": 82,
+      "false_positive_rate": 0.164,
+      "rate_exact_95_interval": [
+        0.13261138593493443,
+        0.19942292430785138
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.794
+    },
+    {
+      "n": 45,
+      "phi": 0.85,
+      "kind": "gamma",
+      "method": "changepoint",
+      "repetitions": 500,
+      "false_positives": 103,
+      "false_positive_rate": 0.206,
+      "rate_exact_95_interval": [
+        0.17137740293852455,
+        0.2441413596880768
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.576
+    },
+    {
+      "n": 45,
+      "phi": 0.85,
+      "kind": "gamma",
+      "method": "family",
+      "repetitions": 500,
+      "false_positives": 58,
+      "false_positive_rate": 0.116,
+      "rate_exact_95_interval": [
+        0.08927195525385852,
+        0.1473657381247924
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": null
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "intermittent",
+      "method": "trend",
+      "repetitions": 500,
+      "false_positives": 53,
+      "false_positive_rate": 0.106,
+      "rate_exact_95_interval": [
+        0.0804146604201371,
+        0.13635202648579128
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.772
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "intermittent",
+      "method": "period_change",
+      "repetitions": 500,
+      "false_positives": 40,
+      "false_positive_rate": 0.08,
+      "rate_exact_95_interval": [
+        0.05776611992883435,
+        0.10734546435635237
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.974
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "intermittent",
+      "method": "changepoint",
+      "repetitions": 500,
+      "false_positives": 43,
+      "false_positive_rate": 0.086,
+      "rate_exact_95_interval": [
+        0.06293676656618725,
+        0.1140936693460559
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.852
+    },
+    {
+      "n": 45,
+      "phi": 0.6,
+      "kind": "intermittent",
+      "method": "family",
+      "repetitions": 500,
+      "false_positives": 26,
+      "false_positive_rate": 0.052,
+      "rate_exact_95_interval": [
+        0.03424569808276793,
+        0.0752663710306222
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": null
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "long_memory",
+      "method": "trend",
+      "repetitions": 500,
+      "false_positives": 74,
+      "false_positive_rate": 0.148,
+      "rate_exact_95_interval": [
+        0.11803282506874811,
+        0.18220039527232693
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.684
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "long_memory",
+      "method": "period_change",
+      "repetitions": 500,
+      "false_positives": 62,
+      "false_positive_rate": 0.124,
+      "rate_exact_95_interval": [
+        0.09640628315082976,
+        0.15612924565137257
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.942
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "long_memory",
+      "method": "changepoint",
+      "repetitions": 500,
+      "false_positives": 64,
+      "false_positive_rate": 0.128,
+      "rate_exact_95_interval": [
+        0.09998835036758895,
+        0.1604963909516593
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": 0.758
+    },
+    {
+      "n": 45,
+      "phi": 0.0,
+      "kind": "long_memory",
+      "method": "family",
+      "repetitions": 500,
+      "false_positives": 42,
+      "false_positive_rate": 0.084,
+      "rate_exact_95_interval": [
+        0.06120905860834765,
+        0.11184830124541209
+      ],
+      "meets_empirical_5pct_target": false,
+      "upper_95_bound_at_most_5pct": false,
+      "strong_signal_power": null
+    }
+  ],
+  "scope": "Component methods and three-test single-product family on explicit synthetic annual nulls; not daily ingestion, SPI, GEV interval coverage, observational validity or full spatial discovery certification.",
+  "claim_promotion_authorized": false,
+  "decision": "experimental until all required validation gates pass; no automatic promotion"
+}

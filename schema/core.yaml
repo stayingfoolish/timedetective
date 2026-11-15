@@ -11,10 +11,8 @@ default_range: string
 imports:
   - linkml:types
 
-# NOT YET DEFINED, on purpose:
-#   Finding  - to be frozen first (schema_version 0.1); see CONTRIBUTING.md section 6
-#   Playbook - nodes, edges, conditions; follows once Finding is frozen
-# Do not add either without agreeing on it together.
+# Additive v0.1 implementation of docs/proposals, requested for the weather build.
+# JSON payloads are strings so arbitrary procedure output cannot alter the ontology.
 
 enums:
   SkillCategory:
@@ -49,6 +47,91 @@ enums:
         description: Survives a second method and an independent record.
 
 classes:
+  Finding:
+    attributes:
+      schema_version: {required: true}
+      question: {required: true}
+      playbook: {required: true}
+      subject: {range: SeriesRef, multivalued: true, inlined_as_list: true}
+      claim: {range: Claim, inlined: true}
+      path: {range: Step, multivalued: true, inlined_as_list: true}
+      refusals: {range: FindingRefusal, multivalued: true, inlined_as_list: true}
+      would_strengthen: {multivalued: true}
+  Claim:
+    attributes:
+      statement_type: {required: true}
+      statement: {required: true}
+      strength: {range: ClaimStrength, required: true}
+  SeriesRef:
+    attributes:
+      name: {required: true}
+      units: {required: true}
+      cadence: {required: true}
+      source: {required: true}
+      retrieved: {range: date, required: true}
+      metadata_json: {required: true}
+  Step:
+    attributes:
+      node: {required: true}
+      procedure: {required: true}
+      parameters_json: {required: true}
+      values_json: {required: true}
+      source: {required: true}
+      edge_taken: {}
+      edge_source: {}
+  FindingRefusal:
+    attributes:
+      procedure: {required: true}
+      failed: {required: true}
+      would_change: {required: true}
+  Playbook:
+    attributes:
+      name: {identifier: true, required: true}
+      question: {required: true}
+      domain: {required: true}
+      start: {required: true}
+      nodes: {range: Node, multivalued: true, inlined_as_list: true, required: true}
+      edges: {range: Edge, multivalued: true, inlined_as_list: true, required: true}
+  Node:
+    attributes:
+      id: {identifier: true, required: true}
+      procedure: {}
+      parameters_json: {}
+      input: {}
+      terminal: {}
+  Edge:
+    attributes:
+      id: {identifier: true, required: true}
+      origin: {required: true}
+      target: {required: true}
+      outcome: {required: true, description: 'ok, refused, or always; exactly one edge must match.'}
+      domain: {required: true}
+      source: {required: true}
+  Dataset:
+    attributes:
+      name: {identifier: true, required: true}
+      pack: {required: true}
+      title: {required: true}
+      plain_definition: {required: true}
+      variable: {required: true}
+      units: {required: true}
+      provider: {required: true}
+      product_id: {required: true}
+      cadence: {required: true}
+      analysis_cadence: {required: true}
+      record_start: {range: date, required: true}
+      spatial_resolution: {required: true}
+      known_issues: {range: KnownIssue, multivalued: true, inlined_as_list: true}
+      companions: {multivalued: true}
+      source: {required: true}
+  KnownIssue:
+    attributes:
+      kind: {required: true}
+      start: {range: date}
+      end: {range: date}
+      effect: {required: true}
+      handling: {required: true}
+      source: {required: true}
   Procedure:
     description: >-
       One test, check or transform. Implemented by exactly one skill registered

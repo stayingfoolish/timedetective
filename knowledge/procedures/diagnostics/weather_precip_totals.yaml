@@ -1,0 +1,6 @@
+name: weather_precip_totals
+category: diagnostics
+description: Complete-calendar monthly and annual precipitation totals, independent of anomaly baseline sufficiency.
+requires: [normalized_monthly_precipitation]
+produces: [monthly_totals, annual_totals, method_sources]
+source: precipitation_policy_v2

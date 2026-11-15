@@ -1,0 +1,32 @@
+name: weather
+question: What do the supplied weather records support about events, seasons, extremes and longer-term change?
+domain: earth
+start: audit
+nodes:
+  - id: audit
+    procedure: weather_audit
+    parameters_json: '{"intent":"$intent"}'
+  - {id: monthly, procedure: weather_monthly}
+  - id: seasons
+    procedure: weather_seasons
+    input: monthly
+    parameters_json: '{"seasons":"$seasons","baseline_start":"$baseline_start","baseline_end":"$baseline_end","event_start":"$event_start","event_end":"$event_end"}'
+  - {id: extremes, procedure: weather_extremes}
+  - id: comparison
+    procedure: weather_compare
+    parameters_json: '{"companion":"$companion","seasons":"$seasons","baseline_start":"$baseline_start","baseline_end":"$baseline_end","event_start":"$event_start","event_end":"$event_end"}'
+  - {id: descriptive, terminal: claim}
+  - id: artifacts
+    procedure: artifact_overlap
+    parameters_json: '{"candidate_years":"$seasons.candidate_years","tolerance_years":1}'
+  - {id: refused, terminal: refusal}
+edges:
+  - {id: audit_ok, origin: audit, target: monthly, outcome: ok, domain: earth, source: weather_policy_v1}
+  - {id: audit_failed, origin: audit, target: refused, outcome: refused, domain: earth, source: weather_policy_v1}
+  - {id: monthly_ok, origin: monthly, target: seasons, outcome: ok, domain: earth, source: nicholson_2017}
+  - {id: monthly_failed, origin: monthly, target: refused, outcome: refused, domain: earth, source: weather_policy_v1}
+  - {id: seasons_ok, origin: seasons, target: extremes, outcome: ok, domain: earth, source: zhang_2011}
+  - {id: seasons_failed, origin: seasons, target: refused, outcome: refused, domain: earth, source: weather_policy_v1}
+  - {id: extremes_recorded, origin: extremes, target: comparison, outcome: always, domain: earth, source: weather_policy_v1}
+  - {id: comparison_recorded, origin: comparison, target: artifacts, outcome: always, domain: earth, source: weather_policy_v1}
+  - {id: artifacts_recorded, origin: artifacts, target: descriptive, outcome: always, domain: earth, source: weather_policy_v1}

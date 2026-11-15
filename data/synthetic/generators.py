@@ -107,3 +107,45 @@ def with_gaps(x: pd.Series, positions: list[int]) -> pd.Series:
     y = x.copy()
     y.iloc[positions] = np.nan
     return y
+
+
+def seasonal_weather(seed: int = 0, episode: bool = False, slope: float = 0.0) -> pd.Series:
+    """Labelled synthetic monthly rainfall for known-answer tests, never real evidence."""
+    idx = pd.date_range("2000-01-01", "2024-12-01", freq="MS")
+    rng = np.random.default_rng(seed)
+    y = 50 + 20 * np.sin(2 * np.pi * (idx.month.to_numpy() - 1) / 12)
+    y = y + slope * (idx.year.to_numpy() - 2000) + rng.uniform(-5, 5, len(idx))
+    if episode:
+        y[(idx.year >= 2020) & (idx.year <= 2022)] *= 0.2
+    x = pd.Series(y, index=idx, name="synthetic_weather")
+    x.attrs = {"units": "mm/month", "cadence": "monthly", "variable": "precipitation",
+               "source": "synthetic:test", "retrieved": "2026-11-15", "product": "synthetic",
+               "version": "1", "spatial_support": {"kind": "synthetic"}, "quality": "known generator",
+               "sha256": "synthetic-not-observations", "time_standard": "UTC", "lineage": ["synthetic"]}
+    return x
+
+
+def annual_precipitation_null(n: int, phi: float, seed: int, kind: str = "gamma") -> np.ndarray:
+    """Labelled synthetic annual precipitation for calibration, never observed evidence.
+
+    Gaussian-copula gamma/intermittent AR(1), or fractionally integrated noise
+    (d=.35, finite 500-lag truncation) transformed to a gamma marginal.
+    """
+    from scipy import stats
+    rng = np.random.default_rng(seed)
+    size = n + 1000
+    innovations = rng.normal(size=size)
+    if kind == "long_memory":
+        weights = np.ones(500)
+        for k in range(1,len(weights)):
+            weights[k] = weights[k-1]*(k-1+.35)/k
+        latent = np.convolve(innovations,weights)[:size]/np.sqrt(weights @ weights)
+    else:
+        latent = np.empty(size)
+        latent[0] = innovations[0]
+        for i in range(1,size):
+            latent[i] = phi*latent[i-1]+np.sqrt(1-phi**2)*innovations[i]
+    probabilities = np.clip(stats.norm.cdf(latent[-n:]),1e-10,1-1e-10)
+    if kind == "intermittent":
+        return np.where(probabilities <= .25,0,stats.gamma.ppf(np.maximum((probabilities-.25)/.75,1e-10),a=1.5,scale=100))
+    return stats.gamma.ppf(probabilities,a=3,scale=100)

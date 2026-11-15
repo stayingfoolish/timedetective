@@ -1,0 +1,6 @@
+name: artifact_overlap
+category: robustness
+description: Compare candidate boundary years with cited dated observing-history records; coincidence is not attribution.
+requires: [candidate_years, cited_dated_history]
+produces: [candidate_years, tolerance_years, coincidences, reviewed_dated_issues, interpretation]
+source: weather_policy_v1

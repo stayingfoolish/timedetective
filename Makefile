@@ -8,6 +8,7 @@ validate:        ## check knowledge/ YAML against schema/core.yaml
 
 generate:        ## regenerate schema/generated/ from schema/core.yaml
 	uv run gen-pydantic schema/core.yaml > schema/generated/models.py
+	cp schema/generated/models.py src/timedetective/engine/models.py
 
 test:            ## fast tests (everything except calibration)
 	uv run pytest -m "not slow"

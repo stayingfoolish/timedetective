@@ -6,11 +6,22 @@ Built for the NASA Space Apps *Earth System Trend Detective* challenge, on a cor
 
 ## Status
 
-Skills are in; the engine is not.
+The weather evidence workflow is executable; broader inference remains unfinished.
 
-- **Done:** 59 procedures across the seven skill categories, each with a YAML definition in `knowledge/procedures/`, a registered skill, and known-answer tests. Seeded synthetic generators in `data/synthetic/generators.py`. A calibration suite (`make calibrate`) with results in [docs/calibration.md](docs/calibration.md).
-- **Not done:** the Finding and Playbook schema, playbooks, the executor and critic, the planner and narrator, data adapters, and the demo. Draft schema and six draft playbooks are in [docs/proposals/](docs/proposals/README.md), awaiting agreement.
-- **Known failing check:** `make validate` reports 40 procedures whose `source` is still `TODO`. That is deliberate: those papers have not been opened yet.
+**New:** [automatic precipitation investigator](docs/precipitation_investigator.md):
+distill → NASA API → immutable cache → cited procedures → report. Includes dependent-data
+trend/change experiments, SPI, conditional GEV return levels, spell/timing summaries and
+cross-product family correction. **The new bootstrap inference failed the 5% dependence
+calibration target; it is not certified statistical significance.** See
+[validation](docs/precipitation_validation.md). The original offline weather workflow is preserved.
+
+- **Done:** general-purpose statistical procedures across the seven skill categories plus weather/metadata procedures in the earth pack; additive Finding/Playbook/Dataset models, a cited YAML executor, conservative critic, evidence-only renderer, two dataset cards, POWER and CSV adapters, an offline Streamlit form, and a real 2000–2024 NASA point cache (two precipitation products plus four weather variables). See [weather instructions](docs/weather_playbook.md), [literature audit](docs/weather_literature.md) and [calibration](docs/calibration.md).
+- **Not done:** calibrated weather significance/robustness, matched regional native-product acquisition, inferential spatial discovery, arbitrary natural-language planning, attribution and forecasts. Six general-purpose playbooks, including the crop season check and groundwater check, remain drafts in [docs/proposals/](docs/proposals/README.md); neither has a data adapter yet.
+- **Known failing check:** `make validate` reports procedures whose `source` is still `TODO`. That is deliberate: those papers have not been opened yet.
+
+The weather-only graph passes `uv run python scripts/validate_knowledge.py --scope weather`.
+Weather Findings remain **descriptive**. Product disagreement is evidence, not a reason to
+change the baseline or select a different location until a desired answer appears.
 
 ## Quickstart
 

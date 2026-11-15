@@ -1,0 +1,6 @@
+name: weather_extremes
+category: diagnostics
+description: Complete-year daily rainfall maxima and wet-day indices; explicitly within-year spells, no return periods.
+requires: [daily_precipitation, provenance]
+produces: [annual_indices, excluded_years, wet_threshold_mm_per_day, scope]
+source: zhang_2011

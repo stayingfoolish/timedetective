@@ -1,0 +1,62 @@
+name: precipitation
+question: Which historical precipitation conclusions are supported by this distilled request and record?
+domain: earth
+start: audit
+nodes:
+  - {id: audit, procedure: weather_audit}
+  - {id: monthly, procedure: weather_monthly}
+  - {id: totals, procedure: weather_precip_totals, input: monthly}
+  - id: summary
+    procedure: weather_seasons
+    input: monthly
+    parameters_json: '{"seasons":"$seasons","baseline_start":"$baseline_start","baseline_end":"$baseline_end","event_start":"$event_start","event_end":"$event_end"}'
+  - id: trend
+    procedure: weather_precip_inference
+    parameters_json: '{"method":"trend","analyses":"$analyses","seasons":"$seasons","baseline":"$baseline","event":"$event","seed":"$seed","resamples":"$resamples","alpha":"$alpha","target":"$target"}'
+  - id: period
+    procedure: weather_precip_inference
+    parameters_json: '{"method":"period_change","analyses":"$analyses","seasons":"$seasons","baseline":"$baseline","event":"$event","seed":"$seed","resamples":"$resamples","alpha":"$alpha","target":"$target"}'
+  - id: changepoint
+    procedure: weather_precip_inference
+    parameters_json: '{"method":"changepoint","analyses":"$analyses","seasons":"$seasons","baseline":"$baseline","event":"$event","seed":"$seed","resamples":"$resamples","alpha":"$alpha","target":"$target"}'
+  - id: spells
+    procedure: weather_precip_spells
+    parameters_json: '{"analyses":"$analyses","wet_threshold":"$wet_threshold"}'
+  - id: spi
+    procedure: weather_precip_spi
+    input: monthly
+    parameters_json: '{"analyses":"$analyses","baseline":"$baseline","scale":"$spi_scale","seed":"$seed","fit_resamples":"$fit_resamples"}'
+  - id: return_levels
+    procedure: weather_precip_return_levels
+    parameters_json: '{"analyses":"$analyses","return_periods":"$return_periods","seed":"$seed","fit_resamples":"$fit_resamples"}'
+  - id: timing
+    procedure: weather_precip_timing
+    parameters_json: '{"analyses":"$analyses","baseline":"$baseline","windows":"$timing_windows"}'
+  - id: comparison
+    procedure: weather_compare
+    parameters_json: '{"companion":"$companion","seasons":"$seasons","baseline_start":"$baseline_start","baseline_end":"$baseline_end","event_start":"$event_start","event_end":"$event_end"}'
+  - id: daily_agreement
+    procedure: weather_precip_agreement
+    parameters_json: '{"companion":"$companion","analyses":"$analyses","wet_threshold":"$wet_threshold"}'
+  - id: family
+    procedure: weather_precip_family
+    parameters_json: '{"trend":"$trend_values","period":"$period_values","changepoint":"$changepoint_values","alpha":"$alpha","planned_members":"$declared_tests"}'
+  - {id: conclusion, terminal: claim}
+  - {id: refused, terminal: refusal}
+edges:
+  - {id: audit_ok, origin: audit, target: monthly, outcome: ok, domain: earth, source: precipitation_policy_v2}
+  - {id: audit_failed, origin: audit, target: refused, outcome: refused, domain: earth, source: precipitation_policy_v2}
+  - {id: monthly_ok, origin: monthly, target: totals, outcome: ok, domain: earth, source: precipitation_policy_v2}
+  - {id: monthly_failed, origin: monthly, target: refused, outcome: refused, domain: earth, source: precipitation_policy_v2}
+  - {id: totals_recorded, origin: totals, target: summary, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: summary_recorded, origin: summary, target: trend, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: trend_recorded, origin: trend, target: period, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: period_recorded, origin: period, target: changepoint, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: change_recorded, origin: changepoint, target: spells, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: spells_recorded, origin: spells, target: spi, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: spi_recorded, origin: spi, target: return_levels, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: levels_recorded, origin: return_levels, target: timing, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: timing_recorded, origin: timing, target: comparison, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: comparison_recorded, origin: comparison, target: daily_agreement, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: agreement_recorded, origin: daily_agreement, target: family, outcome: always, domain: earth, source: precipitation_policy_v2}
+  - {id: family_recorded, origin: family, target: conclusion, outcome: always, domain: earth, source: precipitation_policy_v2}
