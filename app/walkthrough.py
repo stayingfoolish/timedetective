@@ -5,6 +5,7 @@ playbook and procedure files. Nothing is fetched and no model is called.
 """
 
 import json
+from html import escape
 from pathlib import Path
 
 import pandas as pd
@@ -12,7 +13,7 @@ import streamlit as st
 import yaml
 
 from timedetective.agent.report import render
-from timedetective.engine.critic import CALIBRATED, CLOSING
+from timedetective.engine.critic import CALIBRATED
 from timedetective.packs.earth.adapters.gldas import groundwater_estimate, load_gldas_storage
 from timedetective.packs.earth.adapters.mod13c2 import load_mod13c2_region
 from timedetective.packs.earth.adapters.stories import load_gsfc_mascons, load_power_regional
@@ -37,6 +38,7 @@ STEPS = {  # playbook node -> the question a student would ask at that step
     "greenness": "Would you see it from the fields?",
 }
 TABS = ["1 Underground?", "2 Falling?", "3 Noise?", "4 Satellites?", "5 Dry spell?", "6 Fields?"]
+GUIDE_TITLES = ["The question", *STEPS.values(), "The verdict"]
 BLUE, ORANGE, AQUA, YELLOW, GREY = "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#9d9b93"
 MINUS = "−"
 
@@ -321,7 +323,61 @@ def playbook_dot(taken: set[str]) -> str:
     return "\n".join(lines + ["}"])
 
 
+def render_step(node: str, ran: dict, finding, r: dict, gap: tuple[str, str]) -> None:
+    """Render one recorded step, including a recorded stop, in either view."""
+    if node not in ran:
+        st.info(f"This step did not run. The check stopped at step {len(ran)}.")
+        return
+    position, step, values = ran[node]
+    if led_to(step) in ("refused", "skipped"):
+        for reason in (item for item in finding.refusals if item.procedure == step.procedure):
+            st.warning(f"**{reason.failed}.**\n\nWhat would change it: {reason.would_change}.")
+        st.write("The check stopped here." if led_to(step) == "refused" else
+                 "This step was skipped; the finding is written from the steps that ran.")
+    elif node == "audit":
+        step_audit(values, r, gap)
+    elif node == "annual":
+        step_annual(values)
+    elif node == "trend":
+        step_trend(values, ran["annual"][2]["annual"])
+    elif node == "handover":
+        step_handover(values)
+    elif node == "rainfall":
+        step_rainfall(values)
+    elif node == "greenness":
+        step_greenness(values)
+    procedure_line(position, step)
+
+
+def move_guide(delta: int, max_step: int) -> None:
+    st.session_state["story_guide_step"] = max(0, min(max_step, st.session_state["story_guide_step"] + delta))
+
+
+def guide_navigation(max_step: int) -> int:
+    """Keep the visitor's place, but restart when a different question or area is selected."""
+    current = min(st.session_state.get("story_guide_step", 0), max_step)
+    st.session_state["story_guide_step"] = current
+    left, middle, right = st.columns([1, 3, 1])
+    with left:
+        st.button("← Previous clue", disabled=current == 0, key="story_previous", on_click=move_guide, args=(-1, max_step))
+    with middle:
+        title = "The verdict" if current == max_step else GUIDE_TITLES[current]
+        st.progress(current / max_step, text=f"Clue {current + 1} of {max_step + 1}: {title}")
+    with right:
+        st.button("Next clue →", disabled=current == max_step, key="story_next", on_click=move_guide, args=(1, max_step))
+    return current
+
+
 def show_walkthrough() -> None:
+    st.markdown("""<style>
+    .td-hero {background:linear-gradient(125deg,#102b39 0%,#165363 58%,#177765 100%);
+      color:#fff;padding:1.5rem 1.8rem;border-radius:1.1rem;margin:.4rem 0 1.2rem;
+      box-shadow:0 14px 32px rgba(12,54,67,.16)}
+    .td-hero .eyebrow {color:#a6efda;text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:700}
+    .td-hero h2 {color:#fff;font-size:clamp(1.5rem,3vw,2.35rem);line-height:1.15;margin:.45rem 0}
+    .td-hero p {color:#e2f4f1;margin:0;max-width:54rem}
+    .td-hero .question {color:#fff;font-weight:650;margin-top:.8rem}
+    </style>""", unsafe_allow_html=True)
     st.header("Follow one question all the way")
     st.caption("Real NASA records for two regions large enough for the satellites to resolve: GRACE and GRACE-FO (stored water), GLDAS "
                "(modelled soil moisture and snow), MODIS (greenness) and POWER (rainfall). Information only: no forecasts, no causes.")
@@ -330,83 +386,76 @@ def show_walkthrough() -> None:
     area = right.selectbox("Area", list(AREAS), key="story_area")
     st.caption("Things to try: ask *why is the groundwater falling here?*, switch to the US High Plains, or ask about the small area.")
     tag, blocks = AREAS[area]
+    scope = (question, area)
+    if st.session_state.get("story_guide_scope") != scope:
+        st.session_state["story_guide_scope"] = scope
+        st.session_state["story_guide_step"] = 0
     finding = follow(tag, question, blocks)
     ran = {step.node: (position, step, json.loads(step.values_json)) for position, step in enumerate(finding.path, 1)}
     gap = ("2017-07-01", "2018-05-31")
 
     conclusions = [v["conclusion"] for _, _, v in ran.values() if isinstance(v.get("conclusion"), dict)]
-    if finding.claim:
-        st.subheader("The answer")
-        st.markdown(f"Label: **{finding.claim.strength}**")
-        last = conclusions[-1] if conclusions else {}
-        closing = CLOSING.get(finding.claim.strength, "")
-        if " ".join([last.get("statement", ""), *last.get("limits", []), closing]) == finding.claim.statement:
-            st.info(last["statement"])
-            with st.expander("What this answer does not tell you, and what the label means"):
-                st.markdown("\n".join(f"- {limit}" for limit in last["limits"]))
-                st.write(closing)
+    st.markdown(f"""<div class="td-hero"><div class="eyebrow">An evidence-led investigation</div>
+      <h2>Follow the water, check every clue.</h2>
+      <p>From satellites to seasonal patterns to the strength of the answer. Move through the recorded checks at your own pace.</p>
+      <p class="question">{escape(question)}</p></div>""", unsafe_allow_html=True)
+    max_step = len(ran) + 1 if not finding.claim else len(STEPS) + 1
+    current = guide_navigation(max_step)
+    with st.container(border=True):
+        st.caption(f"INVESTIGATION {current + 1} / {max_step + 1}")
+        st.subheader("The verdict" if current == max_step else GUIDE_TITLES[current])
+        if current == 0:
+            st.write("First, the question is matched with the data this playbook can check. The area and its satellite footprint matter: a place too small for the sensor can stop the investigation before any trend is calculated.")
+            st.write(f"**Area:** {area}")
+            st.write("**Records:** GRACE and GRACE-FO water storage, GLDAS modelled water, MODIS greenness, NASA POWER rainfall.")
+            st.caption("The data are cached NASA records. The six checks below run in the order specified by the playbook.")
+        elif current < max_step and current - 1 < len(ran):
+            render_step(list(STEPS)[current - 1], ran, finding, records(tag), gap)
         else:
-            st.info(finding.claim.statement)
-    else:
-        st.subheader("No answer: the check stopped")
-        for refusal in finding.refusals:
-            st.warning(f"**Failed at `{refusal.procedure}`:** {refusal.failed}.\n\n**What would change it:** {refusal.would_change}.")
-        if blocks is not None:
-            st.caption(f"This run declares the area as {blocks} blocks. The check looks at the size of the region first and stops before "
-                       "using the data. A refusal is a result: it names what failed and what would change the answer.")
+            if finding.claim:
+                st.markdown(f"Label: **{finding.claim.strength}**")
+                st.info(finding.claim.statement)
+                if conclusions:
+                    st.write("The critic reads the recorded checks before setting that label:")
+                    label_table(conclusions[-1]["evidence"], finding.claim.strength)
+            else:
+                st.warning("This investigation stopped before it could make a claim.")
+                for refusal in finding.refusals:
+                    st.write(f"**{refusal.procedure}:** {refusal.failed}. What would change it: {refusal.would_change}.")
+    st.caption("Want to inspect the whole route? Open the complete evidence trail below. The guide and the full view use the same recorded Finding.")
 
-    tabs = st.tabs(TABS + ["The label", "The playbook"])
-    r = records(tag)
-    for tab, (node, asks) in zip(tabs, STEPS.items()):
-        with tab:
-            st.markdown(f"#### {asks}")
-            if node not in ran:
-                st.info(f"This step did not run. The check stopped at step {len(ran)}.")
-                continue
-            position, step, v = ran[node]
-            if led_to(step) in ("refused", "skipped"):
-                reasons = [x for x in finding.refusals if x.procedure == step.procedure]
-                for x in reasons:
-                    st.warning(f"**{x.failed}.**\n\nWhat would change it: {x.would_change}.")
-                st.write("The check stopped here." if led_to(step) == "refused" else "This step was skipped; the finding is written from the steps that ran.")
-            elif node == "audit":
-                step_audit(v, r, gap)
-            elif node == "annual":
-                step_annual(v)
-            elif node == "trend":
-                step_trend(v, ran["annual"][2]["annual"])
-            elif node == "handover":
-                step_handover(v)
-            elif node == "rainfall":
-                step_rainfall(v)
-            elif node == "greenness":
-                step_greenness(v)
-            procedure_line(position, step)
+    if st.toggle("Explore the complete evidence trail", key="story_full_evidence"):
+        tabs = st.tabs(TABS + ["The label", "The playbook"])
+        r = records(tag)
+        for tab, (node, asks) in zip(tabs, STEPS.items()):
+            with tab:
+                st.markdown(f"#### {asks}")
+                render_step(node, ran, finding, r, gap)
 
-    with tabs[len(STEPS)]:
-        st.markdown("#### How the label was decided")
-        st.write("Procedures never choose the label. They record evidence, and one module, the critic, applies a fixed rule to it.")
-        if finding.claim and conclusions:
-            label_table(conclusions[-1]["evidence"], finding.claim.strength)
-            if finding.would_strengthen:
-                st.write("What would make this stronger, in the tool's words:")
-                st.markdown("\n".join(f"- {item}" for item in finding.would_strengthen))
-        else:
-            st.info("No label: the check stopped before any evidence was recorded.")
+        with tabs[len(STEPS)]:
+            st.markdown("#### How the label was decided")
+            st.write("Procedures never choose the label. They record evidence, and one module, the critic, applies a fixed rule to it.")
+            if finding.claim and conclusions:
+                label_table(conclusions[-1]["evidence"], finding.claim.strength)
+                if finding.would_strengthen:
+                    st.write("What would make this stronger, in the tool's words:")
+                    st.markdown("\n".join(f"- {item}" for item in finding.would_strengthen))
+            else:
+                st.info("No label: the check stopped before any evidence was recorded.")
 
-    with tabs[len(STEPS) + 1]:
-        st.markdown("#### The playbook, as data")
-        st.write("The order of the steps is a data file. Every arrow names the source of the rule that justifies it, and the engine rejects "
-                 "an arrow that has none. The thick arrows are the route this question took.")
-        st.graphviz_chart(playbook_dot({step.edge_taken for step in finding.path}), width="stretch")
-        k = knowledge()
-        table = ["| Step | Procedure | Needs, then returns | Rule from |", "| --- | --- | --- | --- |"]
-        for position, node in enumerate((n for n in k["playbook"]["nodes"] if n.get("procedure")), 1):
-            p = k["procedures"][node["procedure"]]
-            table.append(f"| {position} | `{p['name']}` | {', '.join(p['requires'])} → {', '.join(p['produces'])} | {source_link(p['source'])} |")
-        st.markdown("\n".join(table))
-        with st.expander(f"The file: {PLAYBOOK.relative_to(ROOT)}"):
-            st.code(k["playbook_text"], language="yaml")
+        with tabs[len(STEPS) + 1]:
+            st.markdown("#### The playbook, as data")
+            st.write("The order of the steps is a data file. Every arrow names the source of the rule that justifies it, and the engine rejects "
+                     "an arrow that has none. The thick arrows are the route this question took.")
+            st.graphviz_chart(playbook_dot({step.edge_taken for step in finding.path}), width="stretch")
+            k = knowledge()
+            table = ["| Step | Procedure | Needs, then returns | Rule from |", "| --- | --- | --- | --- |"]
+            for position, node in enumerate((n for n in k["playbook"]["nodes"] if n.get("procedure")), 1):
+                p = k["procedures"][node["procedure"]]
+                table.append(f"| {position} | `{p['name']}` | {', '.join(p['requires'])} → {', '.join(p['produces'])} | {source_link(p['source'])} |")
+            st.markdown("\n".join(table))
+            with st.expander(f"The file: {PLAYBOOK.relative_to(ROOT)}"):
+                st.code(k["playbook_text"], language="yaml")
 
     with st.expander("Everything the check recorded, and downloads"):
         for position, step, v in ran.values():
