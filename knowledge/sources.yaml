@@ -271,6 +271,16 @@ asoka_mishra_2020:
   accessed: '2026-11-15'
   review: read_preprint_abstract
   note: Using GRACE, well observations and MODIS NDVI over groundwater-irrigated areas, reports that crop growth is negatively correlated with groundwater storage in north India, and that in north-west India vegetation growth explains more of the groundwater storage variation than precipitation (R2 0.26 against 0.02, 2002-2016), which the authors attribute to pumping for irrigation. Preprint title on arXiv differs ("Groundwater pumping to increase food production causes persistent groundwater drought in India"). This project's step only sets yearly greenness beside yearly storage; it does not reproduce the paper's irrigated-pixel masking or relative-importance analysis.
+gldas_noah_v21:
+  authors: Beaudoing, H.; Rodell, M.; NASA/GSFC/HSL
+  year: 2020
+  title: GLDAS Noah Land Surface Model L4 monthly 0.25 x 0.25 degree V2.1
+  venue: Goddard Earth Sciences Data and Information Services Center (GES DISC), Greenbelt, Maryland, USA
+  doi: 10.5067/SXAVCZFAQLNO
+  url: https://disc.gsfc.nasa.gov/datasets/GLDAS_NOAH025_M_2.1/summary
+  accessed: '2026-11-15'
+  review: provider_catalogue_record
+  note: DOI, creators, release date and variable list read from the CMR collection record (C1342986036-GES_DISC) and the granule DMR. Soil moisture in four layers to 2 m, snow water equivalent and canopy water in kg m-2. The README (docserver.gesdisc.eosdis.nasa.gov/public/project/hydrology/README_GLDAS2.pdf) was not opened; the statement that irrigation is not modelled should be checked against it before it is shown as more than a caution.
 rodell_2009:
   authors: Rodell, M.; Velicogna, I.; Famiglietti, J. S.
   year: 2009

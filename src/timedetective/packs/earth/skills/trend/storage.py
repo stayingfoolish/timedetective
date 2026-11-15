@@ -76,6 +76,11 @@ def storage_trend(annual: pd.Series, annual_values: dict, audit_values: dict) ->
     limits = ["It does not say why the storage changed.",
               "It is a regional average; places inside the region can differ."]
     limits += list(audit_values.get("not_answered", []))
+    if kind == "groundwater":
+        subtraction = audit_values.get("subtraction") or {}
+        limits.insert(0, "This is an estimate: modelled soil moisture and snow were subtracted from total storage"
+                         + (f" ({subtraction['model']})" if subtraction.get("model") else "") + "; "
+                         + (subtraction.get("not_subtracted") or "surface water was not subtracted") + ".")
     if kind == "total_water_storage":
         limits.insert(0, "This is all stored water together; soil moisture and surface water have not been separated from groundwater.")
     return SkillResult(name, plain({

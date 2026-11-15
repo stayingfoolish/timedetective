@@ -128,3 +128,10 @@ def test_without_rainfall_the_trend_finding_still_stands():
 def test_cause_and_forecast_questions_are_answered_only_as_far_as_the_record_goes():
     finding = run(g.water_storage(slope_per_year=-1.5, seed=1), question="Why is the groundwater falling and when will it run out?")
     assert "does not identify causes" in finding.claim.statement and "makes no forecast" in finding.claim.statement
+
+
+def test_a_groundwater_label_without_a_recorded_subtraction_is_refused():
+    storage = g.water_storage(slope_per_year=-1.5, seed=1, kind="groundwater")
+    del storage.attrs["subtraction"]
+    finding = run(storage)
+    assert finding.claim is None and "records no subtraction" in finding.refusals[0].failed

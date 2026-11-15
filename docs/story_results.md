@@ -20,8 +20,11 @@ How they were fetched: the cloud workspace cannot reach NASA servers, so the req
 session. Each response's SHA-256 was computed in the browser before saving and re-checked after transfer. No login was
 needed for any of these.
 
-Not fetched: GLDAS (soil moisture, snow and surface water to subtract from total storage). It needs a NASA Earthdata
-login. Until it is added, the storage findings are about **total water storage**, and say so.
+GLDAS (`gldas_noah025_m_{nw_india,high_plains}.json.gz`, 3.4 and 4.2 MB, SHA-256 `afd0d836ea8c`, `6c2baadcd0b4`)
+was fetched on 15 November 2026 from the cloud workspace with an Earthdata Login token, by
+`scripts/fetch_gldas_subsets.py`: GLDAS Noah monthly V2.1 (doi:10.5067/SXAVCZFAQLNO), January 2002 to July 2026,
+soil moisture in four layers to 2 m, snow water and canopy water, only for the grid cells over each region's mascon
+footprints (Earthdata Cloud OPeNDAP). The sidecar records every request address and response checksum.
 
 ## Water storage
 
@@ -63,6 +66,24 @@ series is in the right range, not that the method is validated.
 
 Why neither can be "robust": the two trend methods disagree in both regions, and no independent record (observation
 wells) is wired in.
+
+## Groundwater estimate (GLDAS subtracted)
+
+`packs/earth/adapters/gldas.py` averages the modelled water over the same mascon footprints, weighted by mascon area,
+puts it on the GRACE baseline (2004.0-2010.0 mean) and subtracts it month by month, as Rodell et al. (2009) did. Surface
+water is not subtracted (the model has no such store) and every finding says so.
+
+| | North-west India | US High Plains |
+| --- | --- | --- |
+| Modelled soil, snow and canopy water, trend | +0.15 cm a year | -0.11 cm a year |
+| Groundwater estimate, Theil-Sen slope | -4.0 cm a year (range -4.4 to -3.6), about 95 cm in total | -1.3 cm a year (range -1.7 to -0.9) |
+| Drift test | fired, p = 0.004 | did not fire, p = 0.063 |
+| Prewhitened Mann-Kendall | fired (now agrees) | fired |
+| Change in a spell of average rainfall | -4.1 cm a year (range -2.4 to -5.8) | -1.5 cm a year (range -0.4 to -2.5), descriptive |
+| **Claim strength** | **significant** | **descriptive** |
+
+In north-west India the subtraction barely moves the slope, but it removes the disagreement between the two trend
+methods. Still not "robust": no independent record (observation wells) is wired in.
 
 ## Season check, area around Kotido, Karamoja, Uganda
 

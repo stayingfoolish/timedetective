@@ -14,7 +14,7 @@ from timedetective.skills.result import SkillResult, refuse
 MIN_YEARS = 15
 KINDS = {
     "total_water_storage": "all water stored on and under the land: soil moisture, snow, lakes and rivers, and groundwater together",
-    "groundwater": "groundwater, after modelled soil moisture, snow and surface water were subtracted",
+    "groundwater": "an estimate of groundwater: total water storage minus modelled soil moisture, snow and canopy water",
 }
 
 
@@ -33,6 +33,10 @@ def storage_audit(x: pd.Series, not_answered: list[str] | None = None) -> SkillR
     if kind not in KINDS:
         return refuse(name, "the series does not say whether it is total water storage or groundwater",
                       "declare storage_kind in the metadata; the two must not be confused")
+    subtraction = x.attrs.get("subtraction")
+    if kind == "groundwater" and not (isinstance(subtraction, dict) and subtraction.get("method") and subtraction.get("model")):
+        return refuse(name, "the series is labelled groundwater but records no subtraction",
+                      "record which model's soil, snow and surface water were subtracted, or label it total water storage")
     if x.attrs["cadence"] != "monthly" or not x.index.is_month_start.all():
         return refuse(name, "need a monthly series labelled at month start", "aggregate to months first")
     if not x.index.equals(pd.date_range(x.index[0], x.index[-1], freq="MS")):
@@ -64,4 +68,4 @@ def storage_audit(x: pd.Series, not_answered: list[str] | None = None) -> SkillR
         "longest_gap_months": longest[0], "longest_gap_start": longest[1],
         "region_resolution_cells": units, "provider_resolution_cells": minimum,
         "area_km2": x.attrs.get("area_km2"), "spatial_support": x.attrs["spatial_support"],
-        "not_answered": list(not_answered or []), "provider_uncertainty": x.attrs.get("provider_uncertainty"), "known_issues": x.attrs.get("known_issues", [])}))
+        "not_answered": list(not_answered or []), "provider_uncertainty": x.attrs.get("provider_uncertainty"), "subtraction": subtraction, "known_issues": x.attrs.get("known_issues", [])}))

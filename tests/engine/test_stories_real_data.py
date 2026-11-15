@@ -107,3 +107,37 @@ def test_the_app_runs_both_checks_on_cached_data():
     next(b for b in app.button if b.label == "Check water storage").click().run(timeout=60)
     assert not app.exception
     assert sum(item.value == "What the record shows" for item in app.subheader) == 2
+
+
+def groundwater_inputs(tag):
+    from timedetective.packs.earth.adapters.gldas import groundwater_estimate, load_gldas_storage
+    storage, rainfall, _ = storage_inputs(tag)
+    modelled = load_gldas_storage(CACHE / f"gldas_noah025_m_{tag}.json.gz", CACHE / f"gsfc_mascons_{tag}.meta.yaml")
+    return groundwater_estimate(storage, modelled), modelled, rainfall
+
+
+def test_gldas_covers_the_record_and_rejects_a_bundle_for_another_region():
+    from timedetective.packs.earth.adapters.gldas import load_gldas_storage
+    groundwater, modelled, _ = groundwater_inputs("nw_india")
+    assert modelled.isna().sum() == 0 and modelled.index[0] == np.datetime64("2002-01-01")
+    assert groundwater.attrs["storage_kind"] == "groundwater" and "surface water" in groundwater.attrs["subtraction"]["not_subtracted"]
+    with pytest.raises(ValueError, match="different region"):
+        load_gldas_storage(CACHE / "gldas_noah025_m_nw_india.json.gz", CACHE / "gsfc_mascons_high_plains.meta.yaml")
+
+
+def test_north_west_india_groundwater_estimate_is_falling_and_both_methods_agree():
+    groundwater, _, rainfall = groundwater_inputs("nw_india")
+    finding = check_storage(groundwater, question="Is the groundwater under this region changing?", rainfall=rainfall)
+    v = steps(finding)
+    assert v["trend"]["slope_cm_per_year"] == pytest.approx(-3.98, abs=0.05)
+    assert v["trend"]["trend_detected"] and v["trend"]["second_method"]["trend_detected"]
+    assert v["rainfall"]["link"] == "falls_at_average_rainfall"
+    assert finding.claim.strength == "significant"
+    assert finding.claim.statement.startswith("Groundwater storage") and "surface water" in finding.claim.statement
+
+
+def test_high_plains_groundwater_estimate_stays_descriptive():
+    groundwater, _, rainfall = groundwater_inputs("high_plains")
+    finding = check_storage(groundwater, question="Is the groundwater under this region changing?", rainfall=rainfall)
+    assert steps(finding)["trend"]["slope_cm_per_year"] == pytest.approx(-1.28, abs=0.05)
+    assert finding.claim.strength == "descriptive"
