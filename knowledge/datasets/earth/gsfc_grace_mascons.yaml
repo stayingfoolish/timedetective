@@ -1,0 +1,29 @@
+name: gsfc_grace_mascons
+pack: earth
+title: NASA GSFC GRACE and GRACE-FO global mascons, RL06v2.0
+plain_definition: Month-by-month change in the total weight of water on and under the land (soil moisture, snow, lakes and rivers, and groundwater together), measured from the pull of gravity on a pair of satellites. It is not groundwater alone and not a water-table depth.
+variable: cmwe
+units: cm equivalent water height, relative to the 2004.0-2010.0 mean
+provider: NASA Goddard Space Flight Center, Geodesy and Geophysics Laboratory
+product_id: GSFC.glb.200204_202606_RL06v2.0_OBP-ICE6GD
+cadence: monthly solutions with irregular windows and missing months
+analysis_cadence: annual
+record_start: '2002-04-01'
+spatial_resolution: one-arc-degree equal-area mascons; provider gives about 22 mascons (roughly 300 km) as the approximate resolution
+known_issues:
+  - kind: resolution
+    effect: A region smaller than about 22 mascons cannot be separated from its surroundings; its value mostly reflects neighbours.
+    handling: Refuse regions with fewer than 22 mascons. Report the provider's leakage trend uncertainty with any slope.
+    source: gsfc_mascon_format
+  - kind: gap
+    start: '2017-07-01'
+    end: '2018-05-31'
+    effect: No solutions between the end of GRACE and the start of GRACE-FO, and scattered missing months in the later GRACE years.
+    handling: Never fill. Remove the seasonal cycle with a gap-tolerant fit, require six months per calendar year, and test for a break at the hand-over as a caution.
+    source: story_policy_v1
+  - kind: composition
+    effect: Total water storage includes soil moisture, snow and surface water as well as groundwater.
+    handling: Label findings as total water storage unless a documented model subtraction has been applied and recorded in the series metadata.
+    source: rodell_2009
+companions: [nasa_power_monthly_regional]
+source: gsfc_mascon_format

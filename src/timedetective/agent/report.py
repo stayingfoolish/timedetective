@@ -5,15 +5,18 @@ import json
 from timedetective.engine.models import Finding
 
 
+TITLES = {"season_check": "Season check", "water_storage_check": "Water storage check"}
+
+
 def render(finding: Finding) -> str:
-    lines = ["# Weather evidence report", "", finding.question, ""]
+    lines = [f"# {TITLES.get(finding.playbook, 'Weather')} evidence report", "", finding.question, ""]
     if finding.claim:
         lines += [f"Claim strength: {finding.claim.strength}", "", finding.claim.statement, ""]
     else:
         lines += ["No scientific claim: required inputs or capabilities are missing.", ""]
     for step in finding.path:
         values = json.loads(step.values_json)
-        if "seasons" not in values:
+        if not isinstance(values.get("seasons"), dict):   # the weather playbooks' per-season summary
             continue
         lines += ["## Seasonal evidence at a glance", ""]
         for label, season in values["seasons"].items():

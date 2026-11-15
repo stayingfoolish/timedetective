@@ -1,0 +1,11 @@
+name: storage_annual
+category: transforms
+description: Remove the seasonal cycle with a gap-tolerant harmonic fit and average
+  by calendar year, requiring six months per year.
+requires:
+- monthly_storage
+produces:
+- annual_series
+- monthly_lag1_autocorrelation
+- thin_years
+source: story_policy_v1

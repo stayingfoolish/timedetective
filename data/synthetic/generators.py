@@ -149,3 +149,103 @@ def annual_precipitation_null(n: int, phi: float, seed: int, kind: str = "gamma"
     if kind == "intermittent":
         return np.where(probabilities <= .25,0,stats.gamma.ppf(np.maximum((probabilities-.25)/.75,1e-10),a=1.5,scale=100))
     return stats.gamma.ppf(probabilities,a=3,scale=100)
+
+
+def _provenance(variable: str, units: str, cadence: str, product: str, **extra) -> dict:
+    """Metadata of the kind an adapter attaches, marked as synthetic."""
+    return {"variable": variable, "units": units, "cadence": cadence, "product": product,
+            "version": "synthetic", "source": "data/synthetic/generators.py", "retrieved": "2026-01-01",
+            "sha256": "synthetic", "time_standard": "UTC", "quality": "synthetic",
+            "spatial_support": {"kind": "synthetic"}, **extra}
+
+
+def year_effects(n_years: int = 25, seed: int = 0) -> np.ndarray:
+    """Standardized good-year / bad-year effects, to make rainfall and greenness move together in tests."""
+    return np.random.default_rng(seed).normal(0, 1, n_years)
+
+
+def ndvi_composites(n_years: int = 24, low_year: int | None = None, depth: float = 0.12, drift_per_year: float = 0.0,
+                    sigma: float = 0.02, cloud: float = 0.05, seed: int = 0, start_year: int = 2001,
+                    effects: np.ndarray | None = None) -> pd.Series:
+    """16-day vegetation-index composites with one growing season a year (peak in July).
+
+    `low_year` lowers that year's April-September greenness by `depth`; `cloud` is the
+    share of composites lost (NaN). Dates restart on 1 January each year, as MODIS composites do.
+    """
+    rng = np.random.default_rng(seed)
+    dates = [pd.Timestamp(year=y, month=1, day=1) + pd.Timedelta(days=16 * k) for y in range(start_year, start_year + n_years) for k in range(23)]
+    idx = pd.DatetimeIndex(dates)
+    doy = idx.day_of_year.to_numpy()
+    season = np.clip(np.sin(np.pi * (doy - 90) / 200), 0, None)  # green from about April to mid-October
+    drawn = rng.normal(0, 0.025, n_years)
+    year_effect = dict(zip(range(start_year, start_year + n_years), drawn if effects is None else 0.03 * effects[:n_years]))
+    values = 0.25 + (0.35 + np.array([year_effect[y] for y in idx.year])) * season
+    values = values + drift_per_year * (idx.year - start_year) + rng.normal(0, sigma, len(idx))
+    if low_year is not None:
+        values = values - depth * season * (idx.year == low_year)
+    values = np.where(rng.random(len(idx)) < cloud, np.nan, np.clip(values, -0.2, 1.0))
+    out = pd.Series(values, index=idx, name="ndvi")
+    out.attrs = _provenance("vegetation_index", "NDVI", "16-day composite", "synthetic vegetation index")
+    return out
+
+
+def daily_rain(n_years: int = 25, low_year: int | None = None, factor: float = 0.4, seed: int = 0,
+               start_year: int = 2001, effects: np.ndarray | None = None) -> pd.Series:
+    """Daily rainfall with a March-September wet season; `low_year` gets `factor` times the usual rain."""
+    rng = np.random.default_rng(seed)
+    idx = pd.date_range(f"{start_year}-01-01", f"{start_year + n_years - 1}-12-31", freq="D")
+    wet = np.clip(np.sin(np.pi * (idx.day_of_year.to_numpy() - 60) / 215), 0.03, None)
+    drawn = rng.gamma(40, 1 / 40, n_years)
+    yearly = dict(zip(range(start_year, start_year + n_years), drawn if effects is None else np.exp(0.2 * effects[:n_years])))
+    values = rng.gamma(0.6, 8, len(idx)) * (rng.random(len(idx)) < 0.5 * wet) * np.array([yearly[y] for y in idx.year])
+    if low_year is not None:
+        values = values * np.where(idx.year == low_year, factor, 1.0)
+    out = pd.Series(values, index=idx, name="rain")
+    out.attrs = _provenance("precipitation", "mm/day", "daily", "synthetic rainfall")
+    return out
+
+
+def monthly_rain(n_years: int = 27, seed: int = 0, start_year: int = 2000, mean: float = 60.0) -> pd.Series:
+    """Monthly rainfall totals (mm) with a summer peak and year-to-year swings."""
+    rng = np.random.default_rng(seed)
+    idx = pd.date_range(f"{start_year}-01-01", periods=12 * n_years, freq="MS")
+    shape = 1 + 0.9 * np.sin(2 * np.pi * (idx.month.to_numpy() - 4) / 12)
+    yearly = np.repeat(rng.gamma(12, 1 / 12, n_years), 12)
+    out = pd.Series(mean * shape * yearly * rng.gamma(6, 1 / 6, len(idx)), index=idx, name="rain")
+    out.attrs = _provenance("precipitation", "mm/month", "monthly", "synthetic rainfall")
+    return out
+
+
+# Months without a solution in the NASA GSFC GRACE/GRACE-FO mascon record (April 2002 to June 2026), read from
+# the product's own list of solution dates. Synthetic records copy this pattern so tests face the real gaps.
+GRACE_MISSING = (
+    "2002-06 2002-07 2003-06 2011-01 2011-06 2012-05 2012-10 2013-03 2013-08 2013-09 2014-02 2014-07 2014-12 "
+    "2015-06 2015-10 2015-11 2016-04 2016-09 2016-10 2017-02 2017-07 2017-08 2017-09 2017-10 2017-11 2017-12 "
+    "2018-01 2018-02 2018-03 2018-04 2018-05 2018-08 2018-09").split()
+
+
+def water_storage(slope_per_year: float = 0.0, rain: pd.Series | None = None, response: float = 0.0, sigma: float = 1.0,
+                  phi: float = 0.5, offset_at_handover: float = 0.0, cells: int = 26, kind: str = "total_water_storage",
+                  seed: int = 0) -> pd.Series:
+    """Monthly water-storage anomaly (cm), April 2002 to June 2026, with the real record's missing months.
+
+    `slope_per_year` is a steady drift. With `rain` and `response`, storage also integrates
+    rainfall departures (cm of storage per 100 mm of rain above average). `phi` sets
+    month-to-month persistence of the noise; `offset_at_handover` adds a step from June 2018.
+    """
+    rng = np.random.default_rng(seed)
+    idx = pd.date_range("2002-04-01", "2026-06-01", freq="MS")
+    t = np.arange(len(idx))
+    noise = np.zeros(len(idx) + 200)
+    for i in range(1, len(noise)):
+        noise[i] = phi * noise[i - 1] + rng.normal(0, sigma)
+    values = slope_per_year * t / 12 + 4 * np.sin(2 * np.pi * t / 12) + noise[200:]
+    if rain is not None and response:
+        departures = (rain - rain.groupby(rain.index.month).transform("mean")).reindex(idx).fillna(0.0)
+        values = values + response * departures.cumsum().to_numpy() / 100.0
+    values = values + offset_at_handover * (idx >= "2018-06-01")
+    out = pd.Series(values, index=idx, name="storage")
+    out[pd.to_datetime(GRACE_MISSING)] = np.nan
+    out.attrs = _provenance("water_storage_anomaly", "cm equivalent water height", "monthly", "synthetic water storage",
+                            storage_kind=kind, resolution_units=cells, min_resolution_units=22, area_km2=12400.0 * cells)
+    return out

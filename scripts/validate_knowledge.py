@@ -18,7 +18,7 @@ KNOWLEDGE = ROOT / "knowledge"
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--scope", choices=["all", "weather"], default="all")
+    parser.add_argument("--scope", choices=["all", "weather", "stories"], default="all")
     args = parser.parse_args()
     problems: list[str] = []
     sources = yaml.safe_load((KNOWLEDGE / "sources.yaml").read_text()) or {}
@@ -26,6 +26,8 @@ def main() -> int:
     procedures = sorted((KNOWLEDGE / "procedures").glob("*/*.yaml"))
     if args.scope == "weather":
         procedures = [p for p in procedures if p.stem.startswith("weather_") or p.stem == "artifact_overlap"]
+    if args.scope == "stories":
+        procedures = [p for p in procedures if p.stem.startswith(("season_", "storage_"))]
     for path in procedures:
         rel = path.relative_to(ROOT)
         data = yaml.safe_load(path.read_text())

@@ -27,7 +27,7 @@ def test_skill_lives_in_its_category_folder():
 
 SINGLE_SERIES = [
     n for n in registry.names()
-    if not n.startswith("weather_") and n not in {
+    if not n.startswith(("weather_", "season_", "storage_")) and n not in {
         "lagged_cross_correlation", "partial_correlation", "rolling_regression", "decoupling_test",
         "cointegration_engle_granger", "johansen", "slope_difference", "independent_record_check",
         "fdr_correction", "chow_test", "seasonal_kruskal", "component_strength", "deseasonalize_stl",

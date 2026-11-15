@@ -1,0 +1,14 @@
+name: season_audit
+category: diagnostics
+description: Check a vegetation record's provenance, value range and that the declared
+  season and year fit it; refuse rather than repair.
+requires:
+- dated_series_with_metadata
+- declared_season
+produces:
+- n_readings
+- start
+- end
+- spatial_support
+- scope
+source: story_policy_v1

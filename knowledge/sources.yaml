@@ -245,3 +245,54 @@ merra_observing_history:
   review: opened_documentation
   accessed: '2026-11-15'
   note: Original MERRA and MERRA-2 must not inherit each other's artifact claims.
+
+story_policy_v1:
+  title: TimeDetective season check and water storage check policy v1
+  kind: house_rule
+  url: docs/story_playbooks.md
+  note: Thresholds, minimum record lengths, the six-months-per-year rule, percentile bands and the wording of conclusions are project policy, not paper-derived guarantees. Paper and provider sources for each step are listed in that document.
+asap_classification_v4:
+  authors: Meroni, M.; Rembold, F.; Urbano, F.; Csak, G.; Lemoine, G.; Kerdiles, H.; Perez-Hoyos, A.
+  title: The warning classification scheme of ASAP - Anomaly hot Spots of Agricultural Production, v4.0
+  kind: technical_report
+  venue: European Commission Joint Research Centre
+  doi: 10.2760/798528
+  url: https://agricultural-production-hotspots.ec.europa.eu/files/asap_warning_classification_v_4_0.pdf
+  accessed: '2026-11-15'
+  review: read_sections_5_1_2_and_5_2
+  note: Supports comparing vegetation accumulated since the start of the season with the same period in earlier years, issuing nothing outside the active season, and treating agreement of a rainfall indicator and a vegetation indicator as stronger than either alone. ASAP works on crop and rangeland masks with pixel phenology and z-scores below -1; this project uses a declared season, no mask, and ranks, so its bands are house rules. ASAP states that vegetation anomalies can have causes other than drought and that automatic warnings need analyst verification.
+rodell_2009:
+  authors: Rodell, M.; Velicogna, I.; Famiglietti, J. S.
+  year: 2009
+  title: Satellite-based estimates of groundwater depletion in India
+  venue: Nature 460, 999-1002
+  doi: 10.1038/nature08238
+  url: https://escholarship.org/content/qt22577805/qt22577805.pdf
+  accessed: '2026-11-15'
+  review: read_repository_copy_full_text
+  note: Groundwater was obtained by subtracting modelled soil water from satellite total water storage and the result was compared with rainfall over the same period (rainfall near normal while storage fell). Reported 4.0 +/- 1.0 cm/yr over Rajasthan, Punjab and Haryana (438,296 km2), August 2002 to October 2008. This project's rainfall comparison is a simpler regression of yearly storage change on rainfall, not the paper's method.
+gsfc_mascon_format:
+  title: NASA GSFC global mascon solution HDF5 format description, RL06v2.0, and GRACE/GRACE-FO Mascons product page
+  kind: official_documentation
+  url: https://earth.gsfc.nasa.gov/geo/data/grace-mascons
+  document: https://earth.gsfc.nasa.gov/sites/default/files/2022-05/gsfc_mascons_hdf5_format_rl06v2.pdf
+  accessed: '2026-11-15'
+  review: read_format_description_in_full_and_product_page
+  note: Defines the file layout, the land mascon code, units (cm equivalent water height, 2004.0-2010.0 mean removed) and the regional uncertainty recipe, which takes 22 mascons (about 300 km) as the approximate spatial resolution. The provider asks users to cite Loomis, Luthcke and Sabaka (2019), J. Geod. 93, 1381-1398, doi:10.1007/s00190-019-01252-y; that paper has not been opened for this project.
+ornl_tesvis_api:
+  title: ORNL DAAC Terrestrial Ecology Subsetting and Visualization Services (TESViS) RESTful Web Service
+  kind: official_documentation
+  doi: 10.3334/ORNLDAAC/1600
+  url: https://modis.ornl.gov/data/modis_webservice.html
+  accessed: '2026-11-15'
+  review: opened_documentation_and_checked_responses
+  note: Subset endpoint returns at most ten composite dates per request and at most 100 km either side of the centre.
+mod13_user_guide_c61:
+  authors: Didan, K.; Barreto Munoz, A.
+  year: 2019
+  title: MODIS Vegetation Index User's Guide (MOD13 Series), Version 3.10, Collection 6.1
+  kind: official_documentation
+  url: https://lpdaac.usgs.gov/documents/621/MOD13_User_Guide_V61.pdf
+  accessed: '2026-11-15'
+  review: read_pixel_reliability_compositing_and_data_layer_sections
+  note: Pixel reliability ranks (0 good, 1 marginal, 2 snow or ice, 3 cloud, -1 fill), NDVI scale 0.0001 and valid range -2000 to 10000. Gives no formal filtering rule; accepting ranks 0 and 1 is this project's choice.

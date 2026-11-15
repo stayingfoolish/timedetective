@@ -1,0 +1,11 @@
+name: storage_handover
+category: changepoint
+description: Test for a break at the declared hand-over between satellite missions
+  and attach it as a caution.
+requires:
+- monthly_storage
+- declared_gap
+produces:
+- break_at_handover
+- conclusion
+source: story_policy_v1

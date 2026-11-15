@@ -1,0 +1,12 @@
+name: storage_audit
+category: diagnostics
+description: Check a water-storage record's provenance, what it measures, region size
+  against the provider's resolution, and record length.
+requires:
+- monthly_series_with_metadata
+produces:
+- storage_kind
+- years
+- longest_gap_months
+- region_resolution_cells
+source: gsfc_mascon_format
