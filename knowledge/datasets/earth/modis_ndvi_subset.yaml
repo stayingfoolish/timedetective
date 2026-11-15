@@ -1,0 +1,27 @@
+name: modis_ndvi_subset
+pack: earth
+title: MODIS Terra 16-day vegetation index (MOD13Q1) area subset from ORNL DAAC
+plain_definition: How green the land surface is, from 250 m satellite pixels composited every 16 days and averaged over a small box around a point. It sees all vegetation in the box, not crops alone.
+variable: 250m_16_days_NDVI, 250m_16_days_pixel_reliability
+units: NDVI, unitless, -0.2 to 1 after the provider scale factor of 0.0001
+provider: NASA LP DAAC product served by the ORNL DAAC subsetting service
+product_id: MOD13Q1 as served by the TESViS API; collection as reported by the service
+cadence: 16-day composite
+analysis_cadence: monthly
+record_start: '2000-02-18'
+spatial_resolution: 250 m pixels; this project averages a declared box of up to 100 km either side of a point
+known_issues:
+  - kind: quality
+    effect: Cloud, snow and poor viewing conditions degrade pixels; rainy seasons lose the most.
+    handling: Keep pixels with reliability rank 0 or 1 only; a composite with fewer than half its pixels kept is treated as missing and is never filled.
+    source: mod13_user_guide_c61
+  - kind: land_cover
+    effect: The box average mixes cropland with grassland, shrubs and trees, and land use can change over the record.
+    handling: Describe it as vegetation in the area; report drift in the seasonal record as a caution; never present it as a crop reading.
+    source: asap_classification_v4
+  - kind: processing
+    effect: The subsetting service limits a request to ten composite dates, so a record is assembled from many responses.
+    handling: Keep every response with its request address and retrieval time in one cached bundle with a checksum.
+    source: ornl_tesvis_api
+companions: [nasa_power_imerg, nasa_power_daily]
+source: ornl_tesvis_api

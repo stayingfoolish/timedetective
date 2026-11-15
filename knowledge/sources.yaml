@@ -7,4 +7,292 @@
 #   title: "..."
 #   venue: "..."
 #   doi: "..."
-{}
+
+precipitation_policy_v2:
+  title: TimeDetective precipitation investigation contract and validation gates
+  kind: house_rule
+  url: docs/precipitation_investigator.md
+  note: Composite procedures, minimum lengths, block sensitivities and safeguards are explicit project policy, not paper-derived universal guarantees.
+politis_romano_1994:
+  authors: Politis, D. N.; Romano, J. P.
+  year: 1994
+  title: The Stationary Bootstrap
+  doi: 10.1080/01621459.1994.10476870
+  url: https://users.ssc.wisc.edu/~bhansen/718/Politis%20Romano.pdf
+  review: opened_primary_pdf_and_primary_abstract
+  note: Scanned PDF has no extracted text; implementation also checked against arch documentation. Does not certify the composite finite-sample tests.
+arch_stationary:
+  title: arch StationaryBootstrap documentation
+  kind: implementation_documentation
+  url: https://arch.readthedocs.io/en/latest/bootstrap/generated/arch.bootstrap.StationaryBootstrap.html
+  review: opened_documentation
+dunning_2016:
+  authors: Dunning, C. M.; Black, E. C. L.; Allan, R. P.
+  year: 2016
+  title: The onset and cessation of seasonal rainfall over Africa
+  doi: 10.1002/2016JD025428
+  url: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016JD025428
+  review: read_method_sections_2_2_1_through_2_2_3
+  note: Uses stage-2 cumulative-anomaly rule within user-declared windows, not full harmonic classification or automatic climatological window selection.
+copernicus_spi:
+  title: EDO and GDO Standardized Precipitation Index factsheet
+  kind: technical_report
+  url: https://drought.emergency.copernicus.eu/data/factsheets/factsheet_spi.pdf
+  review: read_definition_and_method_sections
+  note: Supports gamma-to-normal index definition; project uses SciPy MLE rather than the documented Copernicus L-moment fit.
+idmp_spi:
+  title: Integrated Drought Management Programme SPI guidance
+  kind: official_documentation
+  url: https://www.droughtmanagement.info/standardized-precipitation-index-spi/
+  review: read_record_length_and_drought_event_definition
+scipy_gamma:
+  title: scipy.stats.gamma
+  kind: implementation_documentation
+  url: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gamma.html
+  review: opened_documentation
+scipy_genextreme:
+  title: scipy.stats.genextreme
+  kind: implementation_documentation
+  url: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.genextreme.html
+  review: opened_documentation
+scipy_gof:
+  title: scipy.stats.goodness_of_fit
+  kind: implementation_documentation
+  url: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.goodness_of_fit.html
+  review: read_parameter_refitting_and_Monte_Carlo_method
+statsmodels_multipletests:
+  title: statsmodels.stats.multitest.multipletests
+  kind: implementation_documentation
+  url: https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html
+  review: opened_documentation
+
+weather_policy_v1:
+  title: TimeDetective weather evidence policy v1
+  kind: house_rule
+  url: docs/weather_playbook.md
+  note: Engineering thresholds and conservative claim caps, not a scientific paper. Composite method references are in docs/weather_literature.md.
+power_daily:
+  title: NASA POWER Daily API
+  kind: official_documentation
+  url: https://power.larc.nasa.gov/docs/services/api/temporal/daily/
+  accessed: '2026-11-15'
+  review: opened_documentation
+power_monthly:
+  title: NASA POWER Monthly and Annual API
+  kind: official_documentation
+  url: https://power.larc.nasa.gov/docs/services/api/temporal/monthly/
+  accessed: '2026-11-15'
+  review: opened_documentation
+power_meteorology:
+  title: NASA POWER Meteorological Data Sources and Validation
+  kind: official_documentation
+  url: https://power.larc.nasa.gov/docs/methodology/data/sources_meteorology/
+  accessed: '2026-11-15'
+  review: opened_documentation
+imerg_atbd_2023:
+  authors: Huffman, G. J., and coauthors
+  year: 2023
+  title: Integrated Multi-satellitE Retrievals for GPM (IMERG) Version 07 Algorithm Theoretical Basis Document
+  kind: technical_report
+  url: https://gpm.nasa.gov/sites/default/files/2023-07/IMERG_V07_ATBD_final_230712.pdf
+  review: opened_full_text_selected_sections
+  accessed: '2026-11-15'
+  note: See sections 3.3.3, 3.8, 3.11–3.12 for ancillary inputs, gauge combination and quality. POWER export does not establish the native version.
+hirsch_1982:
+  authors: Hirsch, R. M.; Slack, J. R.; Smith, R. A.
+  year: 1982
+  title: Techniques of Trend Analysis for Monthly Water Quality Data
+  doi: 10.1029/WR018i001p00107
+  url: https://lake.wateratlas.usf.edu/upload/documents/Techniques-of-Trend-Analysis-for-Monthly-Water-Quality-Data.pdf
+  review: opened_full_text_selected_sections
+  accessed: '2026-11-15'
+  note: Season-stratified trend analysis; serial dependence still requires care. Does not certify the weather pipeline.
+zhang_2011:
+  authors: Zhang, X., and coauthors
+  year: 2011
+  title: Indices for monitoring changes in extremes based on daily temperature and precipitation data
+  doi: 10.1002/wcc.147
+  url: https://www.geos.ed.ac.uk/~ghegerl/assets/WIRES_index.pdf
+  review: opened_full_text_selected_sections
+  accessed: '2026-11-15'
+  note: Daily indices and spatial aggregation limitations; not a source for flood or drought attribution.
+schwarz_1978:
+  authors: Schwarz, G.
+  year: 1978
+  title: Estimating the Dimension of a Model
+  url: https://sites.stat.washington.edu/courses/stat527/s14/readings/ann_stat1978.pdf
+  review: opened_full_text
+  accessed: '2026-11-15'
+  note: Model dimension penalty; current weather Gaussian iid rankings are descriptive under persistence.
+wilks_2016:
+  authors: Wilks, D. S.
+  year: 2016
+  title: 'The Stippling Shows Statistically Significant Grid Points: How Research Results are Routinely Overstated and Overinterpreted, and What to Do about It'
+  doi: 10.1175/BAMS-D-15-00267.1
+  url: https://read.nxtbook.com/ametsoc/bams/december2016/essay_thestipplingshows.html
+  review: opened_full_text_selected_sections
+  accessed: '2026-11-15'
+  note: Full testing family matters. Descriptive ranks must not be substituted for valid p-values in FDR.
+nicholson_2017:
+  authors: Nicholson, S. E.
+  year: 2017
+  title: Climate and climatic variability of rainfall over eastern Africa
+  doi: 10.1002/2016RG000544
+  url: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2016RG000544
+  review: opened_full_text_selected_sections
+  accessed: '2026-11-15'
+  note: Region and month matter; MAM/OND are not universal seasons and recovery need not negate a longer trend.
+lyon_dewitt_2012:
+  authors: Lyon, B.; DeWitt, D. G.
+  year: 2012
+  title: A recent and abrupt decline in the East African long rains
+  doi: 10.1029/2011GL050337
+  url: https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2011gl050337
+  review: opened_full_text_selected_sections
+  accessed: '2026-11-15'
+  note: Context for competing step/trend explanations, not a predetermined answer for 2020–2022.
+funk_2015:
+  authors: Funk, C., and coauthors
+  year: 2015
+  title: The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes
+  doi: 10.1038/sdata.2015.66
+  url: https://www.usgs.gov/publications/climate-hazards-infrared-precipitation-stations-a-new-environmental-record-monitoring
+  review: opened_authoritative_abstract_only
+  accessed: '2026-11-15'
+  note: Potential longer-record companion, not downloaded or implemented here.
+gelaro_2017:
+  authors: Gelaro, R., and coauthors
+  year: 2017
+  title: The Modern-Era Retrospective Analysis for Research and Applications, Version 2 (MERRA-2)
+  doi: 10.1175/JCLI-D-16-0758.1
+  url: https://pubmed.ncbi.nlm.nih.gov/32020988/
+  review: opened_bibliographic_record_only
+  accessed: '2026-11-15'
+reichle_2017:
+  authors: Reichle, R. H.; Liu, Q.; Koster, R. D.; Draper, C. S.; Mahanama, S. P. P.; Partyka, G. S.
+  year: 2017
+  title: Land Surface Precipitation in MERRA-2
+  doi: 10.1175/JCLI-D-16-0570.1
+  url: https://ntrs.nasa.gov/citations/82000664252800
+  review: opened_bibliographic_record_only
+  accessed: '2026-11-15'
+  note: Full publisher text blocked; implementation facts taken from POWER documentation, not inferred from this record.
+
+manokhin_2025:
+  authors: "Manokhin, V."
+  year: 2025
+  title: "Mastering Modern Time Series Forecasting: A Comprehensive Guide to Statistical, Machine Learning, and Deep Learning Models in Python"
+  venue: "North Star Academic Press"
+  isbn: "978-1-9194658-3-8"
+  note: >-
+    Secondary source. Cited where the book describes the method and its
+    assumptions; the primary paper for each procedure should replace it as
+    those papers are opened.
+
+scipy_theilslopes:
+  title: scipy.stats.theilslopes
+  kind: implementation_documentation
+  url: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.theilslopes.html
+  review: opened_documentation
+  accessed: '2026-11-15'
+statsmodels_hac:
+  title: Statsmodels robust covariance results
+  kind: implementation_documentation
+  url: https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.get_robustcov_results.html
+  review: opened_documentation
+  accessed: '2026-11-15'
+yue_2002:
+  authors: Yue, S.; Pilon, P.; Phinney, B.; Cavadias, G.
+  year: 2002
+  title: The influence of autocorrelation on the ability to detect trend in hydrological series
+  doi: 10.1002/hyp.1095
+  url: https://onlinelibrary.wiley.com/doi/abs/10.1002/hyp.1095
+  review: opened_abstract_only
+  accessed: '2026-11-15'
+  note: Trend and autocorrelation estimates interact. Does not override repository calibration failures.
+mckee_1993:
+  authors: McKee, T. B.; Doesken, N. J.; Kleist, J.
+  year: 1993
+  title: The Relationship of Drought Frequency and Duration to Time Scales
+  venue: Eighth Conference on Applied Climatology
+  url: https://www.droughtmanagement.info/literature/AMS_Relationship_Drought_Frequency_Duration_Time_Scales_1993.pdf
+  review: opened_full_text_selected_sections
+  accessed: '2026-11-15'
+  note: SPI literature; current empirical percentile anomalies are deliberately not labelled SPI.
+guttman_1999:
+  authors: Guttman, N. B.
+  year: 1999
+  title: 'Accepting the Standardized Precipitation Index: A Calculation Algorithm'
+  doi: 10.1111/j.1752-1688.1999.tb03592.x
+  url: https://onlinelibrary.wiley.com/doi/10.1111/j.1752-1688.1999.tb03592.x
+  review: opened_abstract_only
+  accessed: '2026-11-15'
+  note: Distribution choice and record length affect SPI; retained for future validated SPI implementation.
+venema_2012:
+  authors: Venema, V. K. C., and coauthors
+  year: 2012
+  title: Benchmarking homogenization algorithms for monthly data
+  doi: 10.5194/cp-8-89-2012
+  url: https://cp.copernicus.org/articles/8/89/2012/
+  review: opened_article_landing_page
+  accessed: '2026-11-15'
+  note: Homogeneity benchmarking context; this build screens dated metadata but does not homogenize records.
+merra_observing_history:
+  title: 'MERRA-2: Global Precipitation Time Series'
+  kind: official_documentation
+  year: 2015
+  url: https://gmao.gsfc.nasa.gov/science-snapshots/merra-2-global-precipitation-time-series/
+  review: opened_documentation
+  accessed: '2026-11-15'
+  note: Original MERRA and MERRA-2 must not inherit each other's artifact claims.
+
+story_policy_v1:
+  title: TimeDetective season check and water storage check policy v1
+  kind: house_rule
+  url: docs/story_playbooks.md
+  note: Thresholds, minimum record lengths, the six-months-per-year rule, percentile bands and the wording of conclusions are project policy, not paper-derived guarantees. Paper and provider sources for each step are listed in that document.
+asap_classification_v4:
+  authors: Meroni, M.; Rembold, F.; Urbano, F.; Csak, G.; Lemoine, G.; Kerdiles, H.; Perez-Hoyos, A.
+  title: The warning classification scheme of ASAP - Anomaly hot Spots of Agricultural Production, v4.0
+  kind: technical_report
+  venue: European Commission Joint Research Centre
+  doi: 10.2760/798528
+  url: https://agricultural-production-hotspots.ec.europa.eu/files/asap_warning_classification_v_4_0.pdf
+  accessed: '2026-11-15'
+  review: read_sections_5_1_2_and_5_2
+  note: Supports comparing vegetation accumulated since the start of the season with the same period in earlier years, issuing nothing outside the active season, and treating agreement of a rainfall indicator and a vegetation indicator as stronger than either alone. ASAP works on crop and rangeland masks with pixel phenology and z-scores below -1; this project uses a declared season, no mask, and ranks, so its bands are house rules. ASAP states that vegetation anomalies can have causes other than drought and that automatic warnings need analyst verification.
+rodell_2009:
+  authors: Rodell, M.; Velicogna, I.; Famiglietti, J. S.
+  year: 2009
+  title: Satellite-based estimates of groundwater depletion in India
+  venue: Nature 460, 999-1002
+  doi: 10.1038/nature08238
+  url: https://escholarship.org/content/qt22577805/qt22577805.pdf
+  accessed: '2026-11-15'
+  review: read_repository_copy_full_text
+  note: Groundwater was obtained by subtracting modelled soil water from satellite total water storage and the result was compared with rainfall over the same period (rainfall near normal while storage fell). Reported 4.0 +/- 1.0 cm/yr over Rajasthan, Punjab and Haryana (438,296 km2), August 2002 to October 2008. This project's rainfall comparison is a simpler regression of yearly storage change on rainfall, not the paper's method.
+gsfc_mascon_format:
+  title: NASA GSFC global mascon solution HDF5 format description, RL06v2.0, and GRACE/GRACE-FO Mascons product page
+  kind: official_documentation
+  url: https://earth.gsfc.nasa.gov/geo/data/grace-mascons
+  document: https://earth.gsfc.nasa.gov/sites/default/files/2022-05/gsfc_mascons_hdf5_format_rl06v2.pdf
+  accessed: '2026-11-15'
+  review: read_format_description_in_full_and_product_page
+  note: Defines the file layout, the land mascon code, units (cm equivalent water height, 2004.0-2010.0 mean removed) and the regional uncertainty recipe, which takes 22 mascons (about 300 km) as the approximate spatial resolution. The provider asks users to cite Loomis, Luthcke and Sabaka (2019), J. Geod. 93, 1381-1398, doi:10.1007/s00190-019-01252-y; that paper has not been opened for this project.
+ornl_tesvis_api:
+  title: ORNL DAAC Terrestrial Ecology Subsetting and Visualization Services (TESViS) RESTful Web Service
+  kind: official_documentation
+  doi: 10.3334/ORNLDAAC/1600
+  url: https://modis.ornl.gov/data/modis_webservice.html
+  accessed: '2026-11-15'
+  review: opened_documentation_and_checked_responses
+  note: Subset endpoint returns at most ten composite dates per request and at most 100 km either side of the centre.
+mod13_user_guide_c61:
+  authors: Didan, K.; Barreto Munoz, A.
+  year: 2019
+  title: MODIS Vegetation Index User's Guide (MOD13 Series), Version 3.10, Collection 6.1
+  kind: official_documentation
+  url: https://lpdaac.usgs.gov/documents/621/MOD13_User_Guide_V61.pdf
+  accessed: '2026-11-15'
+  review: read_pixel_reliability_compositing_and_data_layer_sections
+  note: Pixel reliability ranks (0 good, 1 marginal, 2 snow or ice, 3 cloud, -1 fill), NDVI scale 0.0001 and valid range -2000 to 10000. Gives no formal filtering rule; accepting ranks 0 and 1 is this project's choice.

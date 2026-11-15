@@ -1,0 +1,9 @@
+name: gap_fill
+category: transforms
+description: Fills short gaps by interpolation, optionally around the mean seasonal cycle; refuses long
+  gaps.
+requires:
+- regular_spacing
+produces:
+- no_missing
+source: manokhin_2025

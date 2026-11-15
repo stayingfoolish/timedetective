@@ -1,0 +1,9 @@
+name: detrend_linear
+category: transforms
+description: Residuals from a least-squares straight line.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- detrended
+source: manokhin_2025

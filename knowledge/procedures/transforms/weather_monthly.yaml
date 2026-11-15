@@ -1,0 +1,6 @@
+name: weather_monthly
+category: transforms
+description: Calendar-aware precipitation integration and weather averaging; mark incomplete months missing.
+requires: [audited_weather_series]
+produces: [conversion, units, incomplete_months, n_months, gap_filling]
+source: power_daily

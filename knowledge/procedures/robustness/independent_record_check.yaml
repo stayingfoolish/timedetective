@@ -1,0 +1,10 @@
+name: independent_record_check
+category: robustness
+description: Compares the trends of two independent records of the same quantity.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- records_agree
+- same_sign
+source: TODO

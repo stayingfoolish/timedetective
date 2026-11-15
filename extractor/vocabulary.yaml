@@ -1,0 +1,652 @@
+# Vocabulary map for the literature extractor.
+#
+# Purpose: papers name the same procedure many ways. The extractor normalizes a
+# phrase found in a paper to one registry name (or to a backlog entry) using this file.
+#
+# Reference vocabulary: Manokhin (2025), "Mastering Modern Time Series Forecasting"
+# (sources.yaml: manokhin_2025). `in_book` lists the terms that occur verbatim in the
+# book's text (checked by string search on 2026-11-14, case-insensitive). `not_in_book`
+# lists terms seen in the applied literature that the book does not use; they are kept
+# so the extractor can still match them, and they mark where the book cannot settle usage.
+#
+# Rules for the extractor:
+#   1. Match the longest term first; short acronyms (MK, PW, FDR, ITA, SSA, EMD) only
+#      count when the paper defines them.
+#   2. A phrase that matches nothing is recorded as "unmapped" with its sentence, never guessed.
+#   3. A match under `unregistered` goes to the backlog: the method exists in the
+#      literature but no skill implements it yet.
+#   4. Ambiguous terms are listed at the bottom and must be resolved from context.
+
+registered:
+  record_summary:
+    in_book:
+    - record length
+    - sample size
+    not_in_book:
+    - period of record
+    - data availability
+  gap_audit:
+    in_book:
+    - missing values
+    - missing data
+    not_in_book:
+    - data gaps
+  outlier_screen:
+    in_book:
+    - outlier detection
+    - median absolute deviation
+    not_in_book:
+    - Hampel filter
+    - Hampel identifier
+  autocorrelation:
+    in_book:
+    - autocorrelation function
+    - ACF
+    - serial correlation
+    - Ljung-Box
+    - persistence
+    - serial dependence
+    not_in_book:
+    - lag-1 autocorrelation
+  stationarity:
+    in_book:
+    - Augmented Dickey-Fuller
+    - ADF test
+    - KPSS test
+    not_in_book:
+    - unit root test
+    - stationarity test
+  seasonality_acf:
+    in_book:
+    - seasonal lag
+    - seasonal autocorrelation
+    not_in_book:
+    - ACF peak
+  seasonality_periodogram:
+    in_book:
+    - periodogram
+    - spectral analysis
+    - Fisher's g-test
+    - power spectrum
+    not_in_book:
+    - Lomb-Scargle
+  seasonal_kruskal:
+    in_book:
+    - Kruskal-Wallis
+    not_in_book:
+    - Friedman test
+    - seasonality test
+  component_strength:
+    in_book:
+    - trend strength
+    - seasonal strength
+    not_in_book:
+    - strength of seasonality
+  permutation_entropy:
+    in_book:
+    - permutation entropy
+    - ordinal patterns
+  residual_diagnostics:
+    in_book:
+    - residual diagnostics
+    - Ljung-Box
+    - Breusch-Pagan
+    - heteroscedasticity
+    - white noise residuals
+    not_in_book:
+    - Jarque-Bera
+  regularize:
+    in_book:
+    - resampling
+    - temporal aggregation
+    not_in_book:
+    - monthly mean
+    - monthly composite
+  gap_fill:
+    in_book:
+    - imputation
+    - interpolation
+    - linear interpolation
+    not_in_book:
+    - gap filling
+    - gap-filling
+  anomaly:
+    in_book:
+    - anomalies
+    - climatology
+    - seasonal means
+    not_in_book:
+    - deseasonalized anomalies
+    - departure from the mean
+  deseasonalize_stl:
+    in_book:
+    - STL
+    - seasonal-trend decomposition
+    - seasonal adjustment
+    - deseasonalize
+    - seasonal decomposition
+  deseasonalize_mstl:
+    in_book:
+    - MSTL
+    - multiple seasonalities
+  deseasonalize_harmonic:
+    in_book:
+    - Fourier terms
+    - harmonic regression
+    - sinusoidal
+    not_in_book:
+    - harmonic analysis
+    - harmonic model
+  moving_average:
+    in_book:
+    - moving average
+    - rolling mean
+    not_in_book:
+    - running mean
+  loess_trend:
+    in_book:
+    - LOESS
+    - LOWESS
+    - locally weighted
+  hp_filter:
+    in_book:
+    - Hodrick-Prescott
+    - HP filter
+  difference:
+    in_book:
+    - differencing
+    - first difference
+  detrend_linear:
+    in_book:
+    - detrending
+    - detrend
+    not_in_book:
+    - linear detrending
+  prewhiten:
+    in_book: []
+    not_in_book:
+    - prewhitening
+    - pre-whitening
+    - PW
+  exceedance_counts:
+    in_book: []
+    not_in_book:
+    - threshold exceedance
+    - number of days above
+    - exceedance
+    - hot days
+  ols_trend:
+    in_book:
+    - linear regression
+    - least squares
+    - linear trend
+    - ordinary least squares
+    - OLS
+    not_in_book:
+    - linear least square
+  ols_trend_hac:
+    in_book:
+    - Newey-West
+    - HAC
+    - heteroskedasticity and autocorrelation consistent
+    not_in_book:
+    - autocorrelation-robust standard errors
+  sens_slope:
+    in_book: []
+    not_in_book:
+    - Sen's slope
+    - Theil-Sen
+    - Sen slope estimator
+    - Theil-Sen estimator
+    - TSE
+    - Kendall-Theil robust line
+  mann_kendall:
+    in_book: []
+    not_in_book:
+    - Mann-Kendall
+    - MK test
+    - M-K test
+    - MKT
+    - Kendall's tau trend test
+  mann_kendall_hamed_rao:
+    in_book: []
+    not_in_book:
+    - modified Mann-Kendall
+    - Hamed and Rao
+    - variance correction
+    - MMK
+    - mMK
+  mann_kendall_prewhitened:
+    in_book: []
+    not_in_book:
+    - prewhitened Mann-Kendall
+    - MK-PW
+    - pre-whitening Mann-Kendall
+    - von Storch prewhitening
+  mann_kendall_tfpw:
+    in_book: []
+    not_in_book:
+    - trend-free prewhitening
+    - TFPW
+    - TFPW-MK
+  seasonal_kendall:
+    in_book: []
+    not_in_book:
+    - seasonal Mann-Kendall
+    - seasonal Kendall
+    - SMK
+  block_bootstrap_slope:
+    in_book: []
+    not_in_book:
+    - block bootstrap
+    - moving block bootstrap
+    - bootstrap confidence interval
+  linearity_check:
+    in_book:
+    - nonlinear trend
+    - quadratic trend
+    not_in_book:
+    - polynomial trend
+  pettitt:
+    in_book: []
+    not_in_book:
+    - Pettitt test
+    - Pettitt's test
+    - Mann-Whitney-Pettitt
+  cusum:
+    in_book:
+    - cumulative sum
+    not_in_book:
+    - CUSUM
+    - cumulative deviation
+  chow_test:
+    in_book:
+    - Chow test
+    not_in_book:
+    - structural break test
+  segmented_regression:
+    in_book:
+    - piecewise linear
+    - turning point
+    not_in_book:
+    - segmented regression
+    - piecewise regression
+    - breakpoint regression
+  step_vs_trend:
+    in_book:
+    - level shift
+    - regime shift
+    not_in_book:
+    - step change
+    - step trend
+    - abrupt change
+  lagged_cross_correlation:
+    in_book:
+    - cross-correlation
+    - lead-lag
+    not_in_book:
+    - lagged correlation
+    - time-lagged correlation
+  partial_correlation:
+    in_book: []
+    not_in_book:
+    - partial correlation
+  rolling_regression:
+    in_book:
+    - sliding window
+    not_in_book:
+    - rolling regression
+    - moving-window regression
+  decoupling_test:
+    in_book:
+    - divergence
+    - residual trend
+    not_in_book:
+    - decoupling
+    - RESTREND
+    - double mass curve
+  cointegration_engle_granger:
+    in_book:
+    - cointegration
+    - Engle-Granger
+    - long-run equilibrium
+  johansen:
+    in_book:
+    - Johansen test
+    - Johansen
+  slope_difference:
+    in_book: []
+    not_in_book:
+    - difference in trends
+    - trend difference
+    - urban-rural difference
+  effective_sample_size:
+    in_book:
+    - effective sample size
+    - effective degrees of freedom
+    not_in_book:
+    - equivalent sample size
+  minimum_detectable_trend:
+    in_book: []
+    not_in_book:
+    - minimum detectable trend
+    - trend detectability
+    - detection limit
+  record_length_needed:
+    in_book: []
+    not_in_book:
+    - number of years to detect
+    - time of emergence
+    - years required to detect
+  method_agreement:
+    in_book:
+    - multiple methods
+    not_in_book:
+    - multi-method
+    - method comparison
+  independent_record_check:
+    in_book:
+    - ground truth
+    not_in_book:
+    - validation against in situ
+    - in situ validation
+    - cross-validation with station data
+  period_sensitivity:
+    in_book: []
+    not_in_book:
+    - sensitivity to start year
+    - start and end date
+    - period sensitivity
+    - end-point sensitivity
+  fdr_correction:
+    in_book: []
+    not_in_book:
+    - false discovery rate
+    - FDR
+    - Benjamini-Hochberg
+    - field significance
+    - multiple testing
+  standardized_anomaly:
+    in_book: []
+    not_in_book: [standardized anomaly, z-score anomaly, NDVI anomaly, percent of average, departure from average]
+  condition_index:
+    in_book: []
+    not_in_book: [Vegetation Condition Index, VCI]
+  savgol_smooth:
+    in_book: []
+    not_in_book: [Savitzky-Golay, SG filter]
+  seasonal_rank:
+    in_book: []
+    not_in_book: [rank among seasons, lowest on record, percentile of the season, seasonal cumulative NDVI]
+  rolling_accumulation:
+    in_book: []
+    not_in_book: [accumulated precipitation, 12-month precipitation, antecedent precipitation, SPI accumulation period]
+  cumulative_departure:
+    in_book: []
+    not_in_book: [cumulative departure from the mean, cumulative rainfall departure, CRD, accumulated deviations, residual mass curve]
+
+unregistered:
+  pelt:
+    in_book:
+    - PELT
+    - pruned exact linear time
+    - changepoint detection
+  bai_perron:
+    in_book:
+    - Bai-Perron
+    not_in_book:
+    - Bai and Perron
+    - multiple structural breaks
+  bfast:
+    in_book: []
+    not_in_book:
+    - BFAST
+    - Breaks For Additive Season and Trend
+  page_hinkley:
+    in_book:
+    - Page-Hinkley
+  adwin:
+    in_book:
+    - ADWIN
+    - adaptive windowing
+  markov_switching:
+    in_book:
+    - Markov-switching
+    - regime-switching
+    - hidden Markov model
+  matrix_profile:
+    in_book:
+    - matrix profile
+    - motif discovery
+    - discord
+  hurst_exponent:
+    in_book:
+    - Hurst exponent
+    - rescaled range
+    - long-range dependence
+    - long memory
+    not_in_book:
+    - Hurst index
+  spearman_rho_trend:
+    in_book: []
+    not_in_book:
+    - Spearman's rho
+    - Spearman rho test
+  innovative_trend_analysis:
+    in_book: []
+    not_in_book:
+    - innovative trend analysis
+    - ITA
+  cramer_von_mises_changepoint:
+    in_book: []
+    not_in_book:
+    - Cramér von Mises
+    - Cramer-von Mises
+  mood_test:
+    in_book: []
+    not_in_book:
+    - Mood test
+  regression_with_covariates:
+    in_book:
+    - MLR
+    - ARIMAX
+    - dynamic regression
+    - exogenous variables
+    not_in_book:
+    - multiple linear regression
+  instrument_offset_term:
+    in_book: []
+    not_in_book:
+    - instrument-dependent offsets
+    - level shift term
+    - intervention analysis
+  granger_causality:
+    in_book:
+    - Granger causality
+    not_in_book:
+    - Granger-causes
+  transfer_entropy:
+    in_book:
+    - transfer entropy
+  mutual_information:
+    in_book:
+    - mutual information
+  wavelet:
+    in_book:
+    - wavelet transform
+    - continuous wavelet
+    not_in_book:
+    - wavelet coherence
+  ssa:
+    in_book:
+    - singular spectrum analysis
+    - SSA
+  emd:
+    in_book:
+    - empirical mode decomposition
+    - EMD
+    - variational mode decomposition
+  dtw_clustering:
+    in_book:
+    - dynamic time warping
+    - DTW
+    - time series clustering
+  spectral_entropy:
+    in_book:
+    - spectral entropy
+    - sample entropy
+    - multiscale entropy
+  dominance_analysis:
+    in_book:
+    - relative importance
+    not_in_book:
+    - dominance analysis
+  spatial_bayesian_trend:
+    in_book: []
+    not_in_book:
+    - hierarchical Bayesian
+    - Gaussian random field
+  # added after the second search round
+  walker_test:
+    in_book: []
+    not_in_book:
+    - Walker test
+    - minimum local p value
+  count_regression_trend:
+    in_book:
+    - count data
+    not_in_book:
+    - Poisson regression
+    - negative binomial regression
+  isotonic_regression:
+    in_book: []
+    not_in_book:
+    - isotonic regression
+  fractional_integration:
+    in_book:
+    - ARFIMA
+    - fractionally integrated
+    - long-term persistence
+    not_in_book:
+    - fractional integration
+    - LTP
+  homogeneity_tests:
+    in_book: []
+    not_in_book:
+    - standard normal homogeneity test
+    - SNHT
+    - Buishand
+    - von Neumann ratio
+    - homogenization
+  unit_root_with_break:
+    in_book:
+    - Perron test
+    not_in_book:
+    - Kim-Perron
+    - unit root test with structural break
+    - Zivot-Andrews
+  co_trending:
+    in_book: []
+    not_in_book:
+    - co-trending
+    - co-shifting
+    - common trend
+  beast:
+    in_book: []
+    not_in_book:
+    - BEAST
+    - Bayesian change-point
+    - Bayesian changepoint
+  phenology_metrics:
+    in_book:
+    - Savitzky-Golay
+    not_in_book:
+    - start of season
+    - end of season
+    - length of season
+    - double logistic
+  precipitation_accumulation:
+    in_book: []
+    not_in_book:
+    - accumulated precipitation
+    - cumulative precipitation anomaly
+    - integrated precipitation anomalies
+  information_flow:
+    in_book: []
+    not_in_book:
+    - Liang-Kleeman information flow
+    - LKIF
+  pcmci:
+    in_book: []
+    not_in_book:
+    - PCMCI
+    - momentary conditional independence
+    - causal discovery
+  likelihood_categories:
+    in_book:
+    - likely
+    not_in_book:
+    - somewhat likely
+    - about as likely as not
+  # added 2026-11-15 with the season-anomaly procedures (terms not checked against the book)
+  spi:
+    in_book: []
+    not_in_book: [Standardized Precipitation Index, SPI, SPI-3, SPI-12]
+  crop_mask_aggregation:
+    in_book: []
+    not_in_book: [crop mask, cropland mask, crop calendar]
+  warning_classification:
+    in_book: []
+    not_in_book: [warning level, alarm, hot spot, trigger threshold]
+
+ambiguous:
+- term: modified Mann-Kendall
+  could_mean:
+  - mann_kendall_hamed_rao
+  - mann_kendall_prewhitened
+  - mann_kendall_tfpw
+  resolve_by: the cited method paper (Hamed and Rao; Yue and Wang; von Storch) or the words variance correction
+    / prewhitening
+- term: prewhitening
+  could_mean:
+  - prewhiten
+  - mann_kendall_prewhitened
+  - mann_kendall_tfpw
+  resolve_by: whether the trend was removed first (trend-free) and whether a test followed
+- term: trend
+  could_mean:
+  - ols_trend
+  - sens_slope
+  - loess_trend
+  - stl trend component
+  resolve_by: whether a slope with units, a smoothed curve, or a decomposition component is reported
+- term: anomaly
+  could_mean:
+  - anomaly (departure from climatology)
+  - outlier_screen (unusual observation)
+  resolve_by: climate papers mean the former; the book and monitoring papers usually mean the latter
+- term: change point / breakpoint / regime shift / step change
+  could_mean:
+  - pettitt
+  - cusum
+  - segmented_regression
+  - step_vs_trend
+  - pelt
+  - bfast
+  resolve_by: the named test; if none is named, record as unmapped
+- term: significant
+  could_mean:
+  - a p-value below a level
+  - field significance after multiple testing
+  resolve_by: whether a multiple-testing correction is described
+- term: detrending
+  could_mean:
+  - detrend_linear
+  - difference
+  - deseasonalize_stl trend removal
+  resolve_by: the stated method
+- term: persistence
+  could_mean:
+  - autocorrelation (short memory)
+  - hurst_exponent (long memory)
+  resolve_by: whether AR(1) or a Hurst parameter is estimated

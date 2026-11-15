@@ -1,0 +1,12 @@
+name: condition_index
+category: transforms
+description: Each value scaled between the lowest and highest ever seen at that point of the cycle (the form of the Vegetation Condition Index).
+requires:
+- regular_spacing
+- known_period
+- comparable_years
+produces:
+- condition_series
+- latest_index
+- n_cycles
+source: TODO

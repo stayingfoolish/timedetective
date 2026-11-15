@@ -1,0 +1,12 @@
+name: cusum
+category: changepoint
+description: CUSUM test that the mean is constant, with the point of largest departure.
+requires:
+- regular_spacing
+- no_missing
+- detrended
+produces:
+- break_detected
+- break_time
+- p_value
+source: TODO

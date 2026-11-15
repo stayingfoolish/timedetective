@@ -1,0 +1,36 @@
+name: water_storage_check
+question: Is the water stored in and under this region changing, and does the change follow rainfall?
+domain: earth
+start: audit
+nodes:
+  - id: audit
+    procedure: storage_audit
+    parameters_json: '{"not_answered":"$not_answered"}'
+  - {id: annual, procedure: storage_annual}
+  - id: trend
+    procedure: storage_trend
+    input: annual
+    parameters_json: '{"annual_values":"$annual_values","audit_values":"$audit_values"}'
+  - id: handover
+    procedure: storage_handover
+    parameters_json: '{"trend_values":"$trend_values","gap_start":"$gap_start","gap_end":"$gap_end"}'
+  - id: rainfall
+    procedure: storage_rainfall
+    input: annual
+    parameters_json: '{"rainfall":"$rainfall","prior_values":"$handover_values","soil_wetness":"$soil_wetness"}'
+  - {id: described, terminal: claim}
+  - {id: refused, terminal: refusal}
+edges:
+  # A region smaller than the product resolves, or a record that is too short, ends here.
+  - {id: audit_ok, origin: audit, target: annual, outcome: ok, domain: earth, source: gsfc_mascon_format}
+  - {id: audit_failed, origin: audit, target: refused, outcome: refused, domain: earth, source: gsfc_mascon_format}
+  - {id: annual_ok, origin: annual, target: trend, outcome: ok, domain: earth, source: story_policy_v1}
+  - {id: annual_failed, origin: annual, target: refused, outcome: refused, domain: earth, source: story_policy_v1}
+  - {id: trend_ok, origin: trend, target: handover, outcome: ok, domain: earth, source: story_policy_v1}
+  - {id: trend_failed, origin: trend, target: refused, outcome: refused, domain: earth, source: story_policy_v1}
+  # The two missions are separated by an 11-month gap; an out-of-the-ordinary change across it is flagged before rainfall is considered.
+  - {id: handover_ok, origin: handover, target: rainfall, outcome: ok, domain: earth, source: story_policy_v1}
+  - {id: handover_failed, origin: handover, target: refused, outcome: refused, domain: earth, source: story_policy_v1}
+  # Compare the change with rainfall over the same period, as the reference study of north-west India did.
+  - {id: rainfall_ok, origin: rainfall, target: described, outcome: ok, domain: earth, source: rodell_2009}
+  - {id: rainfall_unavailable, origin: rainfall, target: described, outcome: refused, domain: earth, source: story_policy_v1}

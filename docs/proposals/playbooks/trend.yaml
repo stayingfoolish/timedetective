@@ -1,0 +1,51 @@
+# DRAFT, not loaded. Is this changing, and how fast? Includes the record-length gate.
+name: trend
+question: Is this series changing, and how fast?
+domain: core
+start: record_summary
+nodes:
+  - {id: record_summary, procedure: record_summary}
+  - {id: regularize, procedure: regularize}
+  - {id: gap_audit, procedure: gap_audit}
+  - {id: gap_fill, procedure: gap_fill}
+  - {id: seasonality, procedure: seasonality_periodogram}
+  - {id: deseasonalize, procedure: deseasonalize_stl}
+  - {id: slope, procedure: sens_slope, input: deseasonalized}
+  - {id: detrend, procedure: detrend_linear, input: deseasonalized}
+  - {id: autocorrelation, procedure: autocorrelation, input: detrended}
+  - {id: detectability, procedure: minimum_detectable_trend, input: deseasonalized}
+  - {id: test_independent, procedure: mann_kendall, input: deseasonalized}
+  - {id: test_autocorrelated, procedure: mann_kendall_prewhitened, input: deseasonalized}
+  - {id: method_agreement, procedure: method_agreement, input: deseasonalized}
+  - {id: period_sensitivity, procedure: period_sensitivity, input: deseasonalized}
+  - {id: refuse_gaps, terminal: refusal}
+  - {id: claim_descriptive, terminal: claim}
+  - {id: claim_significant, terminal: claim}
+  - {id: claim_robust, terminal: claim}
+edges:
+  - {from: record_summary, to: regularize, when: {property: regular, op: is_false}, source: TODO}
+  - {from: record_summary, to: gap_audit, when: {property: regular, op: is_true}, source: TODO}
+  - {from: regularize, to: gap_audit, source: TODO}
+  - {from: gap_audit, to: gap_fill, when: {property: has_gaps, op: is_true}, source: TODO}
+  - {from: gap_audit, to: seasonality, when: {property: has_gaps, op: is_false}, source: TODO}
+  - {from: gap_fill, to: refuse_gaps, when: {property: gap_fill, op: refused}, source: TODO}
+  - {from: gap_fill, to: seasonality, source: TODO}
+  - {from: seasonality, to: deseasonalize, when: {property: seasonal, op: is_true}, source: TODO}
+  - {from: seasonality, to: slope, when: {property: seasonal, op: is_false}, source: TODO}
+  - {from: deseasonalize, to: slope, source: TODO}
+  - {from: slope, to: detrend, source: TODO}
+  - {from: detrend, to: autocorrelation, source: TODO}
+  - {from: autocorrelation, to: detectability, source: TODO}
+  # Gate: a slope smaller than the record can detect stays descriptive.
+  - {from: detectability, to: claim_descriptive, when: {property: slope_below_minimum_detectable, op: is_true}, source: TODO}
+  - {from: detectability, to: test_autocorrelated, when: {property: autocorrelated, op: is_true}, source: TODO}
+  - {from: detectability, to: test_independent, when: {property: autocorrelated, op: is_false}, source: TODO}
+  - {from: test_independent, to: claim_descriptive, when: {property: trend_detected, op: is_false}, source: TODO}
+  - {from: test_autocorrelated, to: claim_descriptive, when: {property: trend_detected, op: is_false}, source: TODO}
+  - {from: test_independent, to: method_agreement, when: {property: trend_detected, op: is_true}, source: TODO}
+  - {from: test_autocorrelated, to: method_agreement, when: {property: trend_detected, op: is_true}, source: TODO}
+  - {from: method_agreement, to: claim_significant, when: {property: methods_agree, op: is_false}, source: TODO}
+  - {from: method_agreement, to: period_sensitivity, when: {property: methods_agree, op: is_true}, source: TODO}
+  - {from: period_sensitivity, to: claim_significant, when: {property: sign_stable, op: is_false}, source: TODO}
+  # "robust" also needs an independent record; without one the critic should cap at significant.
+  - {from: period_sensitivity, to: claim_robust, when: {property: sign_stable, op: is_true}, source: TODO}

@@ -1,0 +1,10 @@
+name: period_sensitivity
+category: robustness
+description: Recomputes the slope after trimming the start and end of the record.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- sign_stable
+- share_same_sign
+source: TODO

@@ -1,0 +1,13 @@
+name: seasonal_kendall
+category: trend
+description: 'Seasonal Mann-Kendall: tests each phase of the cycle and combines them.'
+requires:
+- regular_spacing
+- no_missing
+- known_period
+produces:
+- trend_detected
+- direction
+- p_value
+- slope
+source: TODO

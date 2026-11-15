@@ -1,0 +1,12 @@
+name: stationarity
+category: diagnostics
+description: ADF and KPSS run as a pair; classifies the series as stationary, unit_root, conflict or inconclusive.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- stationarity
+- adf_p
+- kpss_p
+- tests_agree
+source: manokhin_2025

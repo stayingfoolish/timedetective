@@ -1,0 +1,82 @@
+# DRAFT, not loaded. Is the water stored under this region changing, and does the change follow rainfall?
+#
+# Scope: information only, for the region around any place the data covers. The playbook ends in a
+# description of the change in storage and whether it moves with accumulated rainfall. It never names
+# a cause (pumping, irrigation, policy), never gives a water-table depth, and never says how long a
+# supply will last; those need well records, aquifer properties and withdrawal data this system does not have.
+#
+# Inputs, prepared by the earth pack before this playbook runs:
+#   storage   groundwater storage anomaly, monthly: GRACE/GRACE-FO total water storage minus modelled
+#             soil moisture, snow and surface water (GLDAS). The subtraction and its error belong to the adapter.
+#   rainfall  monthly precipitation over the same region (GPM IMERG).
+#   wells     optional independent record (observation-well levels), if one is supplied.
+#
+# Two properties of the record shape the path:
+#   - an 11-month gap between the two missions (mid-2017 to mid-2018), so the seasonal cycle is removed
+#     with a method that tolerates gaps and the tests run on annual means;
+#   - a region smaller than the satellite can resolve gives a number that mostly describes its
+#     neighbours, so the dataset card must refuse regions below its stated minimum area before this starts.
+name: groundwater_check
+question: Is groundwater storage in this region changing, and does the change follow rainfall?
+domain: earth
+start: record_summary
+nodes:
+  - {id: record_summary, procedure: record_summary, input: storage}
+  - {id: gap_audit, procedure: gap_audit, input: storage}
+  - {id: deseasonalize, procedure: deseasonalize_harmonic, input: storage}        # tolerates the mission gap
+  - {id: annual, procedure: regularize, input: storage_deseasonalized, params: {freq: YS, how: mean, min_count: 6}}
+  - {id: autocorrelation, procedure: autocorrelation, input: storage_annual_detrended}
+  - {id: slope, procedure: sens_slope, input: storage_annual}
+  - {id: detectable, procedure: minimum_detectable_trend, input: storage_annual}
+  - {id: test_plain, procedure: mann_kendall, input: storage_annual}
+  - {id: test_red, procedure: mann_kendall_prewhitened, input: storage_annual}
+  - {id: mission_offset, procedure: chow_test, input: storage_annual, params: {at: mission_change}}  # artifact check
+  - {id: shape, procedure: linearity_check, input: storage_annual}                 # steady, or speeding up / slowing
+  - {id: period, procedure: period_sensitivity, input: storage_annual}
+  - {id: rain_accumulated, procedure: rolling_accumulation, input: rainfall_anomaly, params: {window: 24}}
+  - {id: rain_departure, procedure: cumulative_departure, input: rainfall}
+  - {id: lag, procedure: lagged_cross_correlation}                                 # storage against accumulated rainfall
+  - {id: departed, procedure: decoupling_test}                                     # did storage stop following rainfall
+  - {id: wells_agree, procedure: independent_record_check}
+  - {id: refuse_short_record, terminal: refusal}
+  - {id: refuse_gaps, terminal: refusal}
+  - {id: refuse_mission_offset, terminal: refusal}       # the change sits at the mission hand-over
+  - {id: describe_no_detectable_change, terminal: claim} # with the smallest change the record could have shown
+  - {id: describe_change_follows_rain, terminal: claim}  # storage changing, and moving with accumulated rainfall
+  - {id: describe_change_departs_from_rain, terminal: claim}  # storage changing while rainfall is near its average
+  - {id: describe_change_only, terminal: claim}          # storage changing; rainfall comparison not possible
+edges:
+  - {from: record_summary, to: refuse_short_record, when: {property: record_summary, op: refused}, source: TODO}
+  - {from: record_summary, to: gap_audit, source: TODO}
+  - {from: gap_audit, to: deseasonalize, source: TODO}
+  - {from: deseasonalize, to: annual, source: TODO}
+  # A year needs at least six months of data to count; fewer than ten usable years is a refusal.
+  - {from: annual, to: refuse_gaps, when: {property: n_missing, op: gt, value: 2}, source: TODO}
+  - {from: annual, to: slope, source: TODO}
+  - {from: slope, to: detectable, source: TODO}
+  - {from: detectable, to: autocorrelation, source: TODO}
+  - {from: autocorrelation, to: test_red, when: {property: autocorrelated, op: eq, value: true}, source: TODO}   # supported by docs/calibration.md, which is not yet a registered source
+  - {from: autocorrelation, to: test_plain, when: {property: autocorrelated, op: eq, value: false}, source: TODO}
+  - {from: test_plain, to: describe_no_detectable_change, when: {property: trend_detected, op: eq, value: false}, source: TODO}
+  - {from: test_red, to: describe_no_detectable_change, when: {property: trend_detected, op: eq, value: false}, source: TODO}
+  - {from: test_plain, to: mission_offset, when: {property: trend_detected, op: eq, value: true}, source: TODO}
+  - {from: test_red, to: mission_offset, when: {property: trend_detected, op: eq, value: true}, source: TODO}
+  # A break exactly at the hand-over between missions may be an instrument offset, not water.
+  - {from: mission_offset, to: refuse_mission_offset, when: {property: break_detected, op: eq, value: true}, source: TODO}
+  - {from: mission_offset, to: shape, source: TODO}
+  - {from: shape, to: period, source: TODO}
+  - {from: period, to: rain_accumulated, source: TODO}
+  - {from: rain_accumulated, to: describe_change_only, when: {property: rolling_accumulation, op: refused}, source: TODO}
+  - {from: rain_accumulated, to: rain_departure, source: TODO}
+  - {from: rain_departure, to: lag, source: TODO}
+  - {from: lag, to: departed, source: TODO}
+  - {from: departed, to: describe_change_departs_from_rain, when: {property: decoupled, op: eq, value: true}, source: TODO}
+  - {from: departed, to: describe_change_follows_rain, when: {property: decoupled, op: eq, value: false}, source: TODO}
+  # If a well record is supplied, any claim ending is checked against it; disagreement is reported, not hidden.
+  - {from: describe_change_follows_rain, to: wells_agree, when: {property: wells, op: supplied}, source: TODO}
+  - {from: describe_change_departs_from_rain, to: wells_agree, when: {property: wells, op: supplied}, source: TODO}
+open_questions:
+  - The accumulation window (24 months here) differs by aquifer; papers use 12 to 60 months. Should the playbook search a range and report the best, with a correction for the search?
+  - Annual means leave about 22 points. Is the prewhitened test's false-positive rate still near 5% at that length? Not yet in the calibration suite.
+  - The error of the GLDAS subtraction is not carried into the slope's uncertainty.
+  - Minimum region area is a dataset-card value and needs a source; published figures range from about 63,000 to 200,000 km2.

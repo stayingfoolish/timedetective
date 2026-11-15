@@ -1,0 +1,13 @@
+name: mann_kendall
+category: trend
+description: Original Mann-Kendall test for a monotonic trend.
+requires:
+- regular_spacing
+- no_missing
+- independent_observations
+produces:
+- trend_detected
+- direction
+- p_value
+- slope
+source: TODO

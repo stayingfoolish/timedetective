@@ -1,0 +1,16 @@
+name: season_standing
+category: diagnostics
+description: Rank a growing season's vegetation reading against the same months of
+  every other season at the same place.
+requires:
+- monthly_vegetation
+- declared_season
+- target_year
+produces:
+- rank
+- percentile
+- band
+- condition_index
+- drift
+- conclusion
+source: asap_classification_v4

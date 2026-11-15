@@ -1,0 +1,6 @@
+name: weather_precip_global
+category: robustness
+description: Holm adjustment across all declared products, seasons and tests; not a remedy for invalid local inference.
+requires: [all_product_families]
+produces: [tests, family_size, failed_members, method_sources]
+source: statsmodels_multipletests

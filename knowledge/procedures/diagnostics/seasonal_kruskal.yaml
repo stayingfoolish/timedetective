@@ -1,0 +1,12 @@
+name: seasonal_kruskal
+category: diagnostics
+description: Kruskal-Wallis test that the phases of the cycle share one distribution.
+requires:
+- regular_spacing
+- no_missing
+- detrended
+- known_period
+produces:
+- seasonal
+- kruskal_p
+source: manokhin_2025

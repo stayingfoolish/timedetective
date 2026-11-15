@@ -1,0 +1,11 @@
+name: sens_slope
+category: trend
+description: 'Theil-Sen slope: the median of all pairwise slopes, with a confidence interval.'
+requires:
+- regular_spacing
+- no_missing
+produces:
+- slope
+- ci_low
+- ci_high
+source: TODO

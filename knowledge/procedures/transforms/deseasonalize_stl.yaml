@@ -1,0 +1,10 @@
+name: deseasonalize_stl
+category: transforms
+description: Series minus its STL seasonal component.
+requires:
+- regular_spacing
+- no_missing
+- known_period
+produces:
+- deseasonalized
+source: manokhin_2025

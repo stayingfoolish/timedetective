@@ -1,0 +1,14 @@
+name: storage_rainfall
+category: relationship
+description: Relate yearly change in storage to rainfall accumulated over the same
+  two years; report the change at average rainfall.
+requires:
+- annual_storage
+- precipitation
+produces:
+- storage_change_at_average_rainfall_cm_per_year
+- response_cm_per_100mm
+- link
+- rainfall_trend
+- conclusion
+source: rodell_2009

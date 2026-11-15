@@ -1,0 +1,15 @@
+name: seasonal_rank
+category: diagnostics
+description: Ranks the current season-to-date against the same window in every earlier season.
+requires:
+- regular_spacing
+- no_missing
+- known_period
+- season_definition
+- comparable_years
+produces:
+- rank
+- n_seasons
+- percentile
+- lowest_on_record
+source: TODO

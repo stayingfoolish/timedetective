@@ -1,0 +1,10 @@
+name: season_series
+category: transforms
+description: Monthly mean of valid satellite composites; months with none stay missing,
+  nothing is interpolated or smoothed.
+requires:
+- vegetation_composites
+produces:
+- monthly_series
+- missing_months
+source: story_policy_v1

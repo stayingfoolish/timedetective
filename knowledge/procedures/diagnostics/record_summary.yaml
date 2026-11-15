@@ -1,0 +1,10 @@
+name: record_summary
+category: diagnostics
+description: Length, span, cadence, regularity and missing share of a record.
+produces:
+- n
+- span
+- cadence
+- regular
+- missing_share
+source: TODO

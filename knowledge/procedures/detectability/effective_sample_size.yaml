@@ -1,0 +1,10 @@
+name: effective_sample_size
+category: detectability
+description: Number of independent observations a record is worth, from its lag-1 autocorrelation.
+requires:
+- regular_spacing
+- no_missing
+- detrended
+produces:
+- effective_n
+source: TODO

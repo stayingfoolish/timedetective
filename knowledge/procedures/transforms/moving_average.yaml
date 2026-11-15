@@ -1,0 +1,9 @@
+name: moving_average
+category: transforms
+description: Centered rolling mean as a quick estimate of the slow-moving level.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- smoothed
+source: manokhin_2025

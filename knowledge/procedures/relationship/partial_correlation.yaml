@@ -1,0 +1,12 @@
+name: partial_correlation
+category: relationship
+description: Correlation of two series after regressing a shared driver out of both.
+requires:
+- regular_spacing
+- no_missing
+- aligned_pair
+produces:
+- partial_correlation
+- p_value
+- correlated
+source: TODO

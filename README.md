@@ -6,7 +6,23 @@ Built for the NASA Space Apps *Earth System Trend Detective* challenge, on a cor
 
 ## Status
 
-Skeleton only. The layout, tooling and rules are in place; skills, playbooks and the Finding schema are not written yet.
+The weather evidence workflow is executable; broader inference remains unfinished.
+
+**New:** [automatic precipitation investigator](docs/precipitation_investigator.md):
+distill → NASA API → immutable cache → cited procedures → report. Includes dependent-data
+trend/change experiments, SPI, conditional GEV return levels, spell/timing summaries and
+cross-product family correction. **The new bootstrap inference failed the 5% dependence
+calibration target; it is not certified statistical significance.** See
+[validation](docs/precipitation_validation.md). The original offline weather workflow is preserved.
+
+- **Done:** general-purpose statistical procedures across the seven skill categories plus weather procedures in the earth pack; Finding/Playbook/Dataset models, a cited YAML executor, an evidence-based critic, an evidence-only renderer, POWER and CSV adapters, an offline Streamlit form, and a real 2000–2024 NASA point cache. See [weather instructions](docs/weather_playbook.md), [literature audit](docs/weather_literature.md) and [calibration](docs/calibration.md).
+- **Done, two story checks:** a season check (how unusual is this growing season here?) and a water storage check (is the water stored under this region changing, and does it follow rainfall?), each a loaded, cited playbook with known-answer tests and a calibrated claim rule. Information only: no forecasts, causes or declarations. See [story playbooks](docs/story_playbooks.md). Real NASA records and results for Karamoja, north-west India and the US High Plains are on the `real-data-stories` branch.
+- **Not done:** calibrated weather significance/robustness, matched regional native-product acquisition, inferential spatial discovery, arbitrary natural-language planning, attribution and forecasts. For the story checks: the GLDAS subtraction that turns total water storage into groundwater (needs an Earthdata login), an independent record such as wells, a cropland mask, and a second vegetation sensor. Six general-purpose playbooks remain drafts in [docs/proposals/](docs/proposals/README.md).
+- **Known failing check:** `make validate` reports procedures whose `source` is still `TODO`. That is deliberate: those papers have not been opened yet. `--scope weather` and `--scope stories` are clean.
+
+The weather-only graph passes `uv run python scripts/validate_knowledge.py --scope weather`.
+Weather Findings remain **descriptive**. Product disagreement is evidence, not a reason to
+change the baseline or select a different location until a desired answer appears.
 
 ## Quickstart
 

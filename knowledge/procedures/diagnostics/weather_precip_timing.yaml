@@ -1,0 +1,6 @@
+name: weather_precip_timing
+category: diagnostics
+description: Cumulative-anomaly onset and cessation in explicitly supplied broad windows; not automatic seasonal classification.
+requires: [daily_precipitation, complete_baseline, declared_search_windows]
+produces: [timing, subprocedure_refusals, method_sources]
+source: dunning_2016

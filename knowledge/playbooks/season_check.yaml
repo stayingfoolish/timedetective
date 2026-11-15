@@ -1,0 +1,30 @@
+name: season_check
+question: How unusual is this growing season for this place, compared with its own record?
+domain: earth
+start: audit
+nodes:
+  - id: audit
+    procedure: season_audit
+    parameters_json: '{"season_months":"$season_months","target_year":"$target_year","not_answered":"$not_answered"}'
+  - {id: monthly, procedure: season_series}
+  - id: standing
+    procedure: season_standing
+    input: monthly
+    parameters_json: '{"season_months":"$season_months","target_year":"$target_year","audit_values":"$audit_values"}'
+  - id: rainfall
+    procedure: season_rainfall
+    input: monthly
+    parameters_json: '{"rainfall":"$rainfall","standing_values":"$standing_values","season_months":"$season_months","target_year":"$target_year","lead_months":"$lead_months"}'
+  - {id: described, terminal: claim}
+  - {id: refused, terminal: refusal}
+edges:
+  - {id: audit_ok, origin: audit, target: monthly, outcome: ok, domain: earth, source: story_policy_v1}
+  - {id: audit_failed, origin: audit, target: refused, outcome: refused, domain: earth, source: story_policy_v1}
+  - {id: monthly_ok, origin: monthly, target: standing, outcome: ok, domain: earth, source: story_policy_v1}
+  - {id: monthly_failed, origin: monthly, target: refused, outcome: refused, domain: earth, source: story_policy_v1}
+  # Compare the season with the same period in earlier seasons before anything else.
+  - {id: standing_ok, origin: standing, target: rainfall, outcome: ok, domain: earth, source: asap_classification_v4}
+  - {id: standing_failed, origin: standing, target: refused, outcome: refused, domain: earth, source: story_policy_v1}
+  # Look for a second indicator. Without one the finding stands on vegetation alone and says so.
+  - {id: rainfall_ok, origin: rainfall, target: described, outcome: ok, domain: earth, source: asap_classification_v4}
+  - {id: rainfall_unavailable, origin: rainfall, target: described, outcome: refused, domain: earth, source: story_policy_v1}

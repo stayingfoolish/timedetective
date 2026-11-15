@@ -1,0 +1,6 @@
+name: weather_seasons
+category: trend
+description: Complete-season anomalies, empirical ranks, baseline sensitivity and exploratory trend/step/episode comparisons.
+requires: [monthly_weather, declared_seasons, pre_event_baseline]
+produces: [seasons, candidate_years, method_sources, uncertainty, interpretation]
+source: weather_policy_v1

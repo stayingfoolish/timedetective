@@ -1,0 +1,31 @@
+dataset: nasa_power_daily
+request_url: https://power.larc.nasa.gov/api/temporal/daily/point?parameters=PRECTOTCORR,IMERG_PRECTOT,T2M,WS10M,RH2M,PS&community=AG&longitude=42&latitude=3&start=20000101&end=20241231&format=JSON&time-standard=UTC
+retrieved: '2026-11-15'
+sha256: 0a9e448cc1008d8154a7013ff73da1c4a9e3dbf3a259263da96b32b2f100593c
+region:
+  kind: point
+  latitude: 3.0
+  longitude: 42.0
+aggregation: provider-native point query; daily UTC; no regional aggregation
+parameters:
+- PRECTOTCORR
+- IMERG_PRECTOT
+- T2M
+- WS10M
+- RH2M
+- PS
+header:
+  title: NASA/POWER Source Native Resolution Daily Data
+  api:
+    version: v2.10.3
+    name: POWER Daily API
+  sources:
+  - MERRA2
+  - IMERG
+  - POWER
+  fill_value: -999.0
+  time_standard: UTC
+  start: '20000101'
+  end: '20241231'
+note: Real NASA response; synthetic data are used only in separate calibration and
+  known-answer tests.

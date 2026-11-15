@@ -1,0 +1,9 @@
+name: minimum_detectable_trend
+category: detectability
+description: Smallest linear trend this record could detect, given its length, noise and autocorrelation.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- minimum_detectable_trend
+source: TODO

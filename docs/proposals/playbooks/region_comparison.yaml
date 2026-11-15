@@ -1,0 +1,19 @@
+# DRAFT, not loaded. Where is it changing fastest? (Spokane: neighbourhoods.)
+# Needs a map step the draft schema does not have yet: run `trend` once per region.
+name: region_comparison
+question: Which region is changing fastest, and do the regions differ?
+domain: core
+start: per_region_trend
+nodes:
+  - {id: per_region_trend, procedure: trend, parameters: {for_each: region}}   # sub-playbook
+  - {id: fdr, procedure: fdr_correction}
+  - {id: pairwise, procedure: slope_difference, parameters: {for_each: region_pair}}
+  - {id: claim_none_significant, terminal: claim}
+  - {id: claim_regions_differ, terminal: claim}
+  - {id: claim_regions_alike, terminal: claim}
+edges:
+  - {from: per_region_trend, to: fdr, source: TODO}
+  - {from: fdr, to: claim_none_significant, when: {property: n_significant_fdr, op: eq, value: 0}, source: TODO}
+  - {from: fdr, to: pairwise, when: {property: n_significant_fdr, op: gt, value: 0}, source: TODO}
+  - {from: pairwise, to: claim_regions_differ, when: {property: slopes_differ, op: is_true}, source: TODO}
+  - {from: pairwise, to: claim_regions_alike, when: {property: slopes_differ, op: is_false}, source: TODO}

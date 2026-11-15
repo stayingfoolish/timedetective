@@ -1,0 +1,12 @@
+name: cointegration_engle_granger
+category: relationship
+description: Engle-Granger test for a long-run balance between two non-stationary series.
+requires:
+- regular_spacing
+- no_missing
+- aligned_pair
+- non_stationary
+produces:
+- cointegrated
+- p_value
+source: manokhin_2025

@@ -1,0 +1,9 @@
+name: rolling_accumulation
+category: transforms
+description: Sum over a trailing window, such as 12-month rainfall, for comparison with a store that responds slowly.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- accumulated
+source: TODO

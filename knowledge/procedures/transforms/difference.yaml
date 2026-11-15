@@ -1,0 +1,9 @@
+name: difference
+category: transforms
+description: Differences the series at a given lag.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- differenced
+source: manokhin_2025

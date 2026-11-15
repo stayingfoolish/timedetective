@@ -1,0 +1,15 @@
+name: season_rainfall
+category: relationship
+description: Rank the season's rainfall over a declared lead window and report whether
+  it agrees with the vegetation reading.
+requires:
+- monthly_vegetation
+- precipitation
+- season_standing
+produces:
+- rank
+- percentile
+- agreement
+- by_lead
+- conclusion
+source: asap_classification_v4

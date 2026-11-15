@@ -1,0 +1,12 @@
+name: drift_test
+category: trend
+description: t-test on the average step-to-step change, with the standard error inflated for autocorrelation in the changes and a floor that covers a period-averaged random walk.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- trend_detected
+- p_value
+- mean_change
+- lag1_of_changes
+source: TODO

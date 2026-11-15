@@ -1,0 +1,6 @@
+name: weather_precip_family
+category: robustness
+description: Holm adjustment over every declared test and season within a product, preserving refused members.
+requires: [trend_results, period_results, changepoint_results]
+produces: [tests, family_size, failed_members, method_sources]
+source: statsmodels_multipletests

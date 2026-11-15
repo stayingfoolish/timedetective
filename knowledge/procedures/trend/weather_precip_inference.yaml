@@ -1,0 +1,6 @@
+name: weather_precip_inference
+category: trend
+description: Prespecified seasonal slope, period-mean contrast or searched maximum mean-change contrast with stationary-bootstrap block sensitivity; experimental inference.
+requires: [normalized_monthly_precipitation, complete_seasons, explicit_seed, declared_family]
+produces: [tests, subprocedure_refusals, method_sources]
+source: precipitation_policy_v2

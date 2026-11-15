@@ -1,0 +1,9 @@
+name: permutation_entropy
+category: diagnostics
+description: 'Normalized permutation entropy: 0 is fully regular, 1 is noise.'
+requires:
+- regular_spacing
+- no_missing
+produces:
+- permutation_entropy
+source: manokhin_2025

@@ -1,0 +1,26 @@
+# DRAFT, not loaded. Is the apparent trend really one step change?
+name: trend_or_step
+question: Is this a gradual trend or a single step change?
+domain: core
+start: deseasonalize
+nodes:
+  - {id: deseasonalize, procedure: deseasonalize_stl}
+  - {id: compare, procedure: step_vs_trend, input: deseasonalized}
+  - {id: pettitt, procedure: pettitt, input: deseasonalized}
+  - {id: slope_change, procedure: segmented_regression, input: deseasonalized}
+  - {id: trend_playbook, terminal: claim}      # hand over to `trend`
+  - {id: claim_step_descriptive, terminal: claim}
+  - {id: claim_step_significant, terminal: claim}
+  - {id: claim_slope_change_descriptive, terminal: claim}
+  - {id: claim_no_change, terminal: claim}
+edges:
+  - {from: deseasonalize, to: compare, source: TODO}
+  - {from: compare, to: claim_no_change, when: {property: best_model, op: eq, value: flat}, source: TODO}
+  - {from: compare, to: pettitt, when: {property: best_model, op: eq, value: step}, source: TODO}
+  - {from: compare, to: slope_change, when: {property: best_model, op: eq, value: trend}, source: TODO}
+  - {from: compare, to: slope_change, when: {property: best_model, op: eq, value: step_and_trend}, source: TODO}
+  - {from: pettitt, to: claim_step_significant, when: {property: break_detected, op: is_true}, source: TODO}
+  - {from: pettitt, to: claim_step_descriptive, when: {property: break_detected, op: is_false}, source: TODO}
+  # Threshold is a judgment call; needs a source or a house-rule label.
+  - {from: slope_change, to: claim_slope_change_descriptive, when: {property: delta_bic, op: gt, value: 10}, source: TODO}
+  - {from: slope_change, to: trend_playbook, when: {property: delta_bic, op: le, value: 10}, source: TODO}

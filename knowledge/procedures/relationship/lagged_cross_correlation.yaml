@@ -1,0 +1,14 @@
+name: lagged_cross_correlation
+category: relationship
+description: Correlation between two series across leads and lags; reports the strongest.
+requires:
+- regular_spacing
+- no_missing
+- aligned_pair
+- detrended
+- deseasonalized
+produces:
+- best_lag
+- correlation
+- correlated
+source: manokhin_2025

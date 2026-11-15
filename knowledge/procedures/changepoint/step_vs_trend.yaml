@@ -1,0 +1,13 @@
+name: step_vs_trend
+category: changepoint
+description: Compares flat, one step, linear trend, and step plus trend by BIC.
+requires:
+- regular_spacing
+- no_missing
+- residuals_uncorrelated
+produces:
+- best_model
+- bic_margin
+- step_time
+- step_size
+source: TODO

@@ -1,0 +1,12 @@
+name: pettitt
+category: changepoint
+description: Pettitt's rank test for a single shift in level, with its location.
+requires:
+- regular_spacing
+- no_missing
+- independent_observations
+produces:
+- break_detected
+- break_time
+- p_value
+source: TODO

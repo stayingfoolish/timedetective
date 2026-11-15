@@ -1,0 +1,9 @@
+name: hp_filter
+category: transforms
+description: Hodrick-Prescott trend; biased at the endpoints, for comparison only.
+requires:
+- regular_spacing
+- no_missing
+produces:
+- smoothed
+source: manokhin_2025

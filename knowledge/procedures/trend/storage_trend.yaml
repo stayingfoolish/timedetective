@@ -1,0 +1,13 @@
+name: storage_trend
+category: trend
+description: Sen slope with interval, the prewhitened Mann-Kendall test, the smallest
+  detectable trend, curvature and period sensitivity for annual storage.
+requires:
+- annual_storage
+produces:
+- slope_cm_per_year
+- trend_detected
+- minimum_detectable_trend
+- sign_stable
+- conclusion
+source: story_policy_v1

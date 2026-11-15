@@ -1,0 +1,27 @@
+name: nasa_power_monthly_regional
+pack: earth
+title: NASA POWER monthly regional exports (precipitation totals and profile soil wetness)
+plain_definition: Monthly rainfall totals and modelled soil wetness on a half-degree model grid over a latitude-longitude box, averaged over the box. Reanalysis estimates adjusted with gauges, not rain-gauge measurements.
+variable: PRECTOTCORR_SUM, GWETPROF
+units: PRECTOTCORR_SUM is a monthly total in mm (the service labels it mm/day); GWETPROF is a fraction of saturation
+provider: NASA POWER / GMAO
+product_id: POWER Monthly and Annual API regional endpoint / MERRA-2 derivative; exact upstream revision not exposed
+cadence: monthly
+analysis_cadence: annual
+record_start: '1981-01-01'
+spatial_resolution: 0.5 degree latitude by 0.625 degree longitude grid cells inside the requested box
+known_issues:
+  - kind: units
+    effect: The service labels PRECTOTCORR_SUM as mm/day although the values are monthly totals (the thirteenth entry of each year equals the sum of the twelve months).
+    handling: The adapter checks that the annual entry equals the sum of the months and then treats values as mm per month.
+    source: power_monthly
+  - kind: processing
+    effect: A reanalysis product; observing systems assimilated by the model change over time, and gauge adjustment varies by region.
+    handling: Use only completed years; describe rainfall trends as descriptive; do not treat it as independent of other gauge-adjusted products.
+    source: power_meteorology
+  - kind: composition
+    effect: Soil wetness is a modelled fraction of saturation without irrigation or groundwater; it cannot be converted to cm of water here.
+    handling: Use only as a qualitative check on direction; never subtract it from water storage.
+    source: story_policy_v1
+companions: [gsfc_grace_mascons]
+source: power_monthly

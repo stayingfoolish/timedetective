@@ -1,0 +1,37 @@
+name: modis_MOD13Q1_3.0061N_34.1125E_5km_20261115
+dataset_card: modis_ndvi_subset
+product: MOD13Q1
+source: https://modis.ornl.gov/rst/api/v1/MOD13Q1/subset
+dates_url: https://modis.ornl.gov/rst/api/v1/MOD13Q1/dates?latitude=3.0061&longitude=34.1125
+retrieved: '2026-11-15'
+sha256: 4709183a375c56f3536edd15545bd8e3e7cc10c66615d4ab8105ffe294d9f40d
+uncompressed_sha256: b06c2b7f75744a07dc6f3e3293b6982dfc15c27a2f091eed61ab7346e88e58e5
+uncompressed_bytes: 9634307
+latitude: 3.0061
+longitude: 34.1125
+km_above_below: 5
+km_left_right: 5
+place: near Kotido, Karamoja, Uganda
+bands:
+- 250m_16_days_NDVI
+- 250m_16_days_pixel_reliability
+n_responses: 124
+n_composites: 614
+first_composite: '2000-02-18'
+last_composite: '2026-10-16'
+grid:
+  nrows: 41
+  ncols: 41
+  cellsize_m: 231.656358264
+request_window:
+  started: '2026-11-15T12:26:39.090Z'
+  finished: '2026-11-15T13:10:48.715Z'
+bundle_format: 'one JSON object: the dates response, and every subset response with
+  its request address and retrieval time; gzip with zeroed timestamp'
+acquisition: Fetched 2026-11-15 in a desktop browser session (this workspace cannot
+  reach the provider); SHA-256 of the uncompressed bundle computed in the browser
+  before saving and re-checked after transfer.
+citation: ORNL DAAC. 2018. Terrestrial Ecology Subsetting & Visualization Services
+  (TESViS) RESTful Web Service. https://doi.org/10.3334/ORNLDAAC/1600
+note: Real NASA data; synthetic data are used only in separate calibration and known-answer
+  tests.

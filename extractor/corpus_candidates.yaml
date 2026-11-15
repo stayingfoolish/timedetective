@@ -1,0 +1,679 @@
+# Candidate papers for playbook distillation, found by a broad web search on 2026-11-14.
+#
+# Status of every entry: CANDIDATE. None has been opened and read in full, so none is in
+# knowledge/sources.yaml yet. `access` records what the search result showed; confirm the
+# licence on the paper itself before extracting. Paywalled papers are out of scope.
+#
+# Clusters are chosen for diversity of variable, method family and paper type, so that
+# aggregated edges are not just one community's habit.
+#
+# type: applied (analyses a dataset), comparison (tests methods against each other),
+#       method (defines or reviews a method)
+
+groundwater_grace:
+  - title: Trend analysis of GRACE-based groundwater storage anomaly, Tana sub-basin (Heliyon 10, e24474, 2024)
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10845251/
+    type: applied
+    methods_seen: [modified Mann-Kendall, Sen's slope, validation against precipitation and in situ levels]
+    access: open access, CC BY-NC-ND (stated in result)
+  - title: Groundwater level and rainfall trends in Rajasthan, 2000-2021
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10835170/
+    type: applied
+    methods_seen: [modified Mann-Kendall, Spearman's rho, Pearson/Kendall/Spearman correlation with rainfall]
+    access: open access via PubMed Central
+  - title: Drivers and spatiotemporal changes in groundwater storage from GRACE across US aquifers (Scientific Reports)
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6411996/
+    type: applied
+    methods_seen: [seasonal Mann-Kendall, Sen's slope, multiple linear regression, dominance analysis]
+    access: open access via PubMed Central
+    note: covers the High Plains aquifer; closest match to the Kansas demo
+  - title: "When climate variability partly compensates for groundwater depletion: the GRACE signal in Morocco (J. Hydrol. Reg. Stud. 42, 101177, 2022)"
+    url: https://hal.inrae.fr/hal-03747298/document
+    type: applied
+    methods_seen: [separating depletion episodes from recharge events]
+    access: open access, CC BY-NC-ND (stated in result)
+  - title: Comparative analysis of spatiotemporal variability of groundwater storage in Iraq using GRACE (Hydrology 12, 69)
+    url: https://www.mdpi.com/2306-5338/12/4/69
+    type: applied
+    methods_seen: [Mann-Kendall, Sen's slope, comparison of GRACE solutions]
+    access: MDPI, open access
+  - title: Rainfall intensity, drought patterns and groundwater storage in the Guir aquifer, Morocco (E3S Web Conf., 2026)
+    url: https://www.e3s-conferences.org/10.1051/e3sconf/202672601006
+    type: applied
+    methods_seen: [Innovative Trend Analysis]
+    access: open access, CC BY 4.0 (stated in result)
+
+land_surface_temperature:
+  - title: Trend analysis of MODIS land surface temperature and land cover in Central Italy (Land 13, 796, 2024)
+    url: https://www.mdpi.com/2073-445X/13/6/796
+    type: applied
+    methods_seen: [Mann-Kendall and Sen's slope per calendar month, day and night separately, Pearson correlation]
+    access: MDPI, open access
+  - title: "Effects of different urbanization levels on land surface temperature change: Tokyo and Shanghai (Remote Sens. 12, 2022, 2020)"
+    url: https://www.mdpi.com/2072-4292/12/12/2022
+    type: applied
+    methods_seen: [Mann-Kendall, Sen's slope, comparison by urbanization level]
+    access: MDPI, open access
+  - title: Land surface temperature variation in the urban agglomeration on the northern slopes of the Tianshan Mountains (IJERPH 19, 13067, 2022)
+    url: https://www.mdpi.com/1660-4601/19/20/13067
+    type: applied
+    methods_seen: [Mann-Kendall, Sen's slope, Hurst index for persistence of the trend]
+    access: MDPI, open access
+  - title: Urban dynamics and land surface temperature trends in 91 cities and their rural surroundings (Sustainability 14, 14510, 2022)
+    url: https://www.mdpi.com/2071-1050/14/21/14510
+    type: applied
+    methods_seen: [Mann-Kendall, Theil-Sen, urban minus rural difference to remove regional background]
+    access: MDPI, open access
+    note: urban-rural differencing is the same idea as slope_difference
+  - title: Surface urban heat island intensity trends and ARIMA forecasting in Punjab, Pakistan (Land, 2022)
+    url: https://doaj.org/article/84d0f8a00d6242619e8ac368e26f7b8d
+    type: applied
+    methods_seen: [Mann-Kendall on urban minus rural intensity, ARIMA forecast]
+    access: listed in DOAJ (open access journal)
+
+vegetation_ndvi:
+  - title: Detection of breakpoints in global NDVI time series (ISRSE-34 proceedings, de Jong et al., 2011)
+    url: https://www.isprs.org/proceedings/2011/ISRSE-34/211104015Final00234.pdf
+    type: applied
+    methods_seen: [BFAST, seasonal-trend decomposition with trend breaks, sign change of slope]
+    access: conference proceedings PDF, freely hosted
+  - title: Trend estimation methods compared on long-term NDVI series, with Alaska case study (Remote Sens. 5, 2113, 2013)
+    url: TODO
+    type: comparison
+    methods_seen: [annual aggregation vs seasonal-trend model vs season removal, breakpoint over-detection]
+    access: marked open access in the search snippet; locate the article page and confirm title
+  - title: Abrupt structural changes in vegetation dynamics with MODIS NDVI and BFAST (Front. Environ. Sci., 2025)
+    url: https://www.frontiersin.org/journals/environmental-science/articles/10.3389/fenvs.2025.1662155/full
+    type: applied
+    methods_seen: [BFAST, comparison with Mann-Kendall and linear regression]
+    access: Frontiers, open access
+
+soil_moisture_drought:
+  - title: "Potential of long-term satellite observations and reanalysis products for characterising soil drying: trends and drought events (HESS 29, 397, 2025)"
+    url: https://hess.copernicus.org/articles/29/397/2025/
+    type: comparison
+    methods_seen: [trends compared across products, trend-direction consensus, standardized anomalies for drought events]
+    access: Copernicus, CC BY 4.0
+    note: products disagree on trend direction; direct evidence for independent_record_check
+  - title: "Ambiguous agricultural drought: soil moisture and vegetation droughts in Europe (Remote Sens. 13, 1990, 2021)"
+    url: https://doi.org/10.3390/rs13101990
+    type: applied
+    methods_seen: [lagged correlation between soil moisture and NDVI]
+    access: MDPI, open access
+
+air_quality_no2:
+  - title: Long-term changes of tropospheric NO2 over megacities from multiple satellite instruments (ACP 13, 4145, 2013)
+    url: https://acp.copernicus.org/articles/13/4145/2013/acp-13-4145-2013.pdf
+    type: applied
+    methods_seen: [trend function with seasonal terms, instrument-dependent offsets]
+    access: Copernicus, CC BY 3.0
+    note: handling a sensor change inside the trend model; relevant to the GRACE gap
+  - title: Recent satellite-based trends of tropospheric NO2 over large urban agglomerations (ACP 15, 1205, 2015)
+    url: https://acp.copernicus.org/articles/15/1205/2015/acp-15-1205-2015.pdf
+    type: applied
+    methods_seen: [seasonal model with a linear trend fitted per site]
+    access: Copernicus, open access
+  - title: NOx emission trends over Chinese cities estimated from OMI (ACP 17, 9261, 2017)
+    url: https://acp.copernicus.org/articles/17/9261/2017/acp-17-9261-2017.pdf
+    type: applied
+    methods_seen: [argues linear trend analysis does not apply where there is a turning point]
+    access: Copernicus, CC BY 3.0
+  - title: Long-term trends and drivers of NO2 over the Yangtze River Delta from OMI (ACP 22, 4167, 2022)
+    url: https://acp.copernicus.org/articles/22/4167/2022/acp-22-4167-2022.html
+    type: applied
+    methods_seen: [multiple linear regression separating meteorology from emissions]
+    access: Copernicus, open access
+  - title: Multiple linear regression on 11 years of OMI NO2 over hotspots in China (Scientific Reports, srep35912)
+    url: https://link.springer.com/10.1038/srep35912
+    type: applied
+    methods_seen: [regression with meteorology, pixel resolution, season, weekday and year terms]
+    access: Scientific Reports is an open access journal; confirm
+
+snow:
+  - title: Dramatic declines in snowpack in the western US (npj Clim. Atmos. Sci. 1, 2018)
+    url: https://www.nature.com/articles/s41612-018-0012-1
+    type: applied
+    methods_seen: [linear trends in April 1 snow water equivalent, share of sites significant, model corroboration, non-climatic artifacts at sites]
+    access: npj journal, open access
+  - title: Trends in the shape of the annual cycle of snowpack in the western United States (NOAA repository 44668)
+    url: https://repository.library.noaa.gov/view/noaa/44668/noaa_44668_DS1.pdf
+    type: applied
+    methods_seen: [gamma-distribution fit to the annual cycle, trends in cycle shape rather than one date]
+    access: NOAA institutional repository copy
+
+trend_method_comparisons:
+  - title: The importance of prewhitening in change point analysis under persistence (Stoch. Environ. Res. Risk Assess. 30, 763, 2016)
+    url: https://link.springer.com/article/10.1007/s00477-015-1041-5
+    type: comparison
+    methods_seen: [Pettitt under serial correlation, prewhitening variants, corrected trend-free prewhitening, AR(1) bias correction]
+    access: published open access (stated in result)
+    note: bears directly on our calibration result for trend-free prewhitening
+  - title: Applicability of prewhitening to eliminate the influence of serial correlation on the Mann-Kendall test (Water Resour. Res., 2002)
+    url: https://doi.org/10.1029/2001WR000861
+    type: comparison
+    methods_seen: [prewhitening removes part of a real trend]
+    access: unverified; include only if free to read
+  - title: Block bootstrap for Mann-Kendall trend test of serially dependent data (Hydrol. Process., 2012)
+    url: https://doi.org/10.1002/hyp.8438
+    type: comparison
+    methods_seen: [block bootstrap vs prewhitening vs variance correction, optimal block length]
+    access: appears paywalled; likely out of scope
+
+changepoint_method_comparisons:
+  - title: Comparative analysis of nonparametric change-point detectors commonly used in hydrology (Hydrol. Sci. J. 64, 2019)
+    url: https://repository.tudelft.nl/record/uuid:9be9c07f-0399-49f7-b6bf-99d725ad7e25
+    type: comparison
+    methods_seen: [Pettitt, Cramer-von Mises, CUSUM; bias near the ends of the series]
+    access: TU Delft repository copy
+  - title: "Change points in annual peak streamflows: method comparisons and historical change points in the United States (USGS)"
+    url: https://pubs.usgs.gov/publication/70209553
+    type: comparison
+    methods_seen: [eight methods on simulated data, Pettitt for location, Mood for scale, false positives of multi-break methods]
+    access: USGS publication record; confirm full text is free
+  - title: A brief overview of the regime shift detection methods (Rodionov, NOAA PMEL)
+    url: https://www.pmel.noaa.gov/arctic-zone/bering-sea-indicators/regimes/rodionov_overview.pdf
+    type: method
+    methods_seen: [table of regime-shift methods with pros and cons]
+    access: NOAA-hosted PDF
+  - title: Bootstrap Pettitt test for hydroclimatic change detection (arXiv 2411.05233)
+    url: https://arxiv.org/abs/2411.05233
+    type: method
+    methods_seen: [Pettitt, bootstrap, Monte Carlo evaluation]
+    access: arXiv preprint
+
+spatial_multiple_testing:
+  - title: Spatial trend analysis of gridded temperature data at varying spatial scales (ASCMO 6, 1, 2020)
+    url: https://ascmo.copernicus.org/articles/6/1/2020/
+    type: method
+    methods_seen: [hierarchical Bayesian space-time trend model, joint significance, critique of independent per-cell tests]
+    access: Copernicus, open access
+  - title: "The stippled gridpoints are statistically significant: (mis)uses of false discovery rate correction for geospatial data (EGU 2026 material)"
+    url: https://presentations.copernicus.org/EGU26/EGU26-5236_supplement.pdf
+    type: method
+    methods_seen: [false discovery rate, field significance, interpretation pitfalls]
+    access: Copernicus-hosted supplement; find the preprint
+
+# ---- Second search round (2026-11-14): clusters the first round did not cover ----
+
+precipitation:
+  - title: High-resolution spatiotemporal trend analysis of precipitation using satellite-based products over the United Arab Emirates (Water 13, 2376, 2021)
+    url: https://www.mdpi.com/2073-4441/13/17/2376
+    type: applied
+    methods_seen: [Mann-Kendall on three satellite products and rain gauges, product comparison]
+    access: MDPI, open access (URL built from the volume and article number; confirm)
+  - title: Evaluation of IMERG climate trends over land in the TRMM and GPM eras (Environ. Res. Lett., 2024)
+    url: https://doaj.org/article/77ba2fdeba484809ba4981c82241525f
+    type: comparison
+    methods_seen: [Mann-Kendall on annual precipitation, gauge records as truth, product not designed as a climate record]
+    access: listed in DOAJ (open access journal)
+    note: evidence for a dataset-card warning on IMERG trend use
+  - title: Spatiotemporal variations of precipitation over Iran using PERSIANN-CDR (Remote Sens. 12, 1584, 2020)
+    url: https://doi.org/10.3390/rs12101584
+    type: applied
+    methods_seen: [Mann-Kendall at annual, seasonal and monthly scales, contribution of each season]
+    access: MDPI, open access
+  - title: CHIRPS and TAMSAT rainfall performance and trends over the Upper Gelana watershed, Ethiopia (Heliyon)
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC10920726/
+    type: applied
+    methods_seen: [Mann-Kendall, Sen's slope, Innovative Trend Analysis, pixel-wise trends]
+    access: open access via PubMed Central (URL built from the PMC id; confirm)
+  - title: Exploring trends in Earth's precipitation using satellite-gauge estimates from GPM-IMERG (MDPI, with open peer-review record)
+    url: https://www.mdpi.com/2673-4834/6/4/130
+    type: applied
+    methods_seen: [pixel-scale Mann-Kendall and Sen's slope; reviewers ask about autocorrelation and record length]
+    access: MDPI, open access
+    note: the review record documents exactly the two checks our trend playbook enforces
+  - title: CHIRPS versus station rainfall trends in a tropical catchment, Pangani basin (University of Pretoria repository)
+    url: https://repository.up.ac.za/server/api/core/bitstreams/0b784954-ebf3-435b-87b3-6a7468c118f8/content
+    type: applied
+    methods_seen: [Mann-Kendall, Sen's slope, satellite and station trends of opposite sign at some sites]
+    access: institutional repository copy
+
+streamflow:
+  - title: Impacts of serial correlation and shift on streamflow variability within the climate regions of the contiguous United States (Hydrology 7, 91, 2020)
+    url: https://www.mdpi.com/2306-5338/7/4/91
+    type: applied
+    methods_seen: [Mann-Kendall variants for short and long-term persistence, Pettitt, Walker test for field significance]
+    access: MDPI, open access
+  - title: Decadal trends in seasonal streamflow and stream temperature across the United States (EGUsphere preprint, 2026)
+    url: https://egusphere.copernicus.org/preprints/2026/egusphere-2026-2965/
+    type: applied
+    methods_seen: [Mann-Kendall, likelihood categories instead of a single cut-off, several trend periods]
+    access: Copernicus preprint with open discussion
+    note: the open review raises long-term persistence as a limit on short-memory p-values
+  - title: Assessment of long-term trends in streamflow statistics, Mobile Bay and Perdido Bay watersheds, 1950-2022 (USGS SIR 2026-5142)
+    url: https://pubs.usgs.gov/publication/sir20265142/full
+    type: applied
+    methods_seen: [26 Mann-Kendall tests per streamgage, minimum record-length rule, completeness rule for the last decade]
+    access: USGS report, public
+  - title: Low streamflow trends at human-impacted and reference basins in the United States (J. Hydrol. 580, 2020)
+    url: https://pubs.usgs.gov/publication/70206418
+    type: applied
+    methods_seen: [Mann-Kendall under short- and long-term persistence, three trend periods, reference versus impacted basins]
+    access: USGS record of a journal article; confirm full text is free
+  - title: Long-term change detection in 240 unimpaired US streamflow stations (J. Hydrol. 517, 2014)
+    url: https://doi.org/10.1016/j.jhydrol.2014.05.002
+    type: applied
+    methods_seen: [Mann-Kendall variants, Pettitt, Walker test]
+    access: appears paywalled; likely out of scope
+
+detectability:
+  - title: "Factors affecting the detection of trends: statistical considerations and applications to environmental data (J. Geophys. Res. 103, 17149, 1998)"
+    url: https://statistics.fas.harvard.edu/files/statistics-2/files/xlm_jgeophysres103-d14atmo_17149-17161_1998.pdf
+    type: method
+    methods_seen: [number of years needed to detect a trend, effect of noise variance and autocorrelation, effect of level shifts]
+    access: author-hosted PDF; confirm it may be used
+    note: the defining paper for minimum_detectable_trend and record_length_needed
+  - title: "How long do satellites need to overlap? Evaluation of climate data stability from overlapping satellite records (ACP 17, 15069, 2017)"
+    url: https://repository.library.noaa.gov/view/noaa/20412/noaa_20412_DS1.pdf
+    type: method
+    methods_seen: [detecting an offset or drift between instruments, overlap length]
+    access: CC BY 3.0 (stated in result)
+    note: relevant to the GRACE to GRACE-FO transition, which has no overlap
+  - title: Factors challenging our ability to detect long-term trends in ocean chlorophyll (Biogeosciences 10, 2711, 2013)
+    url: https://bg.copernicus.org/articles/10/2711/2013/bg-10-2711-2013.html
+    type: applied
+    methods_seen: [red noise and trend detection, effect of a discontinuity from an instrument change without overlap]
+    access: Copernicus, open access
+
+groundwater_precipitation_coupling:
+  - title: Assessing terrestrial water storage variations in southern Spain using rainfall estimates and GRACE data (Hydrology 10, 187, 2023)
+    url: https://www.mdpi.com/2306-5338/10/9/187
+    type: applied
+    methods_seen: [lagged correlation between groundwater level and GRACE, accumulated deviations from the mean, drought and recovery]
+    access: MDPI, CC BY 4.0
+  - title: Climate-groundwater dynamics inferred from GRACE and the role of hydraulic memory (Earth Syst. Dynam. 11, 775, 2020)
+    url: https://orca.cardiff.ac.uk/133917/4/esd-11-775-2020.pdf
+    type: applied
+    methods_seen: [correlation of storage change with integrated precipitation anomalies, lags by aridity]
+    access: Copernicus journal, open access; repository copy
+    note: says the right precipitation variable differs by climate; a domain edge candidate
+  - title: "Groundwater storage dynamics in the world's large aquifer systems from GRACE: uncertainty and role of extreme precipitation (Earth Syst. Dynam. 11, 755, 2020)"
+    url: https://esd.copernicus.org/articles/11/755/2020/
+    type: applied
+    methods_seen: [ensemble of GRACE solutions, correlation with precipitation at reported lags, variance decomposition]
+    access: Copernicus, open access
+  - title: Groundwater storage and accumulated precipitation in northwest India (arXiv 1908.00255)
+    url: https://arxiv.org/abs/1908.00255
+    type: applied
+    methods_seen: [optimal precipitation accumulation period by correlation, median correlation over expanding windows]
+    access: arXiv preprint
+
+grace_gap:
+  - title: Filling temporal gaps within and between GRACE and GRACE-FO terrestrial water storage records (Remote Sens. 14, 1565, 2022)
+    url: https://repository.library.noaa.gov/view/noaa/58783
+    type: method
+    methods_seen: [machine-learning reconstruction from climate and hydrology inputs, model choice per basin]
+    access: MDPI article, NOAA repository copy
+  - title: Autoregressive reconstruction of total water storage within the GRACE and GRACE Follow-On gap period (Energies 15, 4827, 2022)
+    url: https://doi.org/10.3390/en15134827
+    type: method
+    methods_seen: [forward and backward autoregressive prediction across the gap]
+    access: MDPI, CC BY 4.0
+  - title: Bridging the terrestrial water storage anomalies between the GRACE/GRACE-FO gap using BEAST + GMDH (Remote Sens. 16, 3693, 2024)
+    url: https://doi.org/10.3390/rs16193693
+    type: method
+    methods_seen: [piecewise detrending with a Bayesian change-point decomposition before filling]
+    access: MDPI, open access
+  - title: Bridging the gap between GRACE and GRACE-FO missions with deep learning aided water storage simulations (2022)
+    url: https://aperta.ulakbim.gov.tr/records/254571
+    type: method
+    methods_seen: [deep-learning reconstruction, external validation required when filling long gaps]
+    access: repository record marked open; confirm
+
+heat_extremes_and_counts:
+  - title: Increasing trends in regional heatwaves (Nature Communications, 2020)
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC7334217
+    type: applied
+    methods_seen: [trends in heatwave frequency, duration and cumulative heat, trends from every start year 1950-2000]
+    access: open access via PubMed Central
+    note: start-year sweep is the same idea as period_sensitivity
+  - title: "Trends and persistence in the number of hot days: some multi-country evidence (2025)"
+    url: https://bura.brunel.ac.uk/bitstream/2438/32102/5/FullText.pdf
+    type: applied
+    methods_seen: [fractional integration, long-range dependence in annual counts of hot days]
+    access: institutional repository copy, marked © The Author(s)
+  - title: Trend analysis methods for temperature, precipitation and counts of extreme weather events (TU Delft thesis)
+    url: https://repository.tudelft.nl/file/File_b86dcd6a-3dfe-42c4-8b6d-9e5c3045c6f3
+    type: comparison
+    methods_seen: [Poisson and negative binomial regression for counts, isotonic regression, permutation tests]
+    access: TU Delft repository; a thesis, so weaker evidence than a reviewed paper
+  - title: Changes in hot-day and hot-spell indices at stations in Poland (Theor. Appl. Climatol.)
+    url: https://link.springer.com/doi/10.1007/s00704-016-1786-x
+    type: applied
+    methods_seen: [homogeneity tests before trend analysis (SNHT, Pettitt, Buishand, von Neumann ratio), threshold-day indices]
+    access: unverified
+
+phenology:
+  - title: Assessing satellite-based start-of-season trends in the US High Plains (Environ. Res. Lett., 2014)
+    url: https://digitalcommons.unl.edu/natrespapers/1252
+    type: applied
+    methods_seen: [start-of-season trends 1982-2008, comparison with surface climate trends, mismatch attributed to land use]
+    access: open access letter (stated in result)
+    note: same region as the Kansas and Nebraska demos
+  - title: Land surface phenology in Northeast China 2001-2021 from MODIS kNDVI (Remote Sens. 17, 1853, 2025)
+    url: https://doi.org/10.3390/rs17111853
+    type: applied
+    methods_seen: [interpolation and Savitzky-Golay filtering, start, end and length of season, trends by ecoregion]
+    access: MDPI, open access
+  - title: Improved land surface phenology detection in China's drylands and associated spatiotemporal trends (Remote Sens. 18, 2073, 2026)
+    url: https://doi.org/10.3390/rs18132073
+    type: comparison
+    methods_seen: [different index, fitting and threshold choices for start versus end of season]
+    access: MDPI, open access
+
+deterministic_vs_stochastic_trend:
+  - title: Global average temperature as trend-stationary with a structural break (arXiv 2312.06379)
+    url: https://arxiv.org/abs/2312.06379
+    type: applied
+    methods_seen: [unit root tests on grid units, unit root tests allowing a break in trend, aggregation effects]
+    access: arXiv preprint
+  - title: Unit root tests and weather noise in temperature series (Earth Syst. Dynam. preprint esd-2023-11)
+    url: https://esd.copernicus.org/preprints/esd-2023-11/esd-2023-11.pdf
+    type: method
+    methods_seen: [trend stationarity after allowing one structural break, bias of unit root tests]
+    access: Copernicus preprint
+  - title: "Global hemispheric temperature trends and co-shifting: a shifting mean vector autoregressive analysis (CREATES Research Paper 2012-54)"
+    url: https://repec.econ.au.dk/repec/creates/rp/12/rp12_54.pdf
+    type: applied
+    methods_seen: [deterministic co-shifting versus cointegration, smooth shifts in the mean]
+    access: open working paper
+  - title: Attribution of climate change with structural breaks and co-trending (Estrada and Perron, author-hosted)
+    url: https://www.bu.edu/econ/files/2017/04/Attribution-Climate-Change-Estrada-Perron.pdf
+    type: applied
+    methods_seen: [structural change tests valid for stationary or unit-root noise, Kim-Perron unit root test, co-trending test]
+    access: author-hosted PDF; confirm it may be used
+
+retail_and_business:
+  - title: Fast forecasting of unstable data streams for on-demand service platforms (arXiv 2303.01887)
+    url: https://arxiv.org/abs/2303.01887
+    type: applied
+    methods_seen: [PELT on hourly demand per delivery area, break dates clustered at a known event]
+    access: arXiv preprint
+  - title: "Rethinking nonstationarity in time series: a deterministic trend perspective (arXiv 2506.07987)"
+    url: https://arxiv.org/abs/2506.07987
+    type: method
+    methods_seen: [deterministic trend with structural breaks on US retail sales, trend-stationary hypothesis]
+    access: arXiv preprint
+  - title: Piecewise linear approximation of product sales trends with structural breaks (J. Marketing Analytics 12, 2024)
+    url: https://link.springer.com/article/10.1057/s41270-023-00207-9
+    type: applied
+    methods_seen: [simultaneous estimation of breakpoints and connected trends, choosing the time span after a break]
+    access: unverified
+
+causal_discovery:   # deferred tier; collected so the corpus is ready if time allows
+  - title: Detecting and quantifying causal associations in large nonlinear time series datasets (arXiv 1702.07007; Science Advances 2019)
+    url: https://arxiv.org/abs/1702.07007
+    type: method
+    methods_seen: [PCMCI, conditional independence tests, time-lagged causal links]
+    access: arXiv preprint
+  - title: Causality for Earth science, a review on time-series and spatiotemporal causality methods (arXiv 2404.05746)
+    url: https://arxiv.org/abs/2404.05746
+    type: method
+    methods_seen: [causal discovery versus causal inference, assumptions, evaluation]
+    access: arXiv preprint
+  - title: Comparison of two causal methods (Liang-Kleeman information flow and PCMCI) on models and climate indices (Nonlin. Processes Geophys. 31, 115, 2024)
+    url: https://npg.copernicus.org/articles/31/115/2024/
+    type: comparison
+    methods_seen: [LKIF, PCMCI, lagged correlation as the common baseline]
+    access: Copernicus, open access
+
+# ---- Third search round (2026-11-14): variables outside the demos, and other fields ----
+
+sea_level:
+  - title: Sea level accelerations at globally distributed tide gauge stations during the satellite altimetry era (J. Geod. Sci., 2018)
+    url: https://doi.org/10.1515/jogs-2018-0013
+    type: applied
+    methods_seen: [broken trend model with harmonics, acceleration term, comparison of tide gauges with altimetry]
+    access: listed in DOAJ (open access journal)
+  - title: Recent and future manifestations of a contingent global mean sea level acceleration (J. Geod. Sci., 2021)
+    url: https://doi.org/10.1515/jogs-2020-0115
+    type: applied
+    methods_seen: [trend plus acceleration with AR(1) disturbances, generalized least squares]
+    access: open access journal
+  - title: Statistical analysis of the acceleration of Baltic mean sea-level rise, 1900-2012 (Front. Mar. Sci. 3, 125, 2016)
+    url: https://doi.org/10.3389/fmars.2016.00125
+    type: applied
+    methods_seen: [several acceleration estimators, gliding trends, reports that methods lack power at single gauges]
+    access: Frontiers, open access
+    note: an example of a paper that reports non-detection and explains why
+  - title: Noise characteristics of sea-level trends from altimetry and tide gauges, Indian and Pacific Oceans (repository copy)
+    url: https://core.ac.uk/download/158371427.pdf
+    type: comparison
+    methods_seen: [noise model selection, AR(1) found insufficient for most grid cells, record length for a trend to emerge]
+    access: repository copy of a submitted manuscript; find the published version
+  - title: Detection time for global and regional sea level trends and accelerations (2014)
+    url: https://eprints.soton.ac.uk/370529/
+    type: method
+    methods_seen: [detection time as a function of trend size]
+    access: record has no file attached; likely out of scope unless a free copy exists
+
+sea_ice:
+  - title: The step-like evolution of Arctic open water (Scientific Reports 8, 16902, 2018)
+    url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6237816/
+    type: applied
+    methods_seen: [structural-break analysis, breakpoint means versus linear detrending, econometric time series methods]
+    access: open access via PubMed Central
+    note: direct precedent for the trend_or_step playbook
+  - title: Recent Eurasian winter temperature change and its association with Arctic sea-ice loss (Polar Research)
+    url: https://polarresearch.net/index.php/polar/article/download/3363/10238?inline=1
+    type: applied
+    methods_seen: [break-point trend analysis, lagged covariability, warning against detrending series whose trend changes]
+    access: open access journal
+  - title: A regime shift in September Arctic sea-ice extent in 2007 (ESS Open Archive preprint)
+    url: https://doi.org/10.22541/essoar.173671277.78145382/v1
+    type: applied
+    methods_seen: [single breakpoint by separation of values, Rodionov regime-shift algorithm, trend then no trend]
+    access: preprint
+
+long_memory:
+  - title: Long-term persistence in discharge time series of mountainous catchments in the Elbe River basin (Proc. IAHS 383, 135, 2020)
+    url: https://piahs.copernicus.org/articles/383/135/2020/piahs-383-135-2020.pdf
+    type: applied
+    methods_seen: [Hurst exponent estimators that disagree, effect of persistence on trend tests]
+    access: Copernicus, CC BY 4.0
+  - title: The spatial scale dependence of the Hurst coefficient in global annual precipitation data (Hydrology 9, 199, 2022)
+    url: https://www.mdpi.com/2306-5338/9/11/199
+    type: method
+    methods_seen: [Hurst-Kolmogorov dynamics, scale dependence of persistence]
+    access: MDPI, CC BY
+  - title: "Trend or persistence: what are we really detecting in annual low-flow time series? (EGU 2026 abstract)"
+    url: https://meetingorganizer.copernicus.org/EGU26/EGU26-13518.html
+    type: comparison
+    methods_seen: [block-bootstrap Mann-Kendall, bias-corrected prewhitening, Mann-Kendall under long-term persistence, FARIMAX, misclassification of short memory as long memory]
+    access: conference abstract only; watch for the paper
+    note: closest published statement of our calibration question
+  - title: Global precipitation trends under long-range dependence (author-hosted preprint, 2017)
+    url: https://www.itia.ntua.gr/el/getfile/1761/2/documents/2017AWR_global_hurst_pp.pdf
+    type: applied
+    methods_seen: [Mann-Kendall under the long-range dependence assumption, Hurst parameter by location]
+    access: author-hosted preprint
+
+interrupted_time_series:   # public health; the same statistics as a known-date break
+  - title: "Interrupted time series regression for the evaluation of public health interventions: a tutorial (Int. J. Epidemiol. 46, 348, 2017)"
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5407170
+    type: method
+    methods_seen: [segmented regression at a known date, impact model stated in advance, over-dispersion, autocorrelation, seasonal adjustment, time-varying confounders]
+    access: open access via PubMed Central
+    note: a ready-made playbook for a break at a known date; maps onto chow_test and count regression
+
+concept_drift_in_demand:
+  - title: PELT-driven drift detection and model adaptation for forecasting (arXiv 2506.14133)
+    url: https://arxiv.org/abs/2506.14133
+    type: applied
+    methods_seen: [PELT change points, retraining after the last detected drift]
+    access: arXiv preprint
+  - title: "DriftGuard: hierarchical concept drift detection and remediation in supply chain forecasting (arXiv 2601.08928)"
+    url: https://arxiv.org/abs/2601.08928
+    type: applied
+    methods_seen: [ensemble of error monitoring, statistical tests and CUSUM, drift located within a product hierarchy, M5 retail data]
+    access: arXiv preprint
+  - title: Concept drift handling in demand prediction (arXiv 2011.02738)
+    url: https://arxiv.org/abs/2011.02738
+    type: applied
+    methods_seen: [sudden, gradual and recurring drift, structural breaks versus drift detectors]
+    access: arXiv preprint
+
+time_of_emergence:
+  - title: Record length needed to distinguish ozone trends from natural variability, and the effect of satellite averaging kernels (ACP 25, 2269, 2025)
+    url: https://acp.copernicus.org/articles/25/2269/2025/acp-25-2269-2025.html
+    type: method
+    methods_seen: [trend compared with a reference distribution of natural trends, record length needed, trends that changed sign after a few more years]
+    access: Copernicus, open access
+  - title: Quantifying the time of emergence of the anthropogenic signal in the global land carbon sink (Biogeosciences 23, 767, 2026)
+    url: https://bg.copernicus.org/articles/23/767/2026/bg-23-767-2026.html
+    type: method
+    methods_seen: [time of emergence from large model ensembles, longer emergence at regional scale, variability removal to shorten detection time]
+    access: Copernicus, open access
+  - title: Detection time for regional fossil-fuel CO2 emission trends (repository copy)
+    url: https://core.ac.uk/download/275812093.pdf
+    type: method
+    methods_seen: [trend detection time by region, confounding by natural variability]
+    access: repository copy; confirm the journal licence
+
+aerosol:
+  - title: Analysis of linear long-term trend of aerosol optical thickness from SeaWiFS over Europe and South China (ACP 11, 12149, 2011)
+    url: https://acp.copernicus.org/articles/11/12149/2011/acp-11-12149-2011.pdf
+    type: applied
+    methods_seen: [linear trend with attention to cloud disturbance, calibration and orbital drift as sources of spurious trend]
+    access: Copernicus, CC BY 3.0
+  - title: 15-year variability of desert dust optical depth on global and regional scales (ACP, 2021)
+    url: https://doaj.org/article/f45c2195c9cd4fcfb8084830529a174d
+    type: applied
+    methods_seen: [factors affecting sign, size and significance of trends, effect of spatial resolution and time interval]
+    access: Copernicus, open access
+  - title: Aerosol trends with variance-corrected Sen's slope, prewhitened Mann-Kendall and Pettitt tests, with field significance (ACP, about 2023)
+    url: TODO
+    type: applied
+    methods_seen: [trend-free prewhitening Mann-Kendall, Pettitt change points, collective significance across grid points]
+    access: seen only through a database snippet; locate the article and confirm
+
+homogenization:
+  - title: Benchmarking homogenization algorithms for monthly data (Clim. Past 8, 89, 2012)
+    url: https://opac.geologie.ac.at/ais312/dokumente/copernicus.org/cp-8-89-2012.pdf
+    type: comparison
+    methods_seen: [break-type inhomogeneities, benchmark with inserted breaks, relative homogenization]
+    access: Copernicus, open access
+    note: inhomogeneities can bias regional trends; supports the artifact check on dataset cards
+  - title: "Homogenization of monthly temperature and precipitation series: benchmarking results of the MULTITEST project (Int. J. Climatol., post-print)"
+    url: https://repositorio.aemet.es/bitstream/20.500.11765/14523/1/MULTITEST-IJC23-post.pdf
+    type: comparison
+    methods_seen: [homogenization packages compared on synthetic networks]
+    access: institutional post-print
+  - title: Relative homogenization and benchmark sections (Atmosphere 15, 957, 2024)
+    url: https://www.mdpi.com/2073-4433/15/8/957
+    type: method
+    methods_seen: [difference series between neighbouring stations, station effect versus climate signal]
+    access: MDPI, open access
+
+burned_area:
+  - title: A human-driven decline in global burned area (Science 356, 2017; author manuscript)
+    url: https://pmc.ncbi.nlm.nih.gov/articles/PMC6047075
+    type: applied
+    methods_seen: [trend with confidence limits, residual trend after adjusting for precipitation, multiple datasets and time intervals]
+    access: author manuscript in PubMed Central
+    note: adjusting for a climate driver before testing the trend; a covariate-regression example
+  - title: Multi-decadal trends and variability in burned area from GFED5 (Earth Syst. Sci. Data, 2023)
+    url: https://doaj.org/article/c29b83c0c9224779b1a420415ed110d2
+    type: applied
+    methods_seen: [fused multi-sensor record, trend with uncertainty by land cover]
+    access: Copernicus, open access
+  - title: Analysis of trends in the FireCCI global long-term burned area product, 1982-2018 (Fire 4, 74, 2021)
+    url: https://doi.org/10.3390/fire4040074
+    type: applied
+    methods_seen: [contextual Mann-Kendall, short and long records giving opposite trends in the same region]
+    access: MDPI, open access
+
+lake_levels:
+  - title: Worldwide lake level trends and responses to background climate variation (HESS 24, 2593, 2020)
+    url: https://hess.copernicus.org/articles/24/2593/2020/hess-24-2593-2020.html
+    type: applied
+    methods_seen: [annual aggregation so residuals are not serially correlated, Theil-Sen, trend after removing background climate variation]
+    access: Copernicus, open access
+    note: aggregating to annual values is an alternative to prewhitening
+  - title: Monitoring spatial-temporal variations of lake level in western China using ICESat-1 and CryoSat-2 (Remote Sens. 14, 5709, 2022)
+    url: https://doi.org/10.3390/rs14225709
+    type: applied
+    methods_seen: [linear trend on merged two-mission series, validation against in situ and an independent product]
+    access: MDPI, open access
+  - title: Lake water level changes across High Mountain Asia from CryoSat-2 and ICESat-2 (EGUsphere preprint, 2026)
+    url: https://doi.org/10.5194/egusphere-2026-808
+    type: applied
+    methods_seen: [inter-mission consistency as sign agreement, precipitation as driver]
+    access: Copernicus preprint
+
+# ---- Fourth round (2026-11-15): seasonal anomaly and agricultural early warning ----
+
+agricultural_early_warning:
+  - title: "ASAP: a new global early warning system to detect anomaly hot spots of agricultural production for food security analysis (Agric. Syst. 168, 2019)"
+    url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6360855/
+    type: method
+    methods_seen: [vegetation and rainfall anomalies against previous seasons, two-step design with automatic warning then analyst check, four warning levels]
+    access: open access via PubMed Central
+    note: the closest published template for the season_check playbook
+  - title: "ASAP: Anomaly hot Spots of Agricultural Production, warning classification v4.0 (JRC technical report, 2019)"
+    url: https://agricultural-production-hotspots.ec.europa.eu/files/asap_warning_classification_v_4_0.pdf
+    type: method
+    methods_seen: [SPI-3, NDVI-based indicators, share of agricultural area affected, timing within the growing cycle]
+    access: European Commission report, public
+    note: source for indicator definitions and thresholds
+  - title: New functionalities and regional/national use cases of the ASAP platform (Remote Sens. 15, 4284, 2023)
+    url: https://doi.org/10.3390/rs15174284
+    type: applied
+    methods_seen: [seasonal forecasts added, crop calendars matched to satellite phenology, national adoptions]
+    access: MDPI, open access
+  - title: "How well do EO-based food security warning systems agree? Comparison of NDVI-based vegetation anomaly maps in West Africa (IEEE JSTARS 16, 2023)"
+    url: https://hal.inrae.fr/hal-04052591v1/document
+    type: comparison
+    methods_seen: [agreement between anomaly maps from different systems, negative-alarm agreement]
+    access: repository copy, CC BY-NC-ND
+    note: evidence that two systems can disagree; supports requiring a second indicator
+  - title: Characterizing agricultural drought in the Karamoja subregion of Uganda with meteorological and satellite-based indices (Natural Hazards 91, 837, 2018)
+    url: https://doi.org/10.1007/s11069-017-3106-x
+    type: applied
+    methods_seen: [NDVI-based drought indicators against SPI and PDSI, ranking of drought years, small-field limits]
+    access: unverified
+  - title: "Agricultural land use, drought impacts and vulnerability: a regional case study for Karamoja, Uganda (PhD dissertation, University of Maryland, 2017)"
+    url: https://api.drum.lib.umd.edu/server/api/core/bitstreams/c0fd793f-9265-4f52-8118-2a9e177e1589/content
+    type: applied
+    methods_seen: [cropland mask, drought within agricultural areas, field and survey data]
+    access: university repository; a dissertation
+  - title: A review of satellite-based global agricultural monitoring systems available for Africa (Global Food Security 29, 100543, 2021)
+    url: https://geog.umd.edu/sites/geog.umd.edu/files/pubs/1-s2.0-S2211912421000523-main.pdf
+    type: method
+    methods_seen: [inventory of monitoring systems, data each exposes (vegetation indices, crop masks)]
+    access: university-hosted PDF; confirm it may be used
+  - title: Crop Monitor methodology (GEOGLAM)
+    url: https://cropmonitor.org/methodology
+    type: method
+    methods_seen: [common crop condition classes, multi-agency consensus, crop masks and crop calendars as context]
+    access: public web page, not a paper
+
+groundwater_india_and_resolution:
+  - title: Satellite-based estimates of groundwater depletion in India (Nature 460, 999, 2009)
+    url: https://escholarship.org/uc/item/22577805
+    type: applied
+    methods_seen: [GRACE storage minus modelled soil water, linear trend over 2002-2008, comparison with rainfall over the same period]
+    access: repository copy (eScholarship); confirm version
+    note: the reference case for "storage falling while rainfall was near average"
+  - title: Dwindling groundwater resources in northern India, from satellite gravity observations (Geophys. Res. Lett. 36, L18401, 2009)
+    url: https://doi.org/10.1029/2009GL039401
+    type: applied
+    methods_seen: [regional mass trend, hydrological model subtraction, leakage handling]
+    access: unverified
+  - title: What is the spatial resolution of GRACE satellite products for hydrology? (Remote Sens. 10, 852, 2018)
+    url: https://doi.org/10.3390/rs10060852
+    type: method
+    methods_seen: [smallest resolvable catchment for a stated error, filtering and leakage]
+    access: open (MDPI)
+    note: source for the minimum-area rule on the dataset card
+  - title: "GRACE hydrological estimates for small basins: evaluating processing approaches on the High Plains Aquifer, USA (Water Resour. Res. 46, W11517, 2010)"
+    url: https://doi.org/10.1029/2009WR008564
+    type: method
+    methods_seen: [bias and leakage correction for a named aquifer, comparison with well-based storage]
+    access: repository copy reported (HAL); confirm
+
+# Gaps still open after three rounds:
+#   - reviewed retail or supply-chain papers on demand shifts (hits remain preprints)
+#   - evapotranspiration, ocean colour and carbon variables are only touched through detectability papers
+#   - nothing yet from energy load or finance, the book's own example domains
