@@ -103,6 +103,7 @@ def test_kotido_2026_has_one_indicator_and_says_so():
 
 def test_the_app_runs_both_checks_on_cached_data():
     app = AppTest.from_file(str(ROOT / "app/main.py")).run(timeout=60)
+    app.radio(key="workspace").set_value("Research tools").run(timeout=60)
     next(b for b in app.button if b.label == "Check the season").click().run(timeout=60)
     next(b for b in app.button if b.label == "Check water storage").click().run(timeout=60)
     assert not app.exception

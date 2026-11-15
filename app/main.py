@@ -10,12 +10,26 @@ import streamlit as st
 from timedetective.agent.report import render
 from timedetective.packs.earth.adapters.power import PARAMETERS, load_power
 from timedetective.packs.earth.run import investigate
+from precipitation_ui import show_precipitation_story
 from walkthrough import show_walkthrough
 
-st.title("TimeDetective")
-st.caption("Is it a real trend, or just noise? Answers from NASA data, each with a label for how sure it is. "
-           "No AI model runs when a check executes.")
-show_walkthrough()
+st.set_page_config(page_title="TimeDetective | Evidence studio", layout="wide", initial_sidebar_state="collapsed")
+st.markdown("""<style>
+  .block-container {max-width: 1500px; padding-top: 3rem; padding-bottom: .25rem}
+  .td-brand {font-size:2rem;font-weight:800;letter-spacing:-.04em;line-height:1.3}
+</style>""", unsafe_allow_html=True)
+brand, navigation = st.columns([1, 2], vertical_alignment="center")
+with brand:
+    st.markdown('<div class="td-brand">TimeDetective</div>', unsafe_allow_html=True)
+with navigation:
+    workspace = st.radio("Workspace", ["Groundwater story", "Research tools"], horizontal=True,
+                         key="workspace", label_visibility="collapsed")
+if workspace == "Groundwater story":
+    show_walkthrough()
+    st.stop()
+
+st.caption("Explore the cached weather comparison, automatic precipitation investigator, and two regional checks. "
+           "Each answer is backed by a recorded run; no AI model runs when a check executes.")
 
 st.divider()
 st.header("Weather evidence for one grid cell")
@@ -66,7 +80,7 @@ st.header("Automatic precipitation investigation")
 st.caption("Distill an explicit request, then fetch real NASA data. Preview never calls the API. "
            "Trend/change bootstrap tests failed dependence calibration and remain experimental.")
 from timedetective.agent.precipitation import distill
-from timedetective.packs.earth.precipitation import investigate_question, render_run
+from timedetective.packs.earth.precipitation import investigate_question
 
 with st.form("automatic_precipitation"):
     live_question = st.text_area("Precipitation question", "Is annual rainfall trending, and do MERRA-2 and IMERG agree?")
@@ -85,31 +99,22 @@ with st.form("automatic_precipitation"):
     preview = st.form_submit_button("Preview distilled request")
     fetch = st.form_submit_button("Fetch and investigate precipitation")
 if preview or fetch:
+    st.session_state.pop("precipitation_result", None)
+    st.session_state.pop("precipitation_plan", None)
+    st.session_state["precip_story_stage"] = "1 · Question"
     try:
         controls = dict(latitude=lat, longitude=lon, start=f"{int(first)}-01-01", end=f"{int(last)}-12-31",
             baseline=[int(v.strip()) for v in reference.split(",")], event=[int(v.strip()) for v in comparison_period.split(",")],
             seasons=json.loads(season_json), analyses=methods, target=target, timing_windows=json.loads(windows))
         plan = distill(live_question, **controls)
-        st.json(plan.model_dump(mode="json"))
+        st.session_state["precipitation_plan"] = plan.model_dump(mode="json")
         if fetch:
             with st.spinner("Acquiring and checking NASA records, then running cited procedures…"):
                 st.session_state["precipitation_result"] = investigate_question(live_question, **controls,
                     cache_dir=raw.parents[3] / "downloads/power", offline=offline)
     except (ValueError, TypeError) as exc:
         st.error(f"Distillation refused before acquisition: {exc}")
-if "precipitation_result" in st.session_state:
-    bundle = st.session_state["precipitation_result"]
-    st.info("The request and all refusals are retained. Nominal p-values are not certified significance claims.")
-    for product, finding_data in bundle["findings"].items():
-        with st.expander(f"Precipitation evidence: {product}"):
-            st.json(finding_data)
-        for item in finding_data["refusals"]:
-            st.warning(f"{product} / {item['procedure']}: {item['failed']}. Needed: {item['would_change']}")
-    if bundle.get("global_family"):
-        with st.expander("Statistical results across all products"):
-            st.json(bundle["global_family"])
-    st.download_button("Download precipitation investigation", json.dumps(bundle, indent=2, allow_nan=False), "precipitation_investigation.json")
-    st.download_button("Download precipitation report", render_run(bundle), "precipitation_report.md")
+show_precipitation_story(st.session_state.get("precipitation_plan"), st.session_state.get("precipitation_result"))
 
 st.divider()
 st.header("Two checks for any place the data covers")
