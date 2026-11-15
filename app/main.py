@@ -13,10 +13,23 @@ from timedetective.packs.earth.run import investigate
 from precipitation_ui import show_precipitation_story
 from walkthrough import show_walkthrough
 
-st.title("TimeDetective")
-st.caption("Is it a real trend, or just noise? Answers from NASA data, each with a label for how sure it is. "
-           "No AI model runs when a check executes.")
-show_walkthrough()
+st.set_page_config(page_title="TimeDetective | Evidence studio", layout="wide", initial_sidebar_state="collapsed")
+st.markdown("""<style>
+  .block-container {max-width: 1500px; padding-top: 1rem; padding-bottom: 1rem}
+  .td-brand {font-size:2rem;font-weight:800;letter-spacing:-.04em;line-height:1.3}
+</style>""", unsafe_allow_html=True)
+brand, navigation = st.columns([1, 2], vertical_alignment="center")
+with brand:
+    st.markdown('<div class="td-brand">TimeDetective</div>', unsafe_allow_html=True)
+with navigation:
+    workspace = st.radio("Workspace", ["Groundwater story", "Research tools"], horizontal=True,
+                         key="workspace", label_visibility="collapsed")
+if workspace == "Groundwater story":
+    show_walkthrough()
+    st.stop()
+
+st.caption("Explore the cached weather comparison, automatic precipitation investigator, and two regional checks. "
+           "Each answer is backed by a recorded run; no AI model runs when a check executes.")
 
 st.divider()
 st.header("Weather evidence for one grid cell")

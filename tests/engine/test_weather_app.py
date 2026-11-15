@@ -13,6 +13,7 @@ RAW = ROOT / "data/cache/earth/power_3N_42E_2000_2024_20261115.json"
 def test_cached_weather_form_produces_finding_without_network():
     app = AppTest.from_file(str(Path(__file__).resolve().parents[2] / "app/main.py"))
     app.run(timeout=30)
+    app.radio(key="workspace").set_value("Research tools").run(timeout=30)
     assert not app.exception
     next(b for b in app.button if b.label == "Investigate cached data").click().run(timeout=30)
     assert not app.exception
@@ -24,6 +25,7 @@ def test_precipitation_preview_does_not_acquire_data(monkeypatch):
         raise AssertionError("preview must not download")
     monkeypatch.setattr("timedetective.packs.earth.precipitation.fetch_power", forbidden)
     app = AppTest.from_file(str(Path(__file__).resolve().parents[2] / "app/main.py")).run(timeout=30)
+    app.radio(key="workspace").set_value("Research tools").run(timeout=30)
     next(b for b in app.button if b.label == "Preview distilled request").click().run(timeout=30)
     assert not app.exception and not app.error
     assert app.json
@@ -34,6 +36,7 @@ def test_precipitation_offline_button_shows_refusals_without_network(monkeypatch
         raise OSError("offline fixture cache unavailable")
     monkeypatch.setattr("timedetective.packs.earth.precipitation.fetch_power", unavailable)
     app = AppTest.from_file(str(Path(__file__).resolve().parents[2] / "app/main.py")).run(timeout=30)
+    app.radio(key="workspace").set_value("Research tools").run(timeout=30)
     next(b for b in app.button if b.label == "Fetch and investigate precipitation").click().run(timeout=30)
     assert not app.exception
     assert any("offline fixture" in w.value for w in app.warning)
@@ -48,6 +51,7 @@ def test_precipitation_story_walks_through_real_recorded_evidence(monkeypatch, t
         records={p: load_power(RAW, p) for p in plan.products})
     monkeypatch.setattr("timedetective.packs.earth.precipitation.investigate_question", lambda *args, **kwargs: bundle)
     app = AppTest.from_file(str(ROOT / "app/main.py")).run(timeout=90)
+    app.radio(key="workspace").set_value("Research tools").run(timeout=90)
     next(b for b in app.button if b.label == "Fetch and investigate precipitation").click().run(timeout=90)
     assert not app.exception
     assert any("What will be checked" == s.value for s in app.subheader)

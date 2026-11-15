@@ -88,6 +88,11 @@ def source_link(key: str) -> str:
     return f"[{title}]({url})" if url and str(url).startswith("http") else f"{title} (`{url}`)" if url else title
 
 
+def short_source_link(key: str) -> str:
+    url = knowledge()["sources"].get(key, {}).get("url")
+    return f"[View method source]({url})" if url and str(url).startswith("http") else f"Source: `{key}`"
+
+
 def led_to(step) -> str:
     """Where the playbook sent the run after this step: ok, skipped, finding or refused."""
     edge = next(e for e in knowledge()["playbook"]["edges"] if e["id"] == step.edge_taken)
@@ -110,18 +115,18 @@ def chart(data: pd.DataFrame, spec: dict) -> None:
 
 
 def monthly_chart(r: dict, gap: tuple[str, str]) -> None:
-    names = ["All stored water", "Soil moisture and snow (model)", "Groundwater estimate"]
+    names = ["Total water", "Soil + snow", "Groundwater estimate"]
     index = r["total"].index
     frame = pd.DataFrame({"month": index, names[0]: r["total"].to_numpy(), names[1]: r["modelled"].reindex(index).to_numpy(),
                           names[2]: r["groundwater"].to_numpy()}).melt("month", var_name="series", value_name="cm")
-    chart(frame, {"height": 300, "layer": [
+    chart(frame, {"height": 270, "layer": [
         {"data": {"values": [{"start": gap[0], "end": gap[1]}]}, "mark": {"type": "rect", "color": GREY, "opacity": 0.18},
          "encoding": {"x": {"field": "start", "type": "temporal"}, "x2": {"field": "end"}}},
         {"mark": {"type": "line", "strokeWidth": 1.6},
          "encoding": {"x": {"field": "month", "type": "temporal", "title": None},
                       "y": {"field": "cm", "type": "quantitative", "title": "cm of water"},
                       "color": {"field": "series", "type": "nominal", "scale": {"domain": names, "range": [GREY, YELLOW, BLUE]},
-                                "legend": {"orient": "top", "title": None, "labelLimit": 320}},
+                                "legend": {"orient": "bottom", "title": None, "labelLimit": 160}},
                       "tooltip": [{"field": "month", "type": "temporal", "format": "%b %Y"}, {"field": "series"}, {"field": "cm", "format": ".1f"}]}}]})
 
 
@@ -145,15 +150,24 @@ def changes_chart(annual: list[dict], mean_change: float) -> None:
         {"data": {"values": [{"mean": mean_change}]}, "mark": {"type": "rule", "strokeWidth": 2}, "encoding": {"y": {"field": "mean", "type": "quantitative"}}}]})
 
 
-def rank_chart(share: float) -> None:
-    chart(pd.DataFrame([{"share": share}]), {"height": 70, "layer": [
-        {"mark": {"type": "bar", "color": BLUE, "height": 22},
-         "encoding": {"x": {"field": "share", "type": "quantitative", "scale": {"domain": [0, 1]},
-                            "axis": {"format": "%", "title": "share of other stretches that moved as much as the real gap"}},
-                      "tooltip": [{"field": "share", "format": ".1%"}]}},
-        {"data": {"values": [{"bar": 0.05, "label": "a caution is raised below 5%"}]}, "layer": [
-            {"mark": {"type": "rule", "strokeWidth": 2, "strokeDash": [4, 3]}, "encoding": {"x": {"field": "bar", "type": "quantitative"}}},
-            {"mark": {"type": "text", "align": "left", "dx": 6, "dy": -22}, "encoding": {"x": {"field": "bar", "type": "quantitative"}, "text": {"field": "label"}}}]}]})
+def matching_stretches(v: dict) -> int:
+    """Recover the exact comparison count from the procedure's add-one rank."""
+    n = v["placebo_positions"]
+    return round(v["share_of_placebos_at_least_as_large"] * (n + 1) - 1)
+
+
+def rank_chart(v: dict) -> None:
+    """One square per alternative gap, so the comparison is visible without a percent axis."""
+    n = v["placebo_positions"]
+    matched = matching_stretches(v)
+    squares = "".join(f'<span class="td-comparison-tile {"matched" if i < matched else ""}" aria-hidden="true"></span>'
+                      for i in range(n))
+    st.markdown(f'''<div class="td-comparison" role="img" aria-label="{matched} of {n} comparison stretches changed at least as much as the real satellite handover">
+      <div class="td-comparison-number">{matched} <span>of {n}</span></div>
+      <div class="td-comparison-label">other stretches changed at least as much</div>
+      <div class="td-comparison-grid">{squares}</div>
+      <div class="td-comparison-note">Each square is one other possible gap in this record. Blue means its shift matched or exceeded the real gap. Squares are grouped by result, not date.</div>
+    </div>''', unsafe_allow_html=True)
 
 
 def rain_chart(v: dict) -> None:
@@ -162,10 +176,10 @@ def rain_chart(v: dict) -> None:
     low, high = frame["rainfall_mm_per_year"].min(), frame["rainfall_mm_per_year"].max()
     fitted = [{"rain": x, "fit": a + b * (x - mean) / 100} for x in (low, high)]
     reading = [{"rain": mean, "at": a, "low": v["interval_at_average_rainfall"][0], "high": v["interval_at_average_rainfall"][1]}]
-    x = {"field": "rainfall_mm_per_year", "type": "quantitative", "title": "rain over the same two years, mm a year", "scale": {"zero": False}}
+    x = {"field": "rainfall_mm_per_year", "type": "quantitative", "title": "Two-year rainfall, mm/year", "scale": {"zero": False}}
     chart(frame, {"height": 320, "layer": [
         {"mark": {"type": "point", "filled": True, "size": 70, "color": BLUE},
-         "encoding": {"x": x, "y": {"field": "storage_change_cm", "type": "quantitative", "title": "cm of water"},
+         "encoding": {"x": x, "y": {"field": "storage_change_cm", "type": "quantitative", "title": "Storage change, cm"},
                       "tooltip": [{"field": "year"}, {"field": "storage_change_cm", "format": "+.1f", "title": "cm"},
                                   {"field": "rainfall_mm_per_year", "format": ".0f", "title": "mm a year"}]}},
         {"data": {"values": fitted}, "mark": {"type": "line", "color": BLUE, "opacity": 0.55, "strokeWidth": 2},
@@ -178,11 +192,13 @@ def rain_chart(v: dict) -> None:
         {"data": {"values": [{"zero": 0}]}, "mark": {"type": "rule", "color": GREY}, "encoding": {"y": {"field": "zero", "type": "quantitative"}}}]})
 
 
-def fields_chart(yearly: list[dict]) -> None:
+def fields_chart(yearly: list[dict], compact: bool = False) -> None:
     frame = pd.DataFrame(yearly)
     for field, title, color, digits, zero in (("storage_cm", "cm of water", BLUE, 1, True), ("greenness", "NDVI", AQUA, 3, False)):
-        st.caption("Groundwater estimate, one value per year." if field == "storage_cm" else "Greenness of the land, one value per year.")
-        chart(frame, {"height": 190, "mark": {"type": "line", "point": {"size": 45}, "color": color, "strokeWidth": 2},
+        st.caption(("Groundwater estimate" if field == "storage_cm" else "Land greenness") if compact else
+                   ("Groundwater estimate, one value per year." if field == "storage_cm" else
+                    "Greenness of the land, one value per year."))
+        chart(frame, {"height": 115 if compact else 190, "mark": {"type": "line", "point": {"size": 45}, "color": color, "strokeWidth": 2},
                       "encoding": {"x": {"field": "year", "type": "quantitative", "title": None, "axis": {"format": "d"}, "scale": {"zero": False}},
                                    "y": {"field": field, "type": "quantitative", "title": title, "scale": {"zero": zero}},
                                    "tooltip": [{"field": "year"}, {"field": field, "format": f".{digits}f"}]}})
@@ -242,8 +258,8 @@ def step_handover(v: dict) -> None:
     a, b, c = st.columns(3)
     a.metric("Change across the real gap", f"{num(v['change_across_gap_cm'], 1, True)} cm")
     b.metric("A typical stretch moves", f"{v['typical_change_cm']:.1f} cm")
-    c.metric("Stretches that moved as much", f"{share:.0%}", f"of {v['placebo_positions']} others", delta_color="off", delta_arrow="off")
-    rank_chart(share)
+    c.metric("Other stretches as large", f"{matching_stretches(v)} of {v['placebo_positions']}")
+    rank_chart(v)
     st.write("**A caution is attached,** so the label cannot rise above descriptive." if v["break_at_handover"]
              else "**No caution is attached.** If one had been, the label could not rise above descriptive, however strong the trend.")
 
@@ -368,23 +384,104 @@ def guide_navigation(max_step: int) -> int:
     return current
 
 
+def compact_step(node: str, ran: dict, finding, r: dict, gap: tuple[str, str]) -> None:
+    """A recording-sized view of the same recorded values used by the full evidence trail."""
+    if node not in ran:
+        st.info(f"This step did not run. The check stopped at step {len(ran)}.")
+        return
+    position, step, v = ran[node]
+    if led_to(step) in ("refused", "skipped"):
+        render_step(node, ran, finding, r, gap)
+        return
+    visual, takeaway = st.columns([1.7, 1], gap="large")
+    with visual:
+        if node == "audit":
+            monthly_chart(r, gap)
+        elif node == "annual":
+            annual_chart(v["annual"])
+        elif node == "trend":
+            changes_chart(ran["annual"][2]["annual"], v["mean_yearly_change_cm"])
+        elif node == "handover":
+            if v.get("break_at_handover") is not None:
+                rank_chart(v)
+            else:
+                st.info("Not enough data on both sides of the mission gap.")
+        elif node == "rainfall":
+            rain_chart(v)
+        elif node == "greenness":
+            fields_chart(v["yearly"], compact=True)
+    with takeaway:
+        st.markdown('<div class="td-kicker">WHAT THIS CLUE SAYS</div>', unsafe_allow_html=True)
+        if node == "audit":
+            st.markdown("#### Weigh water from orbit")
+            st.write("GRACE and GRACE-FO measure changes in total stored water. Subtract GLDAS-modelled soil moisture and snow to estimate groundwater.")
+            st.metric("Record", f"{v['years']:.1f} years")
+            st.caption(f"{v['n_months']} months with data · {v['region_resolution_cells']} regional blocks · shaded band: mission gap. Surface water is not subtracted.")
+        elif node == "annual":
+            first, last = v["annual"][0], v["annual"][-1]
+            st.markdown("#### See the long view")
+            st.write("Removing the yearly cycle lets us compare annual groundwater estimates.")
+            st.metric(f"{first['year']} → {last['year']}", f"{num(first['value'], 0, True)} → {num(last['value'], 0, True)} cm")
+            st.caption("One value per year; incomplete years follow the recorded minimum-month rule.")
+        elif node == "trend":
+            st.markdown("#### Test the movement")
+            st.write("The test asks whether changes from one year to the next average out to zero.")
+            st.metric("Average yearly change", f"{num(v['mean_yearly_change_cm'], 1, True)} cm")
+            st.caption(f"Recorded p-value {v['p_value']:.3f} against {v['alpha']}; straight-line slope {num(v['slope_cm_per_year'], 1, True)} cm/year. The critic sets the final label.")
+        elif node == "handover":
+            st.markdown("#### Check the handover")
+            if v.get("break_at_handover") is None:
+                st.write("The record cannot check both sides of the mission gap well enough.")
+            else:
+                st.write(f"The satellites had an {v['gap_months']}-month gap. After removing seasonality and the overall trend, we compared its shift with other gaps of the same length.")
+                st.metric("Shift across the real gap", f"{num(v['change_across_gap_cm'], 1, True)} cm")
+                st.write(("**Handover caution:** the real gap is among the most unusual 5% of comparable gaps. "
+                          "A water change and instrument offset cannot be separated here.") if v["break_at_handover"] else
+                         (f"**No handover caution:** {matching_stretches(v)} other gaps were at least as large. "
+                          "The conservative rank is "
+                          f"{v['share_of_placebos_at_least_as_large']:.1%}, above the 5% caution cutoff. An instrument offset is not ruled out."))
+        elif node == "rainfall":
+            low, high = v["interval_at_average_rainfall"]
+            st.markdown("#### Is rain the whole story?")
+            st.write("Each dot pairs a year's groundwater change with rain over the same two years.")
+            st.metric("At average rainfall", f"{num(v['storage_change_at_average_rainfall_cm_per_year'], 1, True)} cm/year")
+            st.caption(f"Range {span(low, high)} cm/year at {v['average_rainfall_mm_per_year']:.0f} mm/year. Orange marks average rainfall.")
+        elif node == "greenness":
+            low, high = v["greenness_interval_per_decade"]
+            st.markdown("#### Look at the fields")
+            st.write("MODIS greenness is compared over the same blocks and years as groundwater.")
+            st.metric("Greenness change", f"{num(v['greenness_slope_per_decade'], 2, True)} NDVI/decade")
+            st.caption(f"Range {span(low, high, 2)} · {v['greenness_direction']}. Pattern: {v['pattern']}.")
+        if node != "handover":
+            st.caption(f"Step {position} · {step.procedure} · {short_source_link(step.source)}")
+
+
 def show_walkthrough() -> None:
     st.markdown("""<style>
-    .td-hero {background:linear-gradient(125deg,#102b39 0%,#165363 58%,#177765 100%);
-      color:#fff;padding:1.5rem 1.8rem;border-radius:1.1rem;margin:.4rem 0 1.2rem;
-      box-shadow:0 14px 32px rgba(12,54,67,.16)}
+    .td-hero {background:radial-gradient(circle at 92% 0%,#1e8d83 0%,transparent 38%),linear-gradient(125deg,#102b39,#165363);
+      color:#fff;padding:.65rem 1.2rem;border-radius:1rem;margin:0 0 .3rem;
+      box-shadow:0 12px 32px rgba(12,54,67,.18)}
     .td-hero .eyebrow {color:#a6efda;text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:700}
-    .td-hero h2 {color:#fff;font-size:clamp(1.5rem,3vw,2.35rem);line-height:1.15;margin:.45rem 0}
-    .td-hero p {color:#e2f4f1;margin:0;max-width:54rem}
-    .td-hero .question {color:#fff;font-weight:650;margin-top:.8rem}
+    .td-hero h2 {color:#fff;font-size:clamp(1.3rem,2vw,1.7rem);line-height:1.2;margin:.15rem 0}
+    .td-hero p {color:#e2f4f1;margin:.2rem 0 0}
+    .td-kicker {color:#36b9a8;font-size:.72rem;font-weight:800;letter-spacing:.15em}
+    .td-comparison {padding:.4rem .2rem;color:inherit}
+    .td-comparison-number {font-size:2rem;line-height:1.1;font-weight:800;color:#60c9e7}
+    .td-comparison-number span {font-size:1.2rem;font-weight:600;color:inherit}
+    .td-comparison-label {font-weight:650;margin:.2rem 0 .8rem}
+    .td-comparison-grid {display:grid;grid-template-columns:repeat(25,minmax(0,1fr));gap:3px}
+    .td-comparison-tile {height:9px;border-radius:2px;background:color-mix(in srgb,currentColor 18%,transparent)}
+    .td-comparison-tile.matched {background:#2a78d6}
+    .td-comparison-note {font-size:.82rem;opacity:.75;margin-top:.7rem;line-height:1.35}
+    @media (max-width: 1000px) {
+      main [data-testid="stHorizontalBlock"]:has(.td-kicker) {flex-direction:column}
+      main [data-testid="stHorizontalBlock"]:has(.td-kicker) > [data-testid="stColumn"] {width:100%;flex:1 1 auto}
+    }
     </style>""", unsafe_allow_html=True)
-    st.header("Follow one question all the way")
-    st.caption("Real NASA records for two regions large enough for the satellites to resolve: GRACE and GRACE-FO (stored water), GLDAS "
-               "(modelled soil moisture and snow), MODIS (greenness) and POWER (rainfall). Information only: no forecasts, no causes.")
-    left, right = st.columns([3, 2])
-    question = left.text_input("Question", QUESTION, key="story_q")
-    area = right.selectbox("Area", list(AREAS), key="story_area")
-    st.caption("Things to try: ask *why is the groundwater falling here?*, switch to the US High Plains, or ask about the small area.")
+    with st.expander("Change the question or area"):
+        left, right = st.columns([3, 2])
+        question = left.text_input("Question", QUESTION, key="story_q")
+        area = right.selectbox("Area", list(AREAS), key="story_area")
     tag, blocks = AREAS[area]
     scope = (question, area)
     if st.session_state.get("story_guide_scope") != scope:
@@ -395,35 +492,36 @@ def show_walkthrough() -> None:
     gap = ("2017-07-01", "2018-05-31")
 
     conclusions = [v["conclusion"] for _, _, v in ran.values() if isinstance(v.get("conclusion"), dict)]
-    st.markdown(f"""<div class="td-hero"><div class="eyebrow">An evidence-led investigation</div>
-      <h2>Follow the water, check every clue.</h2>
-      <p>From satellites to seasonal patterns to the strength of the answer. Move through the recorded checks at your own pace.</p>
-      <p class="question">{escape(question)}</p></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class="td-hero"><div class="eyebrow">An evidence-led investigation · NASA records</div>
+      <h2>Follow the water. Check every clue.</h2>
+      <p>{escape(question)}</p></div>""", unsafe_allow_html=True)
     max_step = len(ran) + 1 if not finding.claim else len(STEPS) + 1
     current = guide_navigation(max_step)
     with st.container(border=True):
-        st.caption(f"INVESTIGATION {current + 1} / {max_step + 1}")
+        st.caption(f"CLUE {current + 1} / {max_step + 1} · {area}")
         st.subheader("The verdict" if current == max_step else GUIDE_TITLES[current])
         if current == 0:
-            st.write("First, the question is matched with the data this playbook can check. The area and its satellite footprint matter: a place too small for the sensor can stop the investigation before any trend is calculated.")
-            st.write(f"**Area:** {area}")
-            st.write("**Records:** GRACE and GRACE-FO water storage, GLDAS modelled water, MODIS greenness, NASA POWER rainfall.")
-            st.caption("The data are cached NASA records. The six checks below run in the order specified by the playbook.")
+            a, b = st.columns([1.5, 1], gap="large")
+            with a:
+                st.markdown("### One question. Six evidence checks.")
+                st.write("We start with a satellite view of stored water, then test the trend, the mission handover, rainfall and what the fields show. Each clue is computed from cached NASA records.")
+            with b:
+                st.markdown('<div class="td-kicker">THE INSTRUMENTS</div>', unsafe_allow_html=True)
+                st.write("🛰️ GRACE / GRACE-FO · water storage")
+                st.write("🌱 GLDAS / MODIS · land and greenness")
+                st.write("🌧️ NASA POWER · rainfall")
+                st.caption("The area must be large enough for the water satellites to resolve.")
         elif current < max_step and current - 1 < len(ran):
-            render_step(list(STEPS)[current - 1], ran, finding, records(tag), gap)
+            compact_step(list(STEPS)[current - 1], ran, finding, records(tag), gap)
         else:
             if finding.claim:
                 st.markdown(f"Label: **{finding.claim.strength}**")
                 st.info(finding.claim.statement)
-                if conclusions:
-                    st.write("The critic reads the recorded checks before setting that label:")
-                    label_table(conclusions[-1]["evidence"], finding.claim.strength)
+                st.caption("The label comes from the recorded checks and a fixed critic rule. Open the evidence trail to inspect every criterion.")
             else:
                 st.warning("This investigation stopped before it could make a claim.")
                 for refusal in finding.refusals:
                     st.write(f"**{refusal.procedure}:** {refusal.failed}. What would change it: {refusal.would_change}.")
-    st.caption("Want to inspect the whole route? Open the complete evidence trail below. The guide and the full view use the same recorded Finding.")
-
     if st.toggle("Explore the complete evidence trail", key="story_full_evidence"):
         tabs = st.tabs(TABS + ["The label", "The playbook"])
         r = records(tag)
@@ -457,9 +555,9 @@ def show_walkthrough() -> None:
             with st.expander(f"The file: {PLAYBOOK.relative_to(ROOT)}"):
                 st.code(k["playbook_text"], language="yaml")
 
-    with st.expander("Everything the check recorded, and downloads"):
-        for position, step, v in ran.values():
-            st.markdown(f"**{position}. {step.node}** · source `{step.source}` · edge `{step.edge_taken}` (`{step.edge_source}`)")
-            st.json(v, expanded=False)
-        st.download_button("Download finding (JSON)", finding.model_dump_json(indent=2), "groundwater_finding.json", key="story_json")
-        st.download_button("Download evidence report", render(finding), "groundwater_finding.md", key="story_md")
+        with st.expander("Everything the check recorded, and downloads"):
+            for position, step, v in ran.values():
+                st.markdown(f"**{position}. {step.node}** · source `{step.source}` · edge `{step.edge_taken}` (`{step.edge_source}`)")
+                st.json(v, expanded=False)
+            st.download_button("Download finding (JSON)", finding.model_dump_json(indent=2), "groundwater_finding.json", key="story_json")
+            st.download_button("Download evidence report", render(finding), "groundwater_finding.md", key="story_md")
