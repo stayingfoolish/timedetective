@@ -2,6 +2,9 @@
 
 **Is this place really changing, or does the chart just look dramatic? TimeDetective follows the clues in NASA Earth data and shows its work.**
 
+TimeDetective is an open-source, agentic framework that uses a time series analysis ontology to automate and
+explain trend analysis of NASA Earth data.
+
 **Start with a question.** Has groundwater fallen? Was that growing season unusual? What has rainfall been doing?
 TimeDetective checks the relevant NASA records, measures the change and explains the result in plain language.
 Every answer brings its receipts: data, methods, sources and an evidence label (descriptive, significant or robust).
@@ -17,9 +20,9 @@ can investigate different places and questions without hard-coding the conclusio
 each skill needs and produces, and the playbooks that put the steps together. Follow any finding backward and you
 can see the path from conclusion to analysis to NASA data.
 
-**Research you can inspect.** The team distilled roughly **1,000 papers** while developing the statistical
-methods. The [source library](knowledge/sources.yaml) records the research publications, NASA product guides and
-statistical documentation selected to support the implemented checks. Each active playbook step links to its
+**Research you can inspect.** The team distilled **44 sources** by hand while developing the statistical
+methods. The [source library](knowledge/sources.yaml) records them: the research publications, NASA product guides,
+statistical documentation and written project rules that support the implemented checks. Each active playbook step links to its
 source or a stated project rule. An evidence checker assigns the final label from the recorded results. The
 groundwater example below earns calibrated significance; the precipitation workflow delivers detailed, traceable
 descriptions of rainfall. [See how it works](#how-it-works).
@@ -30,7 +33,7 @@ check how convincing the trend really is. TimeDetective brings water storage, ve
 into one evidence-led workflow. Its key safeguard: a trend earns the word "significant" only when its test has been
 checked for the kind of record being analyzed.
 
-Demo: [interactive walkthrough](https://stayingfoolish.github.io/timedetective/story/) · _add the video or slides link here before submitting_
+Demo: [interactive walkthrough](https://stayingfoolish.github.io/timedetective/story/) · [pitch slides](https://docs.google.com/presentation/d/e/2PACX-1vT9H-xJDBbWAZAMY7YEniQZDIaRajFtdEDWvILH-yvysvePNY2u3UbqJCd-dw635w/pub?start=false&loop=false&delayms=10000)
 
 ## How TimeDetective answers the challenge
 
@@ -250,6 +253,11 @@ flowchart LR
   S -->|a precondition fails| R[Refusal<br/>what failed, what would change it]
   C --> F[Finding<br/>answer, strength, path, sources]
 ```
+
+The loop is agentic in structure: the executor walks the playbook, the outcome of each step decides the next
+one, and the critic reviews the recorded evidence before any claim is made. The planner and the narrator are the
+two places reserved for a language model. In this release both are deterministic, so no AI model runs when a check
+executes.
 
 Every finding carries one of three labels, and only the critic can assign it:
 
